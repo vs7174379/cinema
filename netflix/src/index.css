@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Pacifico&display=swap');
+
+ @import "tailwindcss";
+
+
+
+
+*{
+   font-family: "Outfit", sans-serif;
+   scrollbar-width: thin;
+   scrollbar-color: #787777 #1e1e1e;
+}
+ body {
+            background-image: url('https://www.erfurt.com/fileadmin/user_upload/tipps-inspirationen/tipps-tricks/raumwirkung/leerer-grauer-raum_thumb.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .glass {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        #style-7::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #style-7::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-image: -webkit-gradient(linear,
+                    left bottom,
+                    left top,
+                    color-stop(0.44, rgb(122, 153, 217)),
+                    color-stop(0.72, rgb(73, 125, 189)),
+                    color-stop(0.86, rgb(28, 58, 148)));
+        }
+
