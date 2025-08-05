@@ -1,5 +1,5 @@
 import axios from "axios"
-import { options, Popular_Movie, Top_Rated_Movie, Upcoming_Movie } from "../utils/constant.js";
+import { options, Popular_Movie, Upcoming_Movie } from "../utils/constant.js";
 
 
 export const getNowPlayingMovies = async (req, res) => {
