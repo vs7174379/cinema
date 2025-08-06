@@ -2,6 +2,45 @@ import React, { useState } from 'react';
 
 const LoginSignup = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [form, setForm] = useState({ fullName: '', email: '', password: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const endpoint = isLogin ? '/api/user/login' : '/api/user/register';
+      const payload = isLogin
+        ? { email: form.email, password: form.password }
+        : { fullName: form.fullName, email: form.email, password: form.password };
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        credentials: 'include',
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.message || 'Something went wrong');
+      } else {
+        // Redirect or handle success
+        window.location.href = '/browser';
+      }
+    } catch (err) {
+      setError('Network error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
@@ -21,17 +60,20 @@ const LoginSignup = () => {
             {isLogin ? 'Welcome Back' : 'Create an Account'}
           </h2>
 
-          <form action="#">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
               <div className="mb-4">
-                <label htmlFor="name" className="block mb-1 text-md font-medium">
+                <label htmlFor="fullName" className="block mb-1 text-md font-medium">
                   Full Name
                 </label>
                 <input
                   type="text"
-                  id="name"
+                  id="fullName"
                   placeholder="John Doe"
+                  value={form.fullName}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 rounded-md bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+                  required
                 />
               </div>
             )}
@@ -44,7 +86,10 @@ const LoginSignup = () => {
                 type="email"
                 id="email"
                 placeholder="Email"
+                value={form.email}
+                onChange={handleChange}
                 className="w-full px-4 py-2 rounded-md bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+                required
               />
             </div>
 
@@ -56,23 +101,31 @@ const LoginSignup = () => {
                 type="password"
                 id="password"
                 placeholder="Password"
+                value={form.password}
+                onChange={handleChange}
                 className="w-full px-4 py-2 rounded-md bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+                required
               />
             </div>
+
+            {error && (
+              <div className="text-red-400 text-center mb-2">{error}</div>
+            )}
 
             <button
               type="submit"
               className="w-full py-3 rounded-md bg-white text-black font-semibold hover:bg-blue-500 hover:text-white transition duration-300"
+              disabled={loading}
             >
-              {isLogin ? 'Log In' : 'Sign Up'}
+              {loading ? (isLogin ? 'Logging In...' : 'Signing Up...') : isLogin ? 'Log In' : 'Sign Up'}
             </button>
           </form>
 
           <div className="mt-6 flex justify-between space-x-4">
-            <button className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md bg-red-600 hover:bg-red-700 transition text-white text-sm font-medium">
+            <button className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md bg-red-600 hover:bg-red-700 transition text-white text-sm font-medium" type="button">
               <i className="fab fa-google"></i> Google
             </button>
-            <button className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md bg-blue-600 hover:bg-blue-700 transition text-white text-sm font-medium">
+            <button className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md bg-blue-600 hover:bg-blue-700 transition text-white text-sm font-medium" type="button">
               <i className="fab fa-facebook-f"></i> Facebook
             </button>
           </div>
@@ -80,8 +133,12 @@ const LoginSignup = () => {
           <p className="mt-6 text-center text-sm text-gray-300">
             {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
             <button
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setError('');
+              }}
               className="text-yellow-400 hover:underline font-semibold"
+              type="button"
             >
               {isLogin ? 'Sign Up' : 'Log In'}
             </button>

@@ -33,9 +33,9 @@ const App = () => {
       <Toaster />
       <Navbar />
       <Routes>
-        <Route path='/' element={<MyList />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/browser' element={<Browser movieId={id} />} />   
+        <Route path='/' element={<Login />} />
+        <Route path='/browser' element={<Browser movieId={id}  />} />
+        
         <Route path='/l' element={<Signup/>} />          
       </Routes >
 
