@@ -18,8 +18,8 @@ const LoginSignup = () => {
     try {
       // Use full backend URL for local development
       const endpoint = isLogin
-        ? 'http://localhost:3000/api/user/login'
-        : 'http://localhost:3000/api/user/register';
+        ? 'https://cinemo-pearl.vercel.app/api/user/login'
+        : 'https://cinemo-pearl.vercel.app/api/user/register';
       const payload = isLogin
         ? { email: form.email, password: form.password }
         : { fullName: form.fullName, email: form.email, password: form.password };
