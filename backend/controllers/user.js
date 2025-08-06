@@ -7,8 +7,8 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(401).json({
-        message: "Invalid data",
+      return res.status(400).json({
+        message: "Email and password are required",
         success: false
       });
     }
@@ -29,10 +29,15 @@ export const login = async (req, res) => {
     const tokenData = { id: user._id };
     const token = jwt.sign(tokenData, process.env.JWT_SECRET || "dsvrhbdtjsfhghdjfvfhfdv", { expiresIn: "1h" });
     return res.status(200)
-      .cookie("token", token, { httpOnly: true, maxAge: 3600000 })
+      .cookie("token", token, { httpOnly: true, maxAge: 3600000, sameSite: "lax" })
       .json({
         message: `Welcome back ${user.fullName}`,
-        user,
+        user: {
+          id: user._id,
+          fullName: user.fullName,
+          email: user.email
+        },
+        token,
         success: true
       });
   } catch (error) {
@@ -44,7 +49,7 @@ export const login = async (req, res) => {
 // Logout Controller
 export const logOut = async (req, res) => {
   return res.status(200)
-    .cookie("token", "", { expires: new Date(0), httpOnly: true })
+    .clearCookie("token", { httpOnly: true, sameSite: "lax" })
     .json({
       message: "Logout successful",
       success: true
@@ -56,26 +61,31 @@ export const register = async (req, res) => {
   try {
     const { fullName, email, password } = req.body;
     if (!fullName || !email || !password) {
-      return res.status(401).json({
-        message: "Invalid data",
+      return res.status(400).json({
+        message: "Full name, email, and password are required",
         success: false
       });
     }
     const user = await User.findOne({ email });
     if (user) {
-      return res.status(401).json({
+      return res.status(409).json({
         message: "This email is already used",
         success: false
       });
     }
     const hashedPassword = await bcryptjs.hash(password, 16);
-    await User.create({
+    const newUser = await User.create({
       fullName,
       email,
       password: hashedPassword
     });
     return res.status(201).json({
       message: "Account created successfully",
+      user: {
+        id: newUser._id,
+        fullName: newUser.fullName,
+        email: newUser.email
+      },
       success: true
     });
   } catch (error) {
