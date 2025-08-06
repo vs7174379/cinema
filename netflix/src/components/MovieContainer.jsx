@@ -12,7 +12,7 @@ const MovieContainer = () => {
     useEffect(() => {
         const fetchNowPlaying = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/show/toprated-movies');
+                const response = await axios.get('https://cinemo-pearl.vercel.app/api/show/toprated-movies');
                 if (response.data.success) {
                     setMovies(response.data.movies);
                 }
