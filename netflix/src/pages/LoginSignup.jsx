@@ -16,7 +16,10 @@ const LoginSignup = () => {
     setLoading(true);
 
     try {
-      const endpoint = isLogin ? '/api/user/login' : '/api/user/register';
+      // Use full backend URL for local development
+      const endpoint = isLogin
+        ? 'http://localhost:3000/api/user/login'
+        : 'http://localhost:3000/api/user/register';
       const payload = isLogin
         ? { email: form.email, password: form.password }
         : { fullName: form.fullName, email: form.email, password: form.password };
@@ -32,7 +35,6 @@ const LoginSignup = () => {
       if (!res.ok) {
         setError(data.message || 'Something went wrong');
       } else {
-        // Redirect or handle success
         window.location.href = '/browser';
       }
     } catch (err) {
