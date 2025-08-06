@@ -20,7 +20,14 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:5173', // local frontend
+    'https://cinemo-xnb9.vercel.app', // deployed frontend
+    'https://cinemo-pearl.vercel.app' // deployed backend (for SSR or API calls)
+  ],
+  credentials: true
+}));
 
 // Routes
 app.use('/api/show', showRouter);

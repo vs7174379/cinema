@@ -16,10 +16,14 @@ const LoginSignup = () => {
     setLoading(true);
 
     try {
-      // Use full backend URL for local development
+      // Use local backend for development, Vercel for production
       const endpoint = isLogin
-        ? 'https://cinemo-pearl.vercel.app/api/user/login'
-        : 'https://cinemo-pearl.vercel.app/api/user/register';
+        ? (import.meta.env.MODE === 'development'
+            ? 'http://localhost:3000/api/user/login'
+            : 'https://cinemo-pearl.vercel.app/api/user/login')
+        : (import.meta.env.MODE === 'development'
+            ? 'http://localhost:3000/api/user/register'
+            : 'https://cinemo-pearl.vercel.app/api/user/register');
       const payload = isLogin
         ? { email: form.email, password: form.password }
         : { fullName: form.fullName, email: form.email, password: form.password };
