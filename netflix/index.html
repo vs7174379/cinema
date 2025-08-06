@@ -16,6 +16,23 @@
         
     </div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+    window.addEventListener('DOMContentLoaded', function () {
+        const container = document.getElementById('mf-widget-GYzEOjYdHwdETKoGkWVsA');
+        if (container && typeof MFWidget !== 'undefined') {
+            MFWidget.init({
+                containerId: 'mf-widget-GYzEOjYdHwdETKoGkWVsA',
+                assetType: 'movie',
+                assetId: 'GYzEOjYdHwdETKoGkWVsA'
+            });
+        } else {
+            console.error('MFWidget or container not found.');
+            container.querySelector('.mw-powered-by').style.display = 'none';
+        }
+    });
+</script>
+<script src="https://cdn.moviefone.com/widgets/mf-widget.min.js" defer></script>
+
 </body>
 
 </html>

@@ -8,6 +8,7 @@ import Browser from './pages/Browser'
 import Login from './pages/Login'
 import axios from "axios"
 import Signup from './pages/Signup'
+import MyList from './pages/MyList'
 const App = () => {
   const [id, setid] = useState('');
   const [error, setError] = useState(null);
@@ -32,7 +33,7 @@ const App = () => {
       <Toaster />
       <Navbar />
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<MyList />} />
         <Route path='/login' element={<Login />} />
         <Route path='/browser' element={<Browser movieId={id} />} />   
         <Route path='/l' element={<Signup/>} />          

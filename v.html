@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movie Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc');
+      background-size: cover;
+      background-position: center;
+    }
+    .glass {
+      backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+     .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  </style>
+</head>
+<body class="h-screen flex items-center justify-center p-6 text-white">
+
+  <div class="glass w-full max-w-6xl rounded-2xl p-6 space-y-6 shadow-xl overflow-auto no-scrollbar h-[95%]  ">
+    
+    <!-- Main Content -->
+    
+      <h1 class="text-2xl font-semibold mb-4">Good Morning, Jabel</h1>
+      <p class="text-gray-500 mb-6">99+ new top listed movies for you</p>
+
+      <!-- Search -->
+      <div class=" sticky top-0 mb-8">
+        <div class="flex items-center bg-gray-200 rounded-full px-4 py-2 w-full max-w-xl">
+          <input type="text" placeholder="Search the movie wanted to watch today"
+                 class="bg-transparent outline-none flex-grow px-2 text-sm text-gray-700">
+          <button class="text-white bg-blue-500 px-4 py-1 rounded-full text-sm">Search</button>
+        </div>
+      </div>
+
+      <!-- Section: Popular in Bangladesh -->
+      <div class="mb-10">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold">Popular in Bangladesh</h2>
+          <button class="text-blue-500 text-sm">See all</button>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <!-- Movie Cards -->
+          <div class="bg-gray-100 rounded-md overflow-hidden">
+            <img src="https://image.tmdb.org/t/p/w300/3zQvuSAUdC3mrx9vnSEpkFX0968.jpg" alt="Brave" class="w-full h-40 object-cover">
+            <div class="p-2 text-sm">
+              <p class="font-semibold">BRAVE</p>
+              <p class="text-gray-500 text-xs">The Mule (2018)</p>
+            </div>
+          </div>
+          <div class="bg-gray-100 rounded-md overflow-hidden">
+            <img src="https://image.tmdb.org/t/p/w300/2yYP0PQjG8zVqturh1BAqu2Tixl.jpg" alt="Spiderman 3" class="w-full h-40 object-cover">
+            <div class="p-2 text-sm">
+              <p class="font-semibold">SPIDERMAN 3</p>
+              <p class="text-gray-500 text-xs">Annabelle Comes Home (2019)</p>
+            </div>
+          </div>
+          <div class="bg-gray-100 rounded-md overflow-hidden">
+            <img src="https://image.tmdb.org/t/p/w300/sNjL6SqErDBE8OUZlrDLkexfsCj.jpg" alt="Looper" class="w-full h-40 object-cover">
+            <div class="p-2 text-sm">
+              <p class="font-semibold">LOOPER</p>
+              <p class="text-gray-500 text-xs">The Sun is Also a Star (2019)</p>
+            </div>
+          </div>
+          <div class="bg-gray-100 rounded-md overflow-hidden">
+            <img src="https://image.tmdb.org/t/p/w300/3XyaE1gXkA2kU9fUoFQ3BzLZUbN.jpg" alt="Wolverine" class="w-full h-40 object-cover">
+            <div class="p-2 text-sm">
+              <p class="font-semibold">WOLVERINE</p>
+              <p class="text-gray-500 text-xs">The 15:17 to Paris (2018)</p>
+            </div>
+          </div>
+          <div class="bg-gray-100 rounded-md overflow-hidden">
+            <img src="https://image.tmdb.org/t/p/w300/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg" alt="Pries" class="w-full h-40 object-cover">
+            <div class="p-2 text-sm">
+              <p class="font-semibold">PRIES</p>
+              <p class="text-gray-500 text-xs">Crazy Rich Asians</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Popular Worldwide -->
+      <div>
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold">Popular in Worldwide</h2>
+          <button class="text-blue-500 text-sm">See all</button>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <div class="bg-gray-100 rounded-md overflow-hidden">
+            <img src="https://image.tmdb.org/t/p/w300/cbOPjzE63HgF9Fa8g0MLM9eGZwD.jpg" alt="Oppenheimer" class="w-full h-40 object-cover">
+            <div class="p-2 text-sm">
+              <p class="font-semibold">OPPENHEIMER</p>
+              <p class="text-gray-500 text-xs">Bodyguard</p>
+            </div>
+          </div>
+          <div class="bg-gray-100 rounded-md overflow-hidden">
+            <img src="https://image.tmdb.org/t/p/w300/ziEuG1essDuWuC5lpWUaw1uXY2O.jpg" alt="John Wick" class="w-full h-40 object-cover">
+            <div class="p-2 text-sm">
+              <p class="font-semibold">JOHN WICK</p>
+              <p class="text-gray-500 text-xs">I Saw The Devil</p>
+            </div>
+          </div>
+          <div class="bg-gray-100 rounded-md overflow-hidden">
+            <img src="https://image.tmdb.org/t/p/w300/7bEo3KkL4nBBYJxPmzHuA2kFU1z.jpg" alt="Mulan" class="w-full h-40 object-cover">
+            <div class="p-2 text-sm">
+              <p class="font-semibold">MULAN</p>
+              <p class="text-gray-500 text-xs">Kingdom</p>
+            </div>
+          </div>
+          <div class="bg-gray-100 rounded-md overflow-hidden">
+            <img src="https://image.tmdb.org/t/p/w300/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg" alt="Joker" class="w-full h-40 object-cover">
+            <div class="p-2 text-sm">
+              <p class="font-semibold">JOKER</p>
+              <p class="text-gray-500 text-xs">Kingdom: Ashin of...</p>
+            </div>
+          </div>
+          <div class="bg-gray-100 rounded-md overflow-hidden">
+            <img src="https://image.tmdb.org/t/p/w300/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg" alt="Avengers" class="w-full h-40 object-cover">
+            <div class="p-2 text-sm">
+              <p class="font-semibold">AVENGERS</p>
+              <p class="text-gray-500 text-xs">Reacher</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    
+  </div>
+
+</body>
+</html>

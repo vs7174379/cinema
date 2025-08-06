@@ -9,7 +9,7 @@ import showRouter from './routes/showRoutes.js';
 
 
 const app = express();
-const port = 5000;
+const port = 3000;
 
 
 // Middleware
@@ -25,6 +25,10 @@ app.use('/api/show', showRouter)
 
 
 app.get('/', (req, res) => res.send('Server is Live!'))
+
+app.use((req, res) => {
+  res.status(404).json({ message: 'Resource not found' });
+});
 
 app.listen(port, () => console.log(`Server listening at http://localhost:${port}`));
 

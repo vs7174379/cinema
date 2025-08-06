@@ -1,66 +1,95 @@
 import React, { useState } from 'react';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Add login logic here (e.g., Firebase auth)
-    alert(`Email: ${email}\nPassword: ${password}`);
-  };
+const LoginSignup = () => {
+  const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div className="flex  items-center justify-center  bg-black bg-cover h-200 bg-center" style={{ backgroundImage: `url('https://www.shutterstock.com/image-vector/abstract-white-background-modern-design-600nw-2478912715.jpg')` }}>
-      <div className=" bg-black/75 p-8 rounded-md w-100 h-140">
-        <h1 className="text-2xl font-bold text-white mb-6">Sign In</h1>
-        <form className="flex flex-col space-y-4">
-          <input
-            type="email"
-            placeholder="Email or mobile number"
-            className="border-1 border-gray-500 text-white p-3 rounded focus:outline-2   focus:ring-2 focus:ring-white-600"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="border-1 border-gray-500 text-white p-3  rounded focus:outline-2 focus:ring-2 focus:ring-white-600"
-          />
-          <button
-            type="submit"
-            className="flex justify-center bg-red-600 text-white py-3 h-9 items-center   rounded font-semibold hover:bg-red-700 transition-colors"
-          >
-            Sign In
-          </button>
-          <div className="flex items-center w-9/10 justify-center">
-            <span className="text-gray-400">OR</span>
+    <div
+      className="h-full min-h-screen bg-cover bg-center flex items-center justify-center"
+      style={{
+        backgroundImage:
+          "url('https://assets.aboutamazon.com/dims4/default/d634820/2147483647/strip/true/crop/1279x720+0+0/resize/1320x743!/quality/90/?url=https%3A%2F%2Famazon-blogs-brightspot.s3.amazonaws.com%2F58%2F75%2Fa9ac0af245d0a4267feb6f361781%2Fpv-v-day-movies.jpg')",
+      }}
+    >
+      <div className="relative w-full max-w-md p-8 bg-black/40 rounded-xl shadow-xl backdrop-blur-md border border-black/40 text-white">
+        {/* Decorative Shapes */}
+        <div className="absolute -top-20 -left-20 w-52 h-52 bg-gradient-to-br from-blue-700 to-blue-400 rounded-full z-0 opacity-70 blur-2xl"></div>
+        <div className="absolute -bottom-24 -right-10 w-52 h-52 bg-gradient-to-r from-orange-400 to-red-500 rounded-full z-0 opacity-60 blur-2xl"></div>
+
+        <div className="relative z-10">
+          <h2 className="text-4xl font-semibold text-center mb-6">
+            {isLogin ? 'Welcome Back' : 'Create an Account'}
+          </h2>
+
+          <form action="#">
+            {!isLogin && (
+              <div className="mb-4">
+                <label htmlFor="name" className="block mb-1 text-md font-medium">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="John Doe"
+                  className="w-full px-4 py-2 rounded-md bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+                />
+              </div>
+            )}
+
+            <div className="mb-4">
+              <label htmlFor="email" className="block mb-1 text-md font-medium">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Email"
+                className="w-full px-4 py-2 rounded-md bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="password" className="block mb-1 text-md font-medium">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                className="w-full px-4 py-2 rounded-md bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-3 rounded-md bg-white text-black font-semibold hover:bg-blue-500 hover:text-white transition duration-300"
+            >
+              {isLogin ? 'Log In' : 'Sign Up'}
+            </button>
+          </form>
+
+          <div className="mt-6 flex justify-between space-x-4">
+            <button className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md bg-red-600 hover:bg-red-700 transition text-white text-sm font-medium">
+              <i className="fab fa-google"></i> Google
+            </button>
+            <button className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md bg-blue-600 hover:bg-blue-700 transition text-white text-sm font-medium">
+              <i className="fab fa-facebook-f"></i> Facebook
+            </button>
           </div>
-          <button
-            type="button"
-            className="flex justify-center items-center bg-gray-600 h-9 text-white py-3  rounded font-semibold hover:bg-gray-700 transition-colors"
-          >
-            Use a sign-in code
-          </button>
-          <a href="#" className="text-sm text-blue-500 hover:underline self-center">
-            Forgot password?
-          </a>
-          <div className="flex items-center  text-gray-400 text-sm">
-            <input
-              type="checkbox"
-              id="remember"
-              className="mr-2"
-            />
-            <label htmlFor="remember">Remember me</label>
-          </div>
-          <div className="text-gray-400 text-sm mt-4">
-            New to Netflix? <a href="#" className="text-white hover:underline">Sign up now.</a>
-          </div>
-          <p className="text-xs text-gray-500 mt-2 flex-wrap">
-            This page is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#" className="text-blue-500 hover:underline">Learn more.</a>
+
+          <p className="mt-6 text-center text-sm text-gray-300">
+            {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
+            <button
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-yellow-400 hover:underline font-semibold"
+            >
+              {isLogin ? 'Sign Up' : 'Log In'}
+            </button>
           </p>
-        </form>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default LoginSignup;

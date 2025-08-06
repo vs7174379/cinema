@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 const genreMap = {
   28: "Action",
   12: "Adventure",
@@ -23,10 +23,22 @@ const genreMap = {
 
 
 const Sidebar = ({movies,upcoming}) => {
+    const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const scrollDiv = scrollRef.current;
+      if (scrollDiv) {
+        scrollDiv.scrollBy({ top: 50, behavior: 'smooth' });
+      }
+    }, 3000); // Scroll every second
+
+    return () => clearInterval(interval);
+  }, []);
   return (
       <aside className="sticky hidden xl:flex top-24 h-fit flex-col gap-4 w-full xl:w-1/4">
         {/* Trending Now */}
-        <div className="glass h-80 overflow-y-auto no-scrollbar rounded-3xl bg-black/20">
+        <div  ref={scrollRef} className="glass h-80 overflow-y-auto no-scrollbar rounded-3xl bg-black/20">
           <h2 className="text-xl font-semibold px-4 pt-4 pb-2 bg-black/30 backdrop-blur-sm sticky top-0 z-50">
             Trending Now
           </h2>
@@ -48,7 +60,7 @@ const Sidebar = ({movies,upcoming}) => {
         </div>
 
         {/* New Trailer */}
-        <div className="glass h-80 overflow-y-auto no-scrollbar rounded-3xl bg-black/20">
+        <div  className="glass h-80 overflow-y-auto no-scrollbar rounded-3xl bg-black/20">
           <h2 className="text-xl font-semibold px-4 pt-4 pb-2 bg-black/30 backdrop-blur-sm sticky top-0 z-50">
             New Trailer
           </h2>
