@@ -20,10 +20,7 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
-app.use(cors({
-  origin: 'https://cinemo-xnb9.vercel.app/', // or your frontend URL/port
-  credentials: true
-}));
+app.use(cors());
 
 // Routes
 app.use('/api/show', showRouter);
