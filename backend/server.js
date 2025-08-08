@@ -1,9 +1,18 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import session from 'express-session'; // <-- Add this line
 import 'dotenv/config';
 import connectDB from './configs/db.js';
 import showRouter from './routes/showRoutes.js';
 import userRouter from './routes/user.js';
+
+
+
+
+
+
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,6 +29,20 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser());
+
+// Add express-session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your-session-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // set to true if using https
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 1 day
+  }
+}));
+
 app.use(cors({
   origin: [
     'http://localhost:5173', // local frontend

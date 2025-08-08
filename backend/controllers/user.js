@@ -12,7 +12,8 @@ export const login = async (req, res) => {
         success: false
       });
     }
-    const user = await User.findOne({ email });
+    // Explicitly select password for comparison
+    const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return res.status(401).json({
         message: "Invalid email or password",
@@ -28,15 +29,13 @@ export const login = async (req, res) => {
     }
     const tokenData = { id: user._id };
     const token = jwt.sign(tokenData, process.env.JWT_SECRET || "dsvrhbdtjsfhghdjfvfhfdv", { expiresIn: "1h" });
+    // Remove password from user object before sending
+    const { password: pwd, ...userData } = user.toObject();
     return res.status(200)
       .cookie("token", token, { httpOnly: true, maxAge: 3600000, sameSite: "lax" })
       .json({
         message: `Welcome back ${user.fullName}`,
-        user: {
-          id: user._id,
-          fullName: user.fullName,
-          email: user.email
-        },
+        user: userData,
         token,
         success: true
       });
@@ -79,17 +78,69 @@ export const register = async (req, res) => {
       email,
       password: hashedPassword
     });
+    // Remove password from user object before sending
+    const { password: pwd, ...userData } = newUser.toObject();
     return res.status(201).json({
       message: "Account created successfully",
-      user: {
-        id: newUser._id,
-        fullName: newUser.fullName,
-        email: newUser.email
-      },
+      user: userData,
       success: true
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+// Get current user profile (for navbar/profile)
+export const getProfile = async (req, res) => {
+  try {
+    const token = req.cookies?.token;
+    if (!token) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "dsvrhbdtjsfhghdjfvfhfdv");
+    const user = await User.findById(decoded.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({ user });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Update user profile
+export const updateProfile = async (req, res) => {
+  try {
+    const token = req.cookies?.token;
+    if (!token) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "dsvrhbdtjsfhghdjfvfhfdv");
+    const { fullName, email,avatar } = req.body;
+    const user = await User.findByIdAndUpdate(
+      decoded.id,
+      { fullName, email,avatar },
+      { new: true, runValidators: true }
+    ).select('-password');
+    res.json({ message: "Profile updated", user });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Delete user account
+export const deleteAccount = async (req, res) => {
+  try {
+    const token = req.cookies?.token;
+    if (!token) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "dsvrhbdtjsfhghdjfvfhfdv");
+    await User.findByIdAndDelete(decoded.id);
+    res.clearCookie("token", { httpOnly: true, sameSite: "lax" });
+    res.json({ message: "Account deleted" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 };

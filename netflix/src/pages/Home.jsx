@@ -1,6 +1,4 @@
 import React from 'react';
-import SquidGameCard from '../components/SquidGameCard';
-import { HoverCard } from '../components/HoverCard';
 
 const Home = () => {
   return (

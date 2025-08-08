@@ -1,5 +1,12 @@
 import express from 'express';
-import { login, register, logOut } from '../controllers/user.js';
+import {
+  login,
+  register,
+  logOut,
+  getProfile,
+  updateProfile,
+  deleteAccount
+} from '../controllers/user.js';
 
 const router = express.Router();
 
@@ -11,5 +18,14 @@ router.post('/login', login);
 
 // Logout user
 router.post('/logout', logOut);
+
+// Get current user profile (for navbar/profile)
+router.get('/profile', getProfile);
+
+// Update user profile
+router.put('/profile', updateProfile);
+
+// Delete user account
+router.delete('/delete', deleteAccount);
 
 export default router;

@@ -60,10 +60,10 @@ const continueWatchingData = [
   }
 ];
 
-export default function MyList() {
+export default function MyList({head}) {
   return (
     <div className="p-6  min-h-screen text-white">
-      <h2 className="text-2xl font-bold mb-6">Continue Watching</h2>
+      <h2 className="text-2xl font-bold mb-6">{head} </h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {continueWatchingData.map((item, index) => (
           <div key={index} className="space-y-2">

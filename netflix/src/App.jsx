@@ -7,9 +7,10 @@ import Home from './pages/Home'
 import Browser from './pages/Browser'
 
 import axios from "axios"
-import Signup from './pages/Signup'
+
 import MyList from './pages/MyList'
 import LoginSignup from './pages/LoginSignup'
+import Profile from './pages/Profile'
 
 const App = () => {
   const [id, setid] = useState('');
@@ -33,9 +34,16 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path='/' element={<LoginSignup />} />
-        <Route path='/browser' element={<Browser movieId={id} />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/my-list' element={<MyList />} />
+        <Route path='/browser' element={<Browser movieId={1142127} />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/movies' element={<MyList head={"movies"} />} />
+        <Route path='/tv-series' element={<MyList head={"tvSeries"} />} />
+        <Route path='/animation' element={<MyList head={"animation"} />} />
+        <Route path='/thriller' element={<MyList head={"thriller"} />} />
+        <Route path='/drama' element={<MyList head={"drama"} />} />
+        <Route path='/more' element={<MyList head={"My-list"} />} />
+       
+        
         <Route path='/home' element={<Home />} />
       </Routes>
       

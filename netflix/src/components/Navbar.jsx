@@ -2,7 +2,26 @@ import React, { useState, useRef, useEffect } from 'react';
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
+    const [user, setUser] = useState(null);
     const menuRef = useRef(null);
+      useEffect(() => {
+        const fetchProfile = async () => {
+          try {
+            const res = await fetch(import.meta.env.VITE_API_URL + 'user/profile', {
+              credentials: 'include',
+            });
+            if (res.ok) {
+              const data = await res.json();
+              setUser(data.user);
+            }
+          } catch (err) {
+            setUser(null);
+          } finally {
+            setLoading(false);
+          }
+        };
+        fetchProfile();
+      }, []);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -41,23 +60,23 @@ const Navbar = () => {
                     className="flex items-center space-x-2 bg-gray-500 text-white px-4 py-2 rounded-full hover:bg-gray-700 transition"
                 >
                     <img
-                        src="https://i.pravatar.cc/40"
+                        src={user?.avatar || 'https://i.pravatar.cc/150?img=32'}
                         alt="User"
                         className="w-6 h-6 rounded-full"
                     />
-                    <span className="hidden sm:inline">Vivek</span>
+                    <span className="hidden sm:inline">{user?.fullName || 'User'}</span>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                 </button>
 
                 {open && (
-                    <div className="origin-top-right absolute right-0 mt-2 w-48  rounded-md shadow-lg bg-white ring-1 ring-black/10 z-50">
+                    <div className="origin-top-left absolute text-center mt-2 w-48  rounded-md shadow-lg bg-white ring-1 ring-black/10 z-50">
                         <div className="py-1 text-gray-700 ">
-                            <a href="#" className="block px-4 py-2 hover:bg-gray-100 ">My Profile</a>
-                            <a href="#" className="block px-4 py-2 hover:bg-gray-100">Settings</a>
-                            <a href="#" className="block px-4 py-2 hover:bg-gray-100">Watchlist</a>
-                            <button className="w-full text-left px-4 py-2 hover:bg-gray-100">Logout</button>
+                            <a href="/profile" className="block px-4 py-2 hover:bg-gray-100 ">My Profile</a>
+                            <a href="/profile" className="block px-4 py-2 hover:bg-gray-100">Settings</a>
+                            <a href="/mylist" className="block px-4 py-2 hover:bg-gray-100">Watchlist</a>
+                            <button className="w-full text-center px-4 py-2 hover:bg-gray-100">Logout</button>
                         </div>
                     </div>
                 )}
@@ -75,14 +94,15 @@ const Navbar = () => {
 
             {/* Navigation Buttons - Desktop */}
             <div className="hidden md:flex flex-wrap justify-center gap-2 text-sm text-yellow-400 font-semibold">
-                {['Movies', 'TV Series', 'Animation', 'Thriller', 'Drama', 'More'].map((item) => (
-                    <button
-                        key={item}
-                        className="px-4 py-1 rounded-full hover:bg-yellow-100 hover:text-black transition"
-                    >
-                        {item}
-                    </button>
-                ))}
+                <a href="/browser" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Browse</a>
+                <a href="/movies" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Movies</a>
+                <a href="/tv-series" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">TV Series</a>
+                <a href="/animation" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Animation</a>
+                <a href="/thriller" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Thriller</a>
+                <a href="/drama" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Drama</a>
+                <a href="/more" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">More</a>
+
+               
             </div>
 
            

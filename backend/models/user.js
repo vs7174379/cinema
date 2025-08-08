@@ -1,20 +1,51 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-  fullName: {
-    type: String,
-    required: true // corrected 'require' to 'required'
+const userSchema = new mongoose.Schema(
+  {
+    fullName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      select: false, // Do not return password by default
+    },
+    avatar: {
+      type: String,
+      default: "", // URL to profile image
+    },
+    subscription: {
+      plan: { type: String, default: "free" }, // free, premium, etc.
+      validTill: { type: Date },
+    },
+    watchlist: [
+      {
+        movieId: { type: mongoose.Schema.Types.ObjectId, ref: "Movie" },
+        addedAt: { type: Date, default: Date.now },
+      }
+    ],
+    continueWatching: [
+      {
+        movieId: { type: mongoose.Schema.Types.ObjectId, ref: "Movie" },
+        progress: { type: Number, default: 0 }, // percentage watched
+        updatedAt: { type: Date, default: Date.now },
+      }
+    ],
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    }
   },
-  email: {
-    type: String,
-    required: true, // corrected 'require' to 'required'
-    unique: true    // ensure emails are unique
-  },
-  password: {
-    type: String,
-    required: true // corrected 'require' to 'required'
-  }
-}, { timestamps: true });
+  { timestamps: true }
+);
 
-// Use ES module export
 export const User = mongoose.model("User", userSchema);
