@@ -16,14 +16,12 @@ const LoginSignup = () => {
     setLoading(true);
 
     try {
-      // Use local backend for development, Vercel for production
+      // Use environment variables for API URL
+      const apiBaseUrl = import.meta.env.VITE_API_URL;
       const endpoint = isLogin
-        ? (import.meta.env.MODE === 'development'
-            ? 'http://localhost:3000/api/user/login'
-            : 'https://cinemo-ashy.vercel.app/api/user/login')
-        : (import.meta.env.MODE === 'development'
-            ? 'http://localhost:3000/api/user/register'
-            : 'https://cinemo-ashy.vercel.app/user/register');
+        ? `${apiBaseUrl}user/login`
+        : `${apiBaseUrl}user/register`;
+
       const payload = isLogin
         ? { email: form.email, password: form.password }
         : { fullName: form.fullName, email: form.email, password: form.password };
@@ -36,9 +34,12 @@ const LoginSignup = () => {
       });
 
       const data = await res.json();
+
       if (!res.ok) {
         setError(data.message || 'Something went wrong');
       } else {
+        // Store token in local storage upon successful login/signup
+        localStorage.setItem('token', data.token);
         window.location.href = '/browser';
       }
     } catch (err) {
