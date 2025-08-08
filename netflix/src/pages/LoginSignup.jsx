@@ -20,10 +20,10 @@ const LoginSignup = () => {
       const endpoint = isLogin
         ? (import.meta.env.MODE === 'development'
             ? 'http://localhost:3000/api/user/login'
-            : 'https://cinemo-pearl.vercel.app/api/user/login')
+            : 'https://cinemo-ashy.vercel.app/api/user/login')
         : (import.meta.env.MODE === 'development'
             ? 'http://localhost:3000/api/user/register'
-            : 'https://cinemo-pearl.vercel.app/api/user/register');
+            : 'https://cinemo-ashy.vercel.app/user/register');
       const payload = isLogin
         ? { email: form.email, password: form.password }
         : { fullName: form.fullName, email: form.email, password: form.password };
