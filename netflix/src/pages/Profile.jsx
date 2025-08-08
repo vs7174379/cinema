@@ -34,19 +34,31 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(import.meta.env.VITE_API_URL + 'user/profile', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(form),
-    });
+    try {
+      const res = await fetch(import.meta.env.VITE_API_URL + 'user/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(form),
+      });
 
-    if (res.ok) {
-      const updated = await res.json();
-      onSave(updated.user); // update user in parent
-      onClose(); // close modal
+      if (res.ok) {
+        const updated = await res.json();
+        console.log('Updated user data:', updated.user); // Log the updated user data
+        onSave(updated.user); // update user in parent
+        onClose(); // close modal
+      } else {
+        // Handle error response
+        console.error('Failed to update profile:', res.status, res.statusText);
+        const errorData = await res.json();
+        console.error('Error details:', errorData);
+        // Optionally display an error message to the user
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      // Optionally display an error message to the user
     }
   };
 
@@ -122,8 +134,11 @@ const Profile = () => {
         if (res.ok) {
           const data = await res.json();
           setUser(data.user);
+        } else {
+          console.error('Failed to fetch profile:', res.status, res.statusText);
         }
       } catch (err) {
+        console.error('Error fetching profile:', err);
         setUser(null);
       } finally {
         setLoading(false);
