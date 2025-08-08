@@ -145,7 +145,7 @@ const Profile = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-white">
-        Loading profile...
+        Loading profile....
       </div>
     );
   }
