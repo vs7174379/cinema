@@ -105,6 +105,7 @@ export const getProfile = async (req, res) => {
     }
     res.json({ user });
   } catch (err) {
+    console.error("Error in getProfile:", err); // Log the error
     res.status(500).json({ message: "Server error" });
   }
 };

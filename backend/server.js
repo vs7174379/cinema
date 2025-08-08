@@ -7,13 +7,6 @@ import connectDB from './configs/db.js';
 import showRouter from './routes/showRoutes.js';
 import userRouter from './routes/user.js';
 
-
-
-
-
-
-
-
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -43,13 +36,21 @@ app.use(session({
   }
 }));
 
-app.use(cors({
-  origin: [
-    
-    'https://cinemo-5p8g.vercel.app/', // deployed frontend
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://cinemo-5p8g.vercel.app/',
     'https://cinemo-ashy.vercel.app/' // deployed backend (for SSR or API calls)
-  ],
-  credentials: true
+];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
 }));
 
 // Routes
