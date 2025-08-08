@@ -16,17 +16,7 @@ const App = () => {
   const [id, setid] = useState('');
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchTrailer = async () => {
-      try {
-        const response = await axios.get(`https://cinemo-pearl.vercel.app/api/show/now-playing`);
-        setid(response.data.movies[2]?.id || '');
-      } catch (err) { 
-        setError(err.response?.data?.message || 'Failed to fetch trailer');
-      }
-    };
-    fetchTrailer();
-  }, []);
+
   
   return (
     <>

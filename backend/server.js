@@ -46,8 +46,7 @@ app.use(session({
 app.use(cors({
   origin: [
     'http://localhost:5173', // local frontend
-    'https://cinemo-xnb9.vercel.app', // deployed frontend
-    'https://cinemo-pearl.vercel.app' // deployed backend (for SSR or API calls)
+    
   ],
   credentials: true
 }));
