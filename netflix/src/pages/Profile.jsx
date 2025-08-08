@@ -114,7 +114,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch(import.meta.env.VITE_API_URL + 'user/profile', {
+        const res = await fetch('https://cinemo-ashy.vercel.app/' + 'user/profile', {
           credentials: 'include',
         });
         if (res.ok) {

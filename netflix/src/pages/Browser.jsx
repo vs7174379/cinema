@@ -49,7 +49,7 @@ const Browser = ({ movieId }) => {
   useEffect(() => {
     const fetchNowPlaying = async () => {
       try {
-        const response = await axios.get('https://cinemo-pearl.vercel.app/api/show/popular-movies');
+        const response = await axios.get('https://cinemo-ashy.vercel.app/api/show/popular-movies');
         if (response.data.success) {
           setMovies(response.data.movies);
         }
