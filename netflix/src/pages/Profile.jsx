@@ -63,6 +63,7 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
               value={form.fullName}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-zinc-800 border border-white/10 rounded-md"
+              required
             />
           </div>
           <div>
@@ -73,6 +74,7 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
               value={form.email}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-zinc-800 border border-white/10 rounded-md"
+              required
             />
           </div>
           <div>
@@ -140,6 +142,11 @@ const Profile = () => {
     } catch (err) {
       // Optionally handle error
     }
+  };
+
+  const handleSaveProfile = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser)); // Update localStorage
   };
 
   if (loading) {
@@ -238,7 +245,7 @@ const Profile = () => {
         <EditProfileModal
           user={user}
           onClose={() => setShowEditModal(false)}
-          onSave={(updatedUser) => setUser(updatedUser)}
+          onSave={handleSaveProfile}
         />
       )}
     </div>
