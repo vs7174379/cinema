@@ -118,15 +118,28 @@ export const updateProfile = async (req, res) => {
       return res.status(401).json({ message: "Not authenticated" });
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "dsvrhbdtjsfhghdjfvfhfdv");
-    const { fullName, email,avatar } = req.body;
+    const { fullName, email, avatar } = req.body;
+
+    // Validate input
+    if (!fullName || !email) {
+      return res.status(400).json({ message: "Full name and email are required", success: false });
+    }
+
     const user = await User.findByIdAndUpdate(
       decoded.id,
-      { fullName, email,avatar },
+      { fullName, email, avatar },
       { new: true, runValidators: true }
     ).select('-password');
-    res.json({ message: "Profile updated", user });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found", success: false });
+    }
+
+    res.json({ message: "Profile updated", user, success: true });
+
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Error in updateProfile:", err);
+    res.status(500).json({ message: "Server error", success: false });
   }
 };
 
@@ -140,8 +153,9 @@ export const deleteAccount = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "dsvrhbdtjsfhghdjfvfhfdv");
     await User.findByIdAndDelete(decoded.id);
     res.clearCookie("token", { httpOnly: true, sameSite: "lax" });
-    res.json({ message: "Account deleted" });
+    res.json({ message: "Account deleted", success: true });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Error in deleteAccount:", err);
+    res.status(500).json({ message: "Server error", success: false });
   }
 };
