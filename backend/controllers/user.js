@@ -2,7 +2,6 @@ import { User } from "../models/user.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-
 // Login Controller
 export const login = async (req, res) => {
   try {
@@ -137,5 +136,28 @@ export const updateUser = async (req, res) => {
             success: false
         });
     }
+};
+
+// Get User Controller
+export const getProfile = async (req, res) => {
+  try {
+    const user = req.user; // Assuming authMiddleware is used and populates req.user
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found", success: false });
+    }
+
+    return res.status(200).json({
+      message: "User profile retrieved successfully",
+      user,
+      success: true
+    });
+  } catch (error) {
+    console.error("Error getting user profile:", error);
+    return res.status(500).json({
+      message: "Failed to get user profile",
+      success: false
+    });
+  }
 };
 

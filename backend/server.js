@@ -53,9 +53,6 @@ app.use('/api/user', userRouter); // Apply authMiddleware to /api/user routes
 // Root route
 app.get('/', (req, res) => res.send('Server is Live!'));
 
-app.get("/profile", authMiddleware, (req, res) => {
-  res.json({ user: req.user });
-});
 
 
 // 404 handler
