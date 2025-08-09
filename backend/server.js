@@ -53,7 +53,7 @@ app.use('/api/user', userRouter); // Apply authMiddleware to /api/user routes
 // Root route
 app.get('/', (req, res) => res.send('Server is Live!'));
 
-app.get("/api/profile", authMiddleware, (req, res,next) => {
+app.get("/profile", authMiddleware, (req, res,next) => {
   res.json({ user: req.user });
   next()
 });
