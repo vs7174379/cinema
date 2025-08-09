@@ -1,22 +1,23 @@
 import axios from "axios"
 import { options, Popular_Movie, Upcoming_Movie } from "../utils/constant.js";
+import { Movie } from "../models/movie.js";
 
 
 export const getNowPlayingMovies = async (req, res) => {
-    try {
-        const { data } = await axios.get('https://api.themoviedb.org/3/movie/now_playing', { headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` } })
-        const movies = data.results;
-        res.json({ success: true, movies: movies})
-    } catch (error) {
-        console.error(error);
-        res.json({ success: false, message: error.message })
-    }
+  try {
+    const { data } = await axios.get('https://api.themoviedb.org/3/movie/now_playing', { headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` } })
+    const movies = data.results;
+    res.json({ success: true, movies: movies })
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: error.message })
+  }
 }
 
 
 
 
-const TMDB_BASE_URL = 'https://api.themoviedb.org/3';   
+const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 
 export const getMovieById = async (req, res) => {
   const { id } = req.params;
@@ -25,13 +26,13 @@ export const getMovieById = async (req, res) => {
     const response = await axios.get(`${TMDB_BASE_URL}/movie/${id}/videos`, { headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` } });
 
     const videos = response.data.results;
-   
+
 
     // Find the first YouTube trailer
     const trailer = videos.find(
       (video) => video.type === 'Trailer' && video.site === 'YouTube'
     );
-     
+
 
     if (!trailer) {
       return res.status(404).json({ message: 'Trailer not found' });
@@ -49,41 +50,54 @@ export const getMovieById = async (req, res) => {
   }
 };
 
-export const getPopularMovies =async (req,res) => {
+export const getPopularMovies = async (req, res) => {
 
   try {
-    const {data}=await axios.get(Popular_Movie,options)
-   const movies = data.results;
+    const { data } = await axios.get(Popular_Movie, options)
+    const movies = data.results;
     res.json({ success: true, movies: movies })
 
-   
-    
+
+
   } catch (error) {
     res.json({ success: false, message: error.message })
   }
 }
-export const getUpcommingMovies =async (req,res) => {
+export const getUpcommingMovies = async (req, res) => {
 
   try {
-    const {data}=await axios.get(Upcoming_Movie,options)
-   const movies = data.results;
+    const { data } = await axios.get(Upcoming_Movie, options)
+    const movies = data.results;
     res.json({ success: true, movies: movies })
 
-   
-    
+
+
   } catch (error) {
     res.json({ success: false, message: error.message })
   }
 }
-export const getTopRatedMovies =async (req,res) => {
+export const getTopRatedMovies = async (req, res) => {
 
   try {
-    const {data}=await axios.get('https://api.themoviedb.org/3/movie/top_rated',{ headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` } })
-   const movies = data.results;
+    const { data } = await axios.get('https://api.themoviedb.org/3/movie/top_rated', { headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` } })
+    const movies = data.results;
     res.json({ success: true, movies: movies })
 
-   
-    
+
+
+  } catch (error) {
+    res.json({ success: false, message: error.message })
+  }
+}
+
+export const getmovie = async (req, res) => {
+
+  try {
+    const movies = await Movie.find({});
+    res.json({ success: true, movies: movies })
+
+
+
   } catch (error) {
     res.json({ success: false, message: error.message })
   }
