@@ -128,30 +128,31 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
 
-   const fetchUserDetails = async () => {
-  try {
-    const res = await fetch("https://cinemo-ashy.vercel.app/profile", {
-      method: "GET",
-      credentials: "include", // important to send cookies
-    });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || "Failed to fetch user");
-
-    return data.user; // returns user object
-  } catch (err) {
-    console.error(err.message);
-    return null;
-  }
-};
-
   useEffect(() => {
-     const getUser = async () => {
-       const user= await fetchUserDetails();
-       setUser(user);
-     };
-     getUser();
-   }, []);
+  const fetchProfile = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}user/profile`, {
+        credentials: 'include',
+      });
+
+      console.log('Fetch status:', res.status);
+      const data = await res.json();
+      console.log('Profile data:', data);
+
+      if (res.ok && data.user) {
+        setUser(data.user);
+      } else {
+        setUser(null);
+      }
+    } catch (err) {
+      console.error('Error fetching profile:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProfile();
+}, []);
 
 
   const handleLogout = async () => {
