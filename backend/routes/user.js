@@ -21,7 +21,7 @@ router.post('/logout', logOut);
 
 
 // Update user profile
-router.put('/profile', updateProfile);
+router.put('/profile', updateUser);
 
 
 
