@@ -5,7 +5,8 @@ import {
   logOut,
   getProfile,
   updateProfile,
-  deleteAccount
+  deleteAccount,
+  deleteUser // Import the new controller
 } from '../controllers/user.js';
 
 const router = express.Router();
@@ -27,5 +28,8 @@ router.put('/profile', updateProfile);
 
 // Delete user account
 router.delete('/delete', deleteAccount);
+
+// Delete user by ID
+router.delete('/:id', deleteUser); // Add the new route
 
 export default router;
