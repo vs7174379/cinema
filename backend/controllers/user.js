@@ -4,51 +4,47 @@ import jwt from "jsonwebtoken";
 
 
 // Login Controller
-export const login = async (req, res) => {
+export const login = async(req,res)=>{
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            return res.status(400).json({ // Use 400 for bad request
-                message: "Email and password are required",
+            return res.status(401).json({
+                message: "Invalid data",
                 success: false
-            });
-        }
+            })
 
+        }
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(401).json({ // Use 401 for authentication failure
-                message: "Invalid email or password",
+            return res.status(401).json({
+                message: "invalid email or password",
                 success: false
-            });
+            })
         }
-
         const isMatch = await bcryptjs.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ // Use 401 for authentication failure
-                message: "Invalid email or password",
+            return res.status(401).json({
+                message: "invalid email or password",
                 success: false
-            });
+            })
         }
-
-        const tokenData = { id: user._id };
-        const token = jwt.sign(tokenData, process.env.JWT_SECRET || "dsvrhbdtjsfhghdjfvfhfdv", { expiresIn: "1h" });
-
-        return res.status(200).cookie("token", token, { httpOnly: true }).json({
-            message: `Welcome back ${user.fullName}`,
+        const tokenData={
+            id:user._id
+        }
+        const token=await jwt.sign(tokenData,"dsvrhbdtjsfhghdjfvfhfdv",{expiresIn:"1h"})
+        return res.status(200).cookie("token",token,{httpOnly:true}).json({
+            message:`wellcome back ${user.fullName}`,
             user,
-            success: true,
-            token // Include token in the response
-        });
+            success:true
+        })
 
+
+        
     } catch (error) {
-        console.error("Login error:", error);
-        return res.status(500).json({ // Use 500 for server errors
-            message: "Login failed",
-            success: false
-        });
+        console.log(error)
+        
     }
-};
-
+}
 // Logout Controller
 export const logOut = async (req, res) => {
     return res.status(200).cookie("token", "", { expires: new Date(0), httpOnly: true }).json({ // Use expires: new Date(0)
