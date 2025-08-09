@@ -48,7 +48,7 @@ app.use(cors(corsOptions));
 
 // Routes
 app.use('/api/show', showRouter);
-app.use('/api/user', authMiddleware, userRouter); // Apply authMiddleware to /api/user routes
+app.use('/api/user', userRouter); // Apply authMiddleware to /api/user routes
 
 // Root route
 app.get('/', (req, res) => res.send('Server is Live!'));
