@@ -94,47 +94,27 @@ export const register = async (req, res) => {
   }
 };
 
-
-
-
+// Get current user profile (for navbar/profile)
 export const getProfile = async (req, res) => {
   try {
-    // Check if cookie exists
-    if (!req.cookies || !req.cookies.token) {
+    const token = req.cookies?.token;
+    if (!token) {
       return res.status(401).json({ message: "Not authenticated", success: false });
     }
 
-    const token = req.cookies.token;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "dsvrhbdtjsfhghdjfvfhfdv");
+    const user = await User.findById(decoded.id).select('-password');
 
-    // Ensure JWT secret is set
-    if (!process.env.JWT_SECRET) {
-      console.error("JWT_SECRET is not defined in environment variables");
-      return res.status(500).json({ message: "Server configuration error", success: false });
-    }
-
-    // Verify token
-    let decoded;
-    try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      return res.status(401).json({ message: "Invalid or expired token", success: false });
-    }
-
-    // Find user without password
-    const user = await User.findById(decoded.id).select("-password");
     if (!user) {
       return res.status(404).json({ message: "User not found", success: false });
     }
 
-    // Success response
-    return res.json({ success: true, user });
-
+    res.json({ success: true, user });
   } catch (err) {
-    console.error("Error in getProfile:", err.message);
-    return res.status(500).json({ message: "Server error", success: false });
+    console.error("Error in getProfile:", err);
+    res.status(500).json({ message: "Server error", success: false });
   }
 };
-
 
 
 export const updateProfile = async (req, res) => {
