@@ -2,35 +2,26 @@ import React, { useState, useRef, useEffect } from 'react';
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
-    
+    const [user, setUser] = useState(null);
     const menuRef = useRef(null);
-     const [user, setUser] = useState(null);
-
-     const fetchUserDetails = async () => {
-  try {
-    const res = await fetch("https://cinemo-ashy.vercel.app/api/profile", {
-      method: "GET",
-      credentials: "include", // important to send cookies
-    });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || "Failed to fetch user");
-
-    return data.user; // returns user object
-  } catch (err) {
-    console.error(err.message);
-    return null;
-  }
-};
-
-  useEffect(() => {
-    const getUser = async () => {
-      const userData = await fetchUserDetails();
-      setUser(userData);
-    };
-    getUser();
-  }, []);
-     
+      useEffect(() => {
+        const fetchProfile = async () => {
+          try {
+            const res = await fetch(import.meta.env.VITE_API_URL + 'api/profile', {
+              credentials: 'include',
+            });
+            if (res.ok) {
+              const data = await res.json();
+              setUser(data.user);
+            }
+          } catch (err) {
+            setUser(null);
+          } finally {
+            setLoading(false);
+          }
+        };
+        fetchProfile();
+      }, []);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
