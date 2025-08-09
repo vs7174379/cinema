@@ -7,7 +7,7 @@ const Navbar = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}profile`, {
+                const res = await fetch(`https://cinemo-ashy.vercel.app/profile`, {
                     method: "GET",
                     credentials: "include", // sends cookies
                 });
