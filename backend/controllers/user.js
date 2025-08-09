@@ -5,47 +5,46 @@ import jwt from "jsonwebtoken";
 
 // Login Controller
 export const login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        if (!email || !password) {
-            return res.status(401).json({
-                message: "Invalid data",
-                success: false
-            })
-
-        }
-        const user = await User.findOne({ email }).select("+password");
-        if (!user) {
-            return res.status(401).json({
-                message: "invalid email or password",
-                success: false
-            })
-        }
-        const isMatch = await bcryptjs.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({
-                message: "invalid email or password",
-                success: false
-            })
-        }
-        const tokenData = {
-            id: user._id
-        }
-        
-        const token = jwt.sign(tokenData, "dsvrhbdtjsfhghdjfvfhfdv", { expiresIn: "1h" });
-        return res.status(200).cookie("token", token, { httpOnly: true }).json({
-            message: `wellcome back ${user.fullName}`,
-            user,
-            success: true
-        })
-
-
-
-    } catch (error) {
-        console.log(error)
-
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(401).json({ message: "Invalid data", success: false });
     }
-}
+
+    const user = await User.findOne({ email }).select("+password");
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password", success: false });
+    }
+
+    const isMatch = await bcryptjs.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid email or password", success: false });
+    }
+
+    const tokenData = { id: user._id };
+    const token = jwt.sign(tokenData, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    user.password = undefined; // remove password before sending
+
+    return res.status(200)
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        maxAge: 60 * 60 * 1000
+      })
+      .json({
+        message: `Welcome back ${user.fullName}`,
+        user,
+        success: true
+      });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
 // Logout Controller
 export const logOut = async (req, res) => {
     return res.status(200).cookie("token", "", { expires: new Date(0), httpOnly: true }).json({ // Use expires: new Date(0)
