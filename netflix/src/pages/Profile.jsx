@@ -1,24 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Edit, LogOut } from "lucide-react";
+import React, { useEffect, useState } from 'react';
+import { Edit, LogOut } from 'lucide-react';
 
 // Dummy Continue Watching List
 const continueWatching = [
   {
-    title: "Stranger Things",
-    image:
-      "https://image.tmdb.org/t/p/w500/x2LSRK2Cm7MZhjluni1msVJ3wDF.jpg",
+    title: 'Stranger Things',
+    image: 'https://image.tmdb.org/t/p/w500/x2LSRK2Cm7MZhjluni1msVJ3wDF.jpg',
     progress: 40,
   },
   {
-    title: "Sacred Games",
-    image:
-      "https://image.tmdb.org/t/p/w500/7HtvmsLtyC1iH6jlm9qvZ6e3uXl.jpg",
+    title: 'Sacred Games',
+    image: 'https://image.tmdb.org/t/p/w500/7HtvmsLtyC1iH6jlm9qvZ6e3uXl.jpg',
     progress: 70,
   },
   {
-    title: "Extraction",
-    image:
-      "https://image.tmdb.org/t/p/w500/nygOUcBKPHFTbxsYRFZVePqgPK6.jpg",
+    title: 'Extraction',
+    image: 'https://image.tmdb.org/t/p/w500/nygOUcBKPHFTbxsYRFZVePqgPK6.jpg',
     progress: 20,
   },
 ];
@@ -26,16 +23,16 @@ const continueWatching = [
 // Edit Profile Modal
 const EditProfileModal = ({ user, onClose, onSave }) => {
   const [form, setForm] = useState({
-    fullName: user?.fullName || "",
-    email: user?.email || "",
-    avatar: user?.avatar || "",
+    fullName: user?.fullName || '',
+    email: user?.email || '',
+    avatar: user?.avatar || '',
   });
 
   useEffect(() => {
     setForm({
-      fullName: user?.fullName || "",
-      email: user?.email || "",
-      avatar: user?.avatar || "",
+      fullName: user?.fullName || '',
+      email: user?.email || '',
+      avatar: user?.avatar || '',
     });
   }, [user]);
 
@@ -46,37 +43,34 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/user/profile`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(form),
-        }
-      );
+      const res = await fetch(`${import.meta.env.VITE_API_URL}user/profile`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(form),
+      });
 
       const data = await res.json();
+
       if (!res.ok) {
-        console.error("Profile update failed:", data);
+        console.error('Profile update failed:', data);
         return;
       }
 
-      // Update parent state
       onSave(data.user);
       onClose();
     } catch (error) {
-      console.error("Error updating profile:", error);
+      console.error('Error updating profile:', error);
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-      <div className="bg-zinc-900 text-white p-6 rounded-lg w-full max-w-md border border-white/10 shadow-xl">
+      <div className="bg-zinc-900 text-white p-6 rounded-lg w-full max-w-md border border-white/10 shadow-xl relative">
         <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm mb-1">Full Name</label>
+            <label htmlFor="fullName" className="block text-sm mb-1">Full Name</label>
             <input
               type="text"
               name="fullName"
@@ -87,7 +81,7 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
             />
           </div>
           <div>
-            <label className="block text-sm mb-1">Email</label>
+            <label htmlFor="email" className="block text-sm mb-1">Email</label>
             <input
               type="email"
               name="email"
@@ -98,7 +92,7 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
             />
           </div>
           <div>
-            <label className="block text-sm mb-1">Avatar URL</label>
+            <label htmlFor="avatar" className="block text-sm mb-1">Avatar URL</label>
             <input
               type="text"
               name="avatar"
@@ -134,41 +128,24 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
 
-  const fetchProfile = async () => {
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/user/profile`,
-        {
-          credentials: "include",
-        }
-      );
-
-      const data = await res.json();
-      if (res.ok && data.user) {
-        setUser(data.user);
-      } else {
-        setUser(null);
-      }
-    } catch (err) {
-      console.error("Error fetching profile:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchProfile();
-  }, []);
+     const getUser = async () => {
+       const user= await fetchUserDetails();
+       setUser(user);
+     };
+     getUser();
+   }, []);
+
 
   const handleLogout = async () => {
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/user/logout`, {
-        method: "POST",
-        credentials: "include",
+      await fetch(`${import.meta.env.VITE_API_URL}user/logout`, {
+        method: 'POST',
+        credentials: 'include',
       });
-      window.location.href = "/";
+      window.location.href = '/';
     } catch (err) {
-      console.error("Logout failed:", err);
+      console.error('Logout failed:', err);
     }
   };
 
@@ -186,22 +163,21 @@ const Profile = () => {
 
   return (
     <div className="text-white px-6 py-10">
-      <div className="glass max-w-5xl mx-auto bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-xl">
+      <div className="glass max-w-5xl mx-auto bg-white/5 backdrop-blur-md rounded-2xl p-8 relative border border-white/10 shadow-xl">
         {/* Top Section */}
         <div className="flex flex-col md:flex-row items-center gap-6 mb-10">
           <img
-            src={user?.avatar || "https://i.pravatar.cc/150?img=32"}
+            src={user?.avatar || 'https://i.pravatar.cc/150?img=32'}
             className="w-32 h-32 rounded-full border-4 border-white object-cover"
             alt="User Avatar"
           />
+
           <div className="flex-1 w-full">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
               <div>
-                <h2 className="text-3xl font-bold">
-                  {user?.fullName || "User"}
-                </h2>
+                <h2 className="text-3xl font-bold">{user?.fullName || 'User'}</h2>
                 <p className="text-md font-bold text-yellow-400 mt-1">
-                  {user?.subscription?.plan || "Free Plan"}
+                  {user?.subscription?.plan || 'Free Plan'}
                 </p>
               </div>
               <div className="flex gap-3 mt-4 md:mt-0">
@@ -220,11 +196,11 @@ const Profile = () => {
               </div>
             </div>
             <p className="mt-3 text-gray-300 text-sm">
-              Subscription valid till{" "}
+              Subscription valid till{' '}
               <span className="text-white">
                 {user?.subscription?.validTill
                   ? new Date(user.subscription.validTill).toDateString()
-                  : "N/A"}
+                  : 'N/A'}
               </span>
             </p>
           </div>
@@ -252,9 +228,7 @@ const Profile = () => {
                       style={{ width: `${item.progress}%` }}
                     ></div>
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">
-                    {item.progress}% watched
-                  </p>
+                  <p className="text-xs text-gray-400 mt-1">{item.progress}% watched</p>
                 </div>
               </div>
             ))}
