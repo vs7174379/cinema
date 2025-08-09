@@ -4,24 +4,7 @@ const Navbar = () => {
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState(null);
     const menuRef = useRef(null);
-      useEffect(() => {
-        const fetchProfile = async () => {
-          try {
-            const res = await fetch(import.meta.env.VITE_API_URL + 'user/profile', {
-              credentials: 'include',
-            });
-            if (res.ok) {
-              const data = await res.json();
-              setUser(data.user);
-            }
-          } catch (err) {
-            setUser(null);
-          } finally {
-            setLoading(false);
-          }
-        };
-        fetchProfile();
-      }, []);
+     
 
     useEffect(() => {
         const handleClickOutside = (event) => {

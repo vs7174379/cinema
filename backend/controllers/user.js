@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 
 // Login Controller
-export const login = async(req,res)=>{
+export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -14,7 +14,7 @@ export const login = async(req,res)=>{
             })
 
         }
-        const user = await User.findOne({ email }).select("+password");
+        const user = await User.findOne({ email }).select("-password");
         if (!user) {
             return res.status(401).json({
                 message: "invalid email or password",
@@ -28,21 +28,21 @@ export const login = async(req,res)=>{
                 success: false
             })
         }
-        const tokenData={
-            id:user._id
+        const tokenData = {
+            id: user._id
         }
-        const token= jwt.sign(tokenData,"dsvrhbdtjsfhghdjfvfhfdv", { expiresIn: "1h" });
-        return res.status(200).cookie("token",token,{httpOnly:true}).json({
-            message:`wellcome back ${user.fullName}`,
+        const token = jwt.sign(tokenData, "dsvrhbdtjsfhghdjfvfhfdv", { expiresIn: "1h" });
+        return res.status(200).cookie("token", token, { httpOnly: true }).json({
+            message: `wellcome back ${user.fullName}`,
             user,
-            success:true
+            success: true
         })
 
 
-        
+
     } catch (error) {
         console.log(error)
-        
+
     }
 }
 // Logout Controller
@@ -139,3 +139,7 @@ export const updateUser = async (req, res) => {
     }
 };
 
+
+export const profile = (req, res) => {
+    res.json({ user: req.user });
+}
