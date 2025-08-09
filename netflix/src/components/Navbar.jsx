@@ -2,8 +2,17 @@ import React, { useState, useRef, useEffect } from 'react';
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
-    const [user, setUser] = useState(null);
+    
     const menuRef = useRef(null);
+     const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const user= await fetchUserDetails();
+      setUser(user);
+    };
+    getUser();
+  }, []);
      
 
     useEffect(() => {
