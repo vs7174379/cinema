@@ -31,7 +31,7 @@ const MovieList = ({ title, movies, searchMovies = false }) => {
 
       {/* You Might Like - 1 */}
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold px-2">{title}</h2>
+          <h2 className="text-xl font-semibold px-2">{movie[0].title}</h2>
           <div className="flex gap-3 overflow-x-auto no-scrollbar p-2">
             {movie.map((p, index) => (
               <Cards video={p} key={index}/>
