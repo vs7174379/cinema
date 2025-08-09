@@ -1,6 +1,7 @@
-const { User } = require("../models/user");
-const bcryptjs = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import { User } from "../models/user.js";
+import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
+
 
 // Login Controller
 export const login = async (req, res) => {

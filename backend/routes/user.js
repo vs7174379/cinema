@@ -3,7 +3,6 @@ import {
   login,
   register,
   logOut,
-
   updateUser,
 
 } from '../controllers/user.js';
@@ -21,7 +20,7 @@ router.post('/logout', logOut);
 
 
 // Update user profile
-router.put('/profile', updateUser);
+router.put('/:id', updateUser);
 
 
 

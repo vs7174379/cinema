@@ -1,10 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import session from 'express-session';
-import helmet from 'helmet';
-import compression from 'compression';
-import 'dotenv/config';
+import dotenv from "dotenv";
+dotenv.config({ quiet: true });
 import connectDB from './configs/db.js';
 import showRouter from './routes/showRoutes.js';
 import userRouter from './routes/user.js';
@@ -12,15 +10,9 @@ import userRouter from './routes/user.js';
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Ensure secrets are defined
-if (!process.env.JWT_SECRET || !process.env.SESSION_SECRET) {
-    throw new Error("JWT_SECRET and SESSION_SECRET must be set in .env");
-}
 
-// Trust proxy in production (for cookies to work behind Vercel/Heroku)
-if (process.env.NODE_ENV === 'production') {
-    app.set('trust proxy', 1);
-}
+
+
 
 // Connect to DB
 (async () => {
@@ -33,41 +25,21 @@ if (process.env.NODE_ENV === 'production') {
 })();
 
 // Middlewares
-app.use(helmet()); // Adds security headers
-app.use(compression()); // Compress responses
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Session middleware
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production', // HTTPS only in prod
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
-        sameSite: 'lax'
-    }
-}));
+
 
 // CORS Configuration
-const allowedOrigins = [
-    'http://localhost:5173',
-    'https://cinemo-5p8g.vercel.app',
-    'https://cinemo-ashy.vercel.app'
-];
-
-app.use(cors({
-    origin: (origin, callback) => {
-        if (allowedOrigins.includes(origin) || !origin) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+const corsOptions = {
+    origin: 'https://cinemo-5p8g.vercel.app',
     credentials: true
-}));
+}
+
+
+app.use(cors(corsOptions));
+
 
 // Routes
 app.use('/api/show', showRouter);
