@@ -139,7 +139,3 @@ export const updateUser = async (req, res) => {
     }
 };
 
-
-export const profile = (req, res) => {
-    res.json({ user: req.user });
-}

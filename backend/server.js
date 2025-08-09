@@ -6,6 +6,7 @@ dotenv.config({ quiet: true });
 import connectDB from './configs/db.js';
 import showRouter from './routes/showRoutes.js';
 import userRouter from './routes/user.js';
+import { authMiddleware } from './middlewares/authMiddleware.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -47,6 +48,9 @@ app.use('/api/user', userRouter);
 
 // Root route
 app.get('/', (req, res) => res.send('Server is Live!'));
+app.get("/profile", authMiddleware, (req, res) => {
+  res.json({ user: req.user });
+});
 
 // 404 handler
 app.use((req, res, next) => { // Added next

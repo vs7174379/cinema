@@ -4,10 +4,8 @@ import {
   register,
   logOut,
   updateUser,
-  profile,
 
 } from '../controllers/user.js';
-import { authMiddleware } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -24,7 +22,7 @@ router.post('/logout', logOut);
 // Update user profile
 router.put('/:id', updateUser);
 
-router.get("/profile", authMiddleware,profile);
+
 
 
 
