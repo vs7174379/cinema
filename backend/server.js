@@ -11,8 +11,7 @@ import userRouter from './routes/user.js';
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Env check
-if (!process.env.JWT_SECRET) throw new Error("JWT_SECRET must be set in .env");
+
 
 // Trust proxy in production
 if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
