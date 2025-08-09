@@ -31,7 +31,7 @@ export const login = async (req, res) => {
         const tokenData = {
             id: user._id
         }
-        user = await User.findOne({ email }).select("-password");
+        
         const token = jwt.sign(tokenData, "dsvrhbdtjsfhghdjfvfhfdv", { expiresIn: "1h" });
         return res.status(200).cookie("token", token, { httpOnly: true }).json({
             message: `wellcome back ${user.fullName}`,
