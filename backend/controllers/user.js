@@ -3,7 +3,7 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // Login Controller
-module.exports.login = async (req, res) => {
+export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -49,7 +49,7 @@ module.exports.login = async (req, res) => {
 };
 
 // Logout Controller
-module.exports.logOut = async (req, res) => {
+export const logOut = async (req, res) => {
     return res.status(200).cookie("token", "", { expires: new Date(0), httpOnly: true }).json({ // Use expires: new Date(0)
         message: "Logout successful",
         success: true
@@ -57,7 +57,7 @@ module.exports.logOut = async (req, res) => {
 };
 
 // Register Controller
-module.exports.register = async (req, res) => {
+export const register = async (req, res) => {
     try {
         const { fullName, email, password } = req.body;
         if (!fullName || !email || !password) {
@@ -100,7 +100,7 @@ module.exports.register = async (req, res) => {
 };
 
 // Update User Controller
-module.exports.updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
     try {
         const { id } = req.params; // Get user ID from route parameters
         const { fullName, avatar } = req.body;
