@@ -8,7 +8,7 @@ const Navbar = () => {
 
      const fetchUserDetails = async () => {
   try {
-    const res = await fetch("https://cinemo-ashy.vercel.app/profile", {
+    const res = await fetch("https://cinemo-ashy.vercel.app/api/profile", {
       method: "GET",
       credentials: "include", // important to send cookies
     });
