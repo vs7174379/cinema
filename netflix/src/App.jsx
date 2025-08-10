@@ -27,7 +27,7 @@ const App = () => {
         <Route path='/browser' element={<Browser movieId={1142127} />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/movies' element={<MyList head={"movies"} />} />
-        <Route path='/tv-series' element={<MyList head={"tvSeries"} />} />
+        <Route path='/tv-series' element={<TV/>} />
         <Route path='/animation' element={<MyList head={"animation"} />} />
         <Route path='/thriller' element={<MyList head={"thriller"} />} />
         <Route path='/drama' element={<MyList head={"drama"} />} />

@@ -5,7 +5,7 @@ import MovieList from '../components/MovieList';
 
 
 
-export default function TV({ head }) {
+export default function TV() {
   const [movie, setMovie] = useState([]);
   const top = movie.filter(m =>
     m.type === 'romantic indian movies'
@@ -54,7 +54,7 @@ export default function TV({ head }) {
  
   return (
     <div className="p-6  min-h-screen text-white">
-      <h2 className="text-2xl font-bold mb-6">{head} </h2>
+      <h2 className="text-2xl font-bold mb-6">Drama</h2>
       <div>
         <MovieList title={"Romantic Movies"} movies={top} />
         <MovieList title={"K-Drama"} movies={kDrama} />
