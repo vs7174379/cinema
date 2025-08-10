@@ -30,11 +30,7 @@ const App = () => {
         <Route path='/browser' element={<Browser movieId={1142127} />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/movies' element={<MyList head={"movies"} />} />
-        <Route path='/tv-series' element={<TV head={"tvSeries"} />} />
-        <Route path='/animation' element={<MyList head={"animation"} />} />
-        <Route path='/thriller' element={<Thriller head={"thriller"} />} />
-        <Route path='/drama' element={<New head={"Upcoming"} />} />
-        <Route path='/more' element={<MyList head={"My-list"} />} />
+        
        
         
         <Route path='/home' element={<Home />} />
