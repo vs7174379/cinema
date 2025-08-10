@@ -1,7 +1,52 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const WatchPage = () => {
     const [showUI, setShowUI] = useState(true);
+    const [loading, setLoading] = useState(true);
+      const [error, setError] = useState(null);
+     const { id } = useParams();
+  const [movie, setMovie] = useState(null);
+     useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        const response = await axios.get(`https://cinemo-ashy.vercel.app/api/show/movie/${id}`);
+        setMovie(response.data.movie);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+    fetchMovie();
+  }, [id]);
+  
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Loading movie details...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Error: {error}
+      </div>
+    );
+  }
+
+  if (!movie) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Movie not found.
+      </div>
+    );
+  }
+
+
 
     useEffect(() => {
         let timer;
@@ -24,7 +69,7 @@ const WatchPage = () => {
             <iframe
                 width="100%"
                 height="100%"
-                src="https://www.youtube.com/embed/SKJfBo3xMW0?autoplay=1&controls=1"
+                src={`${movie.url}?autoplay=1&controls=1`}
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -49,13 +94,12 @@ const WatchPage = () => {
             {/* Bottom Overlay */}
             {showUI && (
                 <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent">
-                    <h2 className="text-2xl font-bold">Inception</h2>
+                    <h2 className="text-2xl font-bold">{movie.title}</h2>
                     <p className="text-gray-300 text-sm mt-1">
-                        2010 • 2h 28m • Sci-Fi, Action
+                        2010 • 2h 28m • {movie.genre }
                     </p>
                     <p className="mt-3 text-gray-200 max-w-2xl">
-                        A thief who steals corporate secrets through dream-sharing technology is
-                        tasked with planting an idea into the mind of a CEO.
+                       {movie.description || "A mind-bending thriller where dream invasion is the norm." }
                     </p>
 
                     {/* Action Buttons */}
