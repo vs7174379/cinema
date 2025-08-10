@@ -13,6 +13,7 @@ import LoginSignup from './pages/LoginSignup'
 import Profile from './pages/Profile'
 import Thriller from './pages/Thriller'
 import TV from './pages/TV'
+import New from './pages/New'
 
 const App = () => {
   const [id, setid] = useState('');
