@@ -50,22 +50,7 @@ export default function MyList({ head }) {
     fetchMovies();
   }, []);
 
-  useEffect(() => {
-    const fetchNowPlaying = async () => {
-      try {
-        const response = await axios.get('https://cinemo-ashy.vercel.app/api/show/toprated-movies');
-        if (response.data.success) {
-          setMovie(response.data.movies);
-        }
-      } catch (error) {
-        console.error('Error fetching now playing movies:', error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNowPlaying();
-  }, []);
+ 
   return (
     <div className="p-6  min-h-screen text-white">
       <h2 className="text-2xl font-bold mb-6">{head} </h2>
