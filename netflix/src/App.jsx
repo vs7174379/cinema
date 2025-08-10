@@ -11,9 +11,6 @@ import axios from "axios"
 import MyList from './pages/MyList'
 import LoginSignup from './pages/LoginSignup'
 import Profile from './pages/Profile'
-import Thriller from './pages/Thriller'
-import TV from './pages/TV'
-import New from './pages/New'
 
 const App = () => {
   const [id, setid] = useState('');
@@ -30,7 +27,11 @@ const App = () => {
         <Route path='/browser' element={<Browser movieId={1142127} />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/movies' element={<MyList head={"movies"} />} />
-        
+        <Route path='/tv-series' element={<MyList head={"tvSeries"} />} />
+        <Route path='/animation' element={<MyList head={"animation"} />} />
+        <Route path='/thriller' element={<MyList head={"thriller"} />} />
+        <Route path='/drama' element={<MyList head={"drama"} />} />
+        <Route path='/more' element={<MyList head={"My-list"} />} />
        
         
         <Route path='/home' element={<Home />} />
