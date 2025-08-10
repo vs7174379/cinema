@@ -12,6 +12,9 @@ import MyList from './pages/MyList'
 import LoginSignup from './pages/LoginSignup'
 import Profile from './pages/Profile'
 import TV from './pages/TV'
+import Movie from './pages/Movie'
+import Thriller from './pages/Thriller'
+import New from './pages/New'
 
 const App = () => {
   const [id, setid] = useState('');
@@ -30,12 +33,12 @@ const App = () => {
         <Route path='/movies' element={<MyList head={"movies"} />} />
         <Route path='/tv-series' element={<TV/>} />
         <Route path='/animation' element={<MyList head={"animation"} />} />
-        <Route path='/thriller' element={<MyList head={"thriller"} />} />
-        <Route path='/drama' element={<MyList head={"drama"} />} />
-        <Route path='/more' element={<MyList head={"My-list"} />} />
+        <Route path='/thriller' element={<Thriller/>} />
+        <Route path='/drama' element={<New/>} />
+        <Route path='/mylist' element={<MyList head={"My-list"} />} />
        
         
-        <Route path='/home' element={<Home />} />
+        <Route path='/movies/:id' element={<Movie />} />
       </Routes>
       
       {error && (

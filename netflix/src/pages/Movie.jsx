@@ -1,0 +1,159 @@
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+
+const Movie = () => {
+  const { id } = useParams();
+  const [movie, setMovie] = useState(null);
+  const [trailerUrl, setTrailerUrl] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchMovieDetails = async () => {
+      try {
+        const movieResponse = await axios.get(
+          `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
+        );
+        setMovie(movieResponse.data);
+
+        const trailerResponse = await axios.get(
+          `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
+        );
+        const trailers = trailerResponse.data.results;
+        const officialTrailer = trailers.find(
+          (trailer) => trailer.type === 'Trailer' && trailer.site === 'YouTube'
+        );
+
+        if (officialTrailer) {
+          setTrailerUrl(`https://www.youtube.com/watch?v=${officialTrailer.key}`);
+        }
+      } catch (err) {
+        setError(err.message || 'Failed to load movie details');
+        console.error('Error fetching movie details:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMovieDetails();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Loading movie details...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Error: {error}
+      </div>
+    );
+  }
+
+  if (!movie) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Movie not found.
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <main className="flex flex-col overflow-y-auto h-full" id="style-7">
+        {/* Hero Section */}
+        <section className="relative flex flex-col lg:items-center">
+          <div
+            className="relative min-h-[40vh] sm:min-h-[60vh] lg:min-h-[70vh] bg-cover bg-center rounded-2xl m-4 sm:m-10 overflow-hidden lg:w-[60rem]"
+            style={{
+              backgroundImage: `url(https://image.tmdb.org/t/p/w1280${movie.backdrop_path})`,
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-black/20 to-transparent"></div>
+          </div>
+
+          {/* Movie Info */}
+          <div className="flex flex-col items-center relative z-10 px-6 sm:px-10 -mt-48 sm:-mt-72 mx-auto lg:w-[60rem] inset-0 bg-gradient-to-t from-black via-black to-black/20">
+            <h1 className="text-4xl sm:text-5xl sm:font-bold mb-4">{movie.title}</h1>
+            <p className="text-gray-200 sm:text-xl md:w-1/2 sm:font-bold leading-relaxed mb-4">
+              {movie.overview}
+            </p>
+            <div className="flex flex-wrap items-center gap-2 text-sm text-gray-400 mb-2">
+              <span>IMDb {movie.vote_average}</span> •
+              <span>{Math.floor(movie.runtime / 60)}h {movie.runtime % 60}min</span> •
+              <span>{new Date(movie.release_date).getFullYear()}</span>
+              {/* Add other relevant details as needed */}
+            </div>
+            <div className="text-sm text-blue-400 font-semibold mb-6 flex flex-wrap gap-3">
+              {movie.genres &&
+                movie.genres.map((genre) => (
+                  <a href="#" key={genre.id} className="hover:underline">
+                    {genre.name}
+                  </a>
+                ))}
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 mb-4">
+              {trailerUrl && (
+                <a
+                  href={trailerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white text-black font-semibold px-6 py-3 rounded flex items-center gap-2 text-lg"
+                >
+                  <i className="fas fa-play" /> Watch Trailer
+                </a>
+              )}
+            </div>
+
+            <div className="flex gap-4 mb-4 text-xl">
+              <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
+                <i className="fas fa-film" />
+              </button>
+              <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
+                <i className="fas fa-plus" />
+              </button>
+              <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
+                <i className="fas fa-thumbs-up" />
+              </button>
+              <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
+                <i className="fas fa-share" />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Tabs */}
+        <div className="flex gap-6 px-6 sm:px-10 pt-6 text-lg border-b border-gray-600">
+          <button className="border-b-2 border-white pb-2 font-semibold">Related</button>
+          <button className="text-gray-400 hover:text-white pb-2">Details</button>
+        </div>
+
+        {/* Related Movies */}
+        <section className="px-6 sm:px-10 py-6">
+          <h2 className="text-xl font-semibold mb-4">Customers also watched</h2>
+          <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
+            {[...Array(10)].map((_, idx) => (
+              <div key={idx} className="w-36 sm:w-48 flex-shrink-0 relative">
+                <img
+                  src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcS_WhubxLwynDD0XPpLbF9Ol-QYjPrfiia4e2Gd2QHmLztf--FZpK9WAemCIcUXgL9Brv1W"
+                  alt="Related Movie"
+                  className="rounded w-full"
+                />
+                <span className="absolute bottom-2 right-2 bg-white/80 text-black px-2 text-xs rounded">
+                  MX PLAYER
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+};
+
+export default Movie;

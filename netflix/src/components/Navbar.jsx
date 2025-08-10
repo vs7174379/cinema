@@ -105,7 +105,7 @@ const Navbar = () => {
                 <a href="/animation" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Animation</a>
                 <a href="/thriller" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Thriller</a>
                 <a href="/drama" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Drama</a>
-                <a href="/more" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">More</a>
+                <a href="/mylist" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">More</a>
 
 
             </div>

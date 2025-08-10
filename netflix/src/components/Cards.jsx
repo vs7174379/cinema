@@ -5,7 +5,7 @@ import React from "react";
 
 const Cards = ({ video, configBaseUrl }) => {
   return (
-   <a href="/home">
+   <a href={`/movies/${video.id}`} >
      <div
 
       className="min-w-[14rem] h-36 rounded-2xl shadow-lg bg-cover bg-top flex-shrink-0 relative"

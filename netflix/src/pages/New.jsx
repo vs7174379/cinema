@@ -5,7 +5,7 @@ import MovieList from '../components/MovieList';
 
 
 
-export default function New({ head }) {
+export default function New() {
   const [movie, setMovie] = useState([]);
 
   const nw= movie.filter(m =>
@@ -35,7 +35,7 @@ export default function New({ head }) {
  
   return (
     <div className="p-6  min-h-screen text-white">
-      <h2 className="text-2xl font-bold mb-6">{head} </h2>
+      <h2 className="text-2xl font-bold mb-6">New/upcoming </h2>
       <div>
         <MovieList title={"coming this week"} movies={nw} />
        

@@ -5,7 +5,7 @@ import MovieList from '../components/MovieList';
 
 
 
-export default function Thriller({ head }) {
+export default function Thriller() {
   const [movie, setMovie] = useState([]);
 
   const marvel = movie.filter(m =>
@@ -46,7 +46,7 @@ export default function Thriller({ head }) {
  
   return (
     <div className="p-6  min-h-screen text-white">
-      <h2 className="text-2xl font-bold mb-6">{head} </h2>
+      <h2 className="text-2xl font-bold mb-6">Thriller </h2>
       <div>
         <MovieList title={"Marvel-Hits"} movies={marvel} />
         <MovieList title={"Tollywood-BlockBusters"} movies={south} />
