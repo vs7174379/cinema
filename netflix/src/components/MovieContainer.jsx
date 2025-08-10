@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { comedy, romantic, top, womenrule } from '../../lib/data';
+import { comedy, romantic,womenrule } from '../../lib/data';
 
 
 import MovieList from './MovieList';
@@ -9,6 +9,11 @@ const MovieContainer = () => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [movie, setMovie] = useState([]);
+    const top = movie.filter(m =>
+        m.type === 'top indian movies'
+    );
+
+
     useEffect(() => {
         const fetchMovies = async () => {
             try {
