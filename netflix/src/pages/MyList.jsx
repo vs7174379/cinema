@@ -56,7 +56,7 @@ export default function MyList({ head }) {
   return (
     <div className="p-6  min-h-screen text-white">
       <h2 className="text-2xl font-bold mb-6">{head} </h2>
-      <div>
+      {head=='movies'} && <div>
         <MovieList title={"Romantic Movies"} movies={top} />
         <MovieList title={"Comedy Movies"} movies={comedyMovies} />
         <MovieList title={"Marvel-Hits"} movies={marvel} />
