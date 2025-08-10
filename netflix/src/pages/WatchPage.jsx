@@ -9,7 +9,7 @@ const WatchPage = () => {
     const { id } = useParams();
     const [movie, setMovie] = useState(null);
     useEffect(() => {
-        const fetchMovie = async () => {
+        const fetchMovi = async () => {
             try {
                 const response = await axios.get(`https://cinemo-ashy.vercel.app/api/show/movie/${id}`);
                 setMovie(response.data.movie);
@@ -19,7 +19,7 @@ const WatchPage = () => {
                 setLoading(false);
             }
         };
-        fetchMovie();
+        fetchMovi();
     }, [id]);
 
     if (loading) {
@@ -30,7 +30,13 @@ const WatchPage = () => {
         );
     }
 
-   
+    if (error) {
+        return (
+            <div className="flex items-center justify-center min-h-screen text-white">
+                Error: {error}
+            </div>
+        );
+    }
 
     if (!movie) {
         return (
