@@ -8,6 +8,6 @@ showRouter.get('/now-playing', getNowPlayingMovies)
 showRouter.get('/popular-movies', getPopularMovies)
 showRouter.get('/upcomming-movies', getUpcommingMovies)
 showRouter.get('/toprated-movies', getTopRatedMovies)
-showRouter.get('/movie/:id', getMovieById)
+showRouter.get('/movie/:id', getMovieById);
 showRouter.get('/movie', getmovie)
 export default showRouter
