@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Play } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import MovieList from '../components/MovieList';
 
 
 

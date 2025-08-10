@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { comedy, romantic,womenrule } from '../../lib/data';
+
 
 
 import MovieList from './MovieList';
