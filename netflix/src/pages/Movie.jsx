@@ -5,9 +5,9 @@ import axios from 'axios';
 const Movie = () => {
   const { id } = useParams();
   const [movi, setMovie] = useState(null);
-  const [trailerUrl, setTrailerUrl] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+ 
+  
+
   const movie=movi.filter(m =>
     m._id === id
   );
@@ -30,21 +30,9 @@ const Movie = () => {
     }, []);
 
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-white">
-        Loading movie details...
-      </div>
-    );
-  }
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-white">
-        Error: {error}
-      </div>
-    );
-  }
+
+
 
   if (!movie) {
     return (
