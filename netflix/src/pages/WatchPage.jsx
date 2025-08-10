@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
-
+import React, { use, useEffect,useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 
 const mockShow = {
@@ -9,11 +10,11 @@ const mockShow = {
     rating: "8.6",
     description:
         "A tense sci-fi thriller where a group of engineers race to repair an orbital gateway while political and corporateforces collide.",
-episodes: [
+    episodes: [
         { id: 1, title: "Episode 1 — Launch", length: "42m" },
         { id: 2, title: "Episode 2 — Drift", length: "45m" },
         { id: 3, title: "Episode 3 — Breach", length: "36m" },
-],
+    ],
 };
 
 const recommendations = new Array(10).fill(0).map((_, i) => ({
@@ -35,6 +36,51 @@ function IconButton({ children, label, onClick }) {
 }
 
 export default function WatchPage() {
+    const { id } = useParams();
+    const [movie, setMovie] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchMovie = async () => {
+            try {
+                const response = await axios.get(`https://cinemo-ashy.vercel.app/api/show/movie/${id}`);
+                setMovie(response.data.movie);
+                setLoading(false);
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        };
+        fetchMovie();
+    }, [id]);
+
+
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen text-white">
+                Loading movie details...
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="flex items-center justify-center min-h-screen text-white">
+                Error: {error}
+            </div>
+        );
+    }
+
+    if (!movie) {
+        return (
+            <div className="flex items-center justify-center min-h-screen text-white">
+                Movie not found.
+            </div>
+        );
+    }
+
     const [playing, setPlaying] = useState(false);
     const [currentEpisode, setCurrentEpisode] = useState(mockShow.episodes[0]);
     const [isInWatchlist, setIsInWatchlist] = useState(false);
@@ -98,7 +144,7 @@ export default function WatchPage() {
                     {/* Player (spans two columns on large screens) */}
                     <div className="lg:col-span-2 space-y-4">
                         <div className="relative bg-black rounded-xl overflow-hidden shadow-xl">
-                            <video ref={videoRef} className="w-full h-[56vh] bg-black object-cover" src="/assets/sample-trailer.mp4"
+                            <video ref={videoRef} className="w-full h-[56vh] bg-black object-cover" src={`${movie.url}`}
                                 poster="https://picsum.photos/seed/poster/1200/675" onClick={togglePlay} />
 
                             {/* Overlay controls */}
@@ -157,11 +203,11 @@ export default function WatchPage() {
                         {/* Title and actions */}
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                             <div>
-                                <h1 className="text-2xl sm:text-3xl font-semibold">{mockShow.title}</h1>
+                                <h1 className="text-2xl sm:text-3xl font-semibold">{movie.title}</h1>
                                 <div className="text-slate-400 mt-1 text-sm">
-                                    {mockShow.year} • {mockShow.duration} • ⭐ {mockShow.rating}
+                                    {movie.year} • {movie.duration} • ⭐ {movie.rating}
                                 </div>
-                                <p className="mt-3 text-slate-300 max-w-2xl">{mockShow.description}</p>
+                                <p className="mt-3 text-slate-300 max-w-2xl">{movie.description}</p>
                             </div>
 
                             <div className="flex items-center gap-3">
