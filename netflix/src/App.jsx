@@ -11,6 +11,7 @@ import axios from "axios"
 import MyList from './pages/MyList'
 import LoginSignup from './pages/LoginSignup'
 import Profile from './pages/Profile'
+import TV from './pages/TV'
 
 const App = () => {
   const [id, setid] = useState('');
