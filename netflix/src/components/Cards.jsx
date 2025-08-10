@@ -14,7 +14,7 @@ const Cards = ({ video, configBaseUrl }) => {
       <div className="absolute bottom-0 bg-black/40 backdrop-blur-sm w-full p-2 rounded-b-2xl">
         <p className="text-sm font-bold">{video.title}</p>
         <p className="text-xs text-gray-300">
-          {video.genre.join(", ")} - {video.year}
+          
         </p>
       </div>
     </div>

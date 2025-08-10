@@ -10,9 +10,9 @@ const MovieList = ({ title, movies, searchMovies = false }) => {
     const fetchMovies = async () => {
       try {
         const response = await axios.get('https://cinemo-ashy.vercel.app/api/show/movie');
-        const data = await response.json();
-        if (data.success) {
-          setMovies(data.movies);
+        const data = response.data.movies
+        if (response.data.success) {
+          setMovies(data);
         } else {
           console.error('Failed to fetch movies:', data.message);
         }
@@ -38,6 +38,7 @@ const MovieList = ({ title, movies, searchMovies = false }) => {
                 key={m.id}
                 id={m.id}
                 video={m}
+                
               />
             ))}
           </div>
