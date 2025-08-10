@@ -33,7 +33,7 @@ const WatchPage = () => {
     if (error) {
         return (
             <div className="flex items-center justify-center min-h-screen text-white">
-                Error: {error}
+                Error: {error}{id}
             </div>
         );
     }
