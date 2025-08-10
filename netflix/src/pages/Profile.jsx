@@ -43,7 +43,7 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}user/profile`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}user/update`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
