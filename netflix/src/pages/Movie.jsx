@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, {  useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const Movie = () => {
@@ -78,12 +78,11 @@ const Movie = () => {
               {movie.genre }
             </div>
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
-             <Link to={`/movies/${id}/watch`}>
-
+              <a href="/movies/:id/watch">
               <button className="bg-white text-black font-semibold px-6 py-3 rounded flex items-center gap-2 text-lg">
                 <i className="fas fa-play" /> Watch now
               </button>
-              </Link>
+              </a>
               
 
             </div>
