@@ -10,9 +10,9 @@ const MovieList = ({ title, movies, searchMovies = false }) => {
     const fetchMovies = async () => {
       try {
         const response = await axios.get('https://cinemo-ashy.vercel.app/api/show/movie');
-        const data = response.data.movies
-        if (response.data.success) {
-          setMovies(data);
+        const data = await response.json();
+        if (data.success) {
+          setMovies(data.movies);
         } else {
           console.error('Failed to fetch movies:', data.message);
         }
@@ -31,14 +31,12 @@ const MovieList = ({ title, movies, searchMovies = false }) => {
 
       {/* You Might Like - 1 */}
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold px-2">{movie[0].title}</h2>
+          <h2 className="text-xl font-semibold px-2">{title}</h2>
           <div className="flex gap-3 overflow-x-auto no-scrollbar p-2">
-            {movie.map((m) => (
+            {movies.map((movie) => (
               <Cards
-                key={m.id}
-                id={m.id}
-                video={m}
-                
+               
+                video={movie}
               />
             ))}
           </div>
