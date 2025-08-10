@@ -11,7 +11,7 @@ export default function MyList({ head }) {
     m.type === 'romantic indian movies'
   );
   const comedyMovies = movie.filter(m =>
-    m.type === 'top comedy indian movies'
+    m.type === 'top comedy indian movies',head='movies'
   );
   const marvel = movie.filter(m =>
     m.type === 'marvel movies'
@@ -56,7 +56,7 @@ export default function MyList({ head }) {
   return (
     <div className="p-6  min-h-screen text-white">
       <h2 className="text-2xl font-bold mb-6">{head} </h2>
-      {head=='movies'} && <div>
+      <div>
         <MovieList title={"Romantic Movies"} movies={top} />
         <MovieList title={"Comedy Movies"} movies={comedyMovies} />
         <MovieList title={"Marvel-Hits"} movies={marvel} />
