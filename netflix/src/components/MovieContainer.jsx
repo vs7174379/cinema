@@ -10,8 +10,31 @@ const MovieContainer = () => {
     const [loading, setLoading] = useState(true);
     const [movie, setMovie] = useState([]);
     const top = movie.filter(m =>
-        m.type === 'top indian movies'
+        m.type === 'romantic indian movies'
     );
+    const comedyMovies = movie.filter(m =>
+        m.type === 'top comedy indian movies'
+    );
+    const marvel= movie.filter(m =>
+        m.type === 'marvel movies'
+    );
+    const emotional = movie.filter(m =>
+        m.type === 'top emotional indian movies'
+    );
+    const south = movie.filter(m =>
+        m.type === 'top south indian movies'
+    );
+    const thriller = movie.filter(m =>
+        m.type === 'top thriller indian movies'
+    );
+    const hollywood = movie.filter(m =>
+        m.type === 'hollywood movies'
+    );
+    const hollywoodRomantic = movie.filter(m =>
+        m.type === 'hollywood romantic movies'
+    );
+
+        
 
 
     useEffect(() => {
@@ -53,10 +76,14 @@ const MovieContainer = () => {
     return (
         <div>
             <MovieList title={"you might like"} movies={top} />
-            <MovieList title={"Comedy Movies"} movies={comedy} />
-            <MovieList title={"Romantic Movies"} movies={romantic} />
-            <MovieList title={"Women Ruling Movies"} movies={womenrule} />
-            <MovieList title={"Movies"} movies={movie} />
+            <MovieList title={"Comedy Movies"} movies={comedyMovies} />
+            <MovieList title={"Marvel-Hits"} movies={marvel} />
+            <MovieList title={"Emotional-Movies"} movies={emotional} />
+            <MovieList title={"Tollywood-BlockBusters"} movies={south} />
+            <MovieList title={"Thriller-Movies"} movies={thriller} />
+            <MovieList title={"Hollywood-Movies"} movies={hollywood} />
+            <MovieList title={"Hollywood-Romantic-Movies"} movies={hollywoodRomantic} />
+            
 
 
         </div>
