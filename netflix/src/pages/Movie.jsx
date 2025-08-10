@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -9,20 +9,22 @@ const Movie = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchMovie = async () => {
+    const fetchMovieDetails = async () => {
       try {
-        const response = await axios.get(`https://cinemo-ashy.vercel.app/api/show/movie/${id}`);
-        setMovie(response.data.movie);
-        setLoading(false);
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
+        );
+        setMovie(response.data);
       } catch (err) {
-        setError(err.message);
+        setError(err.message || 'Failed to load movie details');
+        console.error('Error fetching movie details:', err);
+      } finally {
         setLoading(false);
       }
     };
-    fetchMovie();
+
+    fetchMovieDetails();
   }, [id]);
-
-
 
   if (loading) {
     return (
@@ -56,7 +58,7 @@ const Movie = () => {
           <div
             className="relative min-h-[40vh] sm:min-h-[60vh] lg:min-h-[70vh] bg-cover bg-center rounded-2xl m-4 sm:m-10 overflow-hidden lg:w-[60rem]"
             style={{
-              backgroundImage: `url(${movie.backdrop})`,
+              backgroundImage: `url(https://image.tmdb.org/t/p/w1280${movie.backdrop_path})`,
             }}
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-black/20 to-transparent"></div>
@@ -66,24 +68,26 @@ const Movie = () => {
           <div className="flex flex-col items-center relative z-10 px-6 sm:px-10 -mt-48 sm:-mt-72 mx-auto lg:w-[60rem]    inset-0 bg-gradient-to-t from-black via-black to-black/20">
             <h1 className="text-4xl sm:text-5xl sm:font-bold mb-4">{movie.title}</h1>
             <p className="text-gray-200 sm:text-xl md:w-1/2 sm:font-bold leading-relaxed mb-4">
-              {movie.description}
+              {movie.overview}
             </p>
             <div className="flex flex-wrap items-center gap-2 text-sm text-gray-400 mb-2">
-              <span>IMDb {movie.rating}</span> •
-              <span>{Math.floor(movie.duration / 60)}h {movie.duration % 60}min</span> •
-              <span>{new Date(movie.releaseDate).getFullYear()}</span>
+              <span>IMDb {movie.vote_average}</span> •
+              <span>{Math.floor(movie.runtime / 60)}h {movie.runtime % 60}min</span> •
+              <span>{new Date(movie.release_date).getFullYear()}</span>
               {/* Add other relevant details as needed */}
             </div>
             <div className="text-sm text-blue-400 font-semibold mb-6 flex flex-wrap gap-3">
-              {movie.genre }
+              {movie.genres &&
+                movie.genres.map((genre) => (
+                  <a href="#" className="hover:underline">
+                    {genre.name}
+                  </a>
+                ))}
             </div>
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
-              <a href="/movies/:id/watch">
               <button className="bg-white text-black font-semibold px-6 py-3 rounded flex items-center gap-2 text-lg">
                 <i className="fas fa-play" /> Watch now
               </button>
-              </a>
-              
 
             </div>
 
