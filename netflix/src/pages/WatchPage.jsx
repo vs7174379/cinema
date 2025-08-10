@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const MovieWatch = () => {
+const WatchPage = () => {
   const [showUI, setShowUI] = useState(true);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const MovieWatch = () => {
         className="w-full h-full object-cover"
         autoPlay
         controls
-        src="https://www.youtube.com/watch?v=SKJfBo3xMW0"
+        src="https://www.w3schools.com/html/mov_bbb.mp4"
       ></video>
 
       {/* Top Overlay */}
@@ -72,4 +72,4 @@ const MovieWatch = () => {
   );
 };
 
-export default MovieWatch;
+export default WatchPage;
