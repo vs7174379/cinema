@@ -4,40 +4,31 @@ import axios from 'axios';
 
 const Movie = () => {
   const { id } = useParams();
-  const [movie, setMovie] = useState(null);
+  const [movi, setMovie] = useState(null);
   const [trailerUrl, setTrailerUrl] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const movie=movi.filter(m =>
+    m._id === id
+  );
 
-  useEffect(() => {
-    const fetchMovieDetails = async () => {
-      try {
-        const movieResponse = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
-        );
-        setMovie(movieResponse.data);
-
-        const trailerResponse = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
-        );
-        const trailers = trailerResponse.data.results;
-        const officialTrailer = trailers.find(
-          (trailer) => trailer.type === 'Trailer' && trailer.site === 'YouTube'
-        );
-
-        if (officialTrailer) {
-          setTrailerUrl(`https://www.youtube.com/watch?v=${officialTrailer.key}`);
+   useEffect(() => {
+      const fetchMovies = async () => {
+        try {
+          const response = await axios.get('https://cinemo-ashy.vercel.app/api/show/movie');
+          const data = response.data.movies
+          if (response.data.success) {
+            setMovie(data);
+          } else {
+            console.error('Failed to fetch movies:', data.message);
+          }
+        } catch (error) {
+          console.error('Error fetching movies:', error);
         }
-      } catch (err) {
-        setError(err.message || 'Failed to load movie details');
-        console.error('Error fetching movie details:', err);
-      } finally {
-        setLoading(false);
       }
-    };
+      fetchMovies();
+    }, []);
 
-    fetchMovieDetails();
-  }, [id]);
 
   if (loading) {
     return (
