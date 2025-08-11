@@ -40,7 +40,7 @@ const App = () => {
        
         
         <Route path='/movies/:id' element={<Movie />} />
-        <Route path='/movies/:id/watch' element={<WatchPage />} />
+        <Route path='/movies/:id/watch' element={<WatchPage/>} />
       </Routes>
       
       {error && (
