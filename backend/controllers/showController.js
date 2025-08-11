@@ -19,36 +19,36 @@ export const getNowPlayingMovies = async (req, res) => {
 
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 
-// export const getMovieById = async (req, res) => {
-//   const { id } = req.params;
+export const getMovieById = async (req, res) => {
+  const { id } = req.params;
 
-//   try {
-//     const response = await axios.get(`${TMDB_BASE_URL}/movie/${id}/videos`, { headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` } });
+  try {
+    const response = await axios.get(`${TMDB_BASE_URL}/movie/${id}/videos`, { headers: { Authorization: `Bearer ${process.env.TMDB_API_KEY}` } });
 
-//     const videos = response.data.results;
-
-
-//     // Find the first YouTube trailer
-//     const trailer = videos.find(
-//       (video) => video.type === 'Trailer' && video.site === 'YouTube'
-//     );
+    const videos = response.data.results;
 
 
-//     if (!trailer) {
-//       return res.status(404).json({ message: 'Trailer not found' });
-//     }
+    // Find the first YouTube trailer
+    const trailer = videos.find(
+      (video) => video.type === 'Trailer' && video.site === 'YouTube'
+    );
 
-//     // Return trailer info or just the YouTube URL
-//     return res.json({
-//       id: trailer.id,
-//       name: trailer.name,
-//       url: `https://www.youtube.com/watch?v=${trailer.key}`
-//     });
-//   } catch (error) {
-//     console.error('Error fetching trailer:', error.message);
-//     return res.status(500).json({ message: 'Failed to fetch trailer' });
-//   }
-// };
+
+    if (!trailer) {
+      return res.status(404).json({ message: 'Trailer not found' });
+    }
+
+    // Return trailer info or just the YouTube URL
+    return res.json({
+      id: trailer.id,
+      name: trailer.name,
+      url: `https://www.youtube.com/watch?v=${trailer.key}`
+    });
+  } catch (error) {
+    console.error('Error fetching trailer:', error.message);
+    return res.status(500).json({ message: 'Failed to fetch trailer' });
+  }
+};
 
 export const getPopularMovies = async (req, res) => {
 
@@ -103,7 +103,7 @@ export const getmovie = async (req, res) => {
   }
 }
 
-export const getMovieById = async (req, res) => {
+export const getMoviById = async (req, res) => {
   const { id } = req.params;
 
   try {
