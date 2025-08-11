@@ -21,28 +21,6 @@ const WatchPage = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-white">
-        Loading movie details...
-      </div>
-    );
-  }
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-white">
-        Error: {error}
-      </div>
-    );
-  }
-  if (!movie) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-white">
-        Movie not found.
-      </div>
-    );
-  }
   
 
 
