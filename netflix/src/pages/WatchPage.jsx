@@ -1,10 +1,29 @@
 import React, { useState, useEffect } from "react";
-import ReactPlayer from "react-player";
+import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const WatchPage = () => {
   const [showUI, setShowUI] = useState(true);
   const { id } = useParams();
+   useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        const response = await axios.get(`https://cinemo-ashy.vercel.app/api/show/movi/${id}`);
+        setMovie(response.data.movie);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+    fetchMovie();
+  }, [id]);
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  
+
 
   useEffect(() => {
     let timer;
