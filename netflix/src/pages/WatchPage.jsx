@@ -48,29 +48,6 @@ const WatchPage = () => {
     };
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-white">
-        Loading movie details...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-white">
-        Error: {error}
-      </div>
-    );
-  }
-
-  if (!movie) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-white">
-        Movie not found.
-      </div>
-    );
-  }
 
   return (
     <div className="bg-black text-white h-screen overflow-hidden relative">
