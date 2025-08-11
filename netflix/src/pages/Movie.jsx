@@ -80,7 +80,7 @@ const Movie = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
              
-              <button onClick={()=>navigate(`/movies/${video._id}/watch`)} className="bg-white text-black font-semibold px-6 py-3 rounded flex items-center gap-2 text-lg">
+              <button onClick={()=>navigate(`/movies/${id}/watch`)} className="bg-white text-black font-semibold px-6 py-3 rounded flex items-center gap-2 text-lg">
                 <i className="fas fa-play" /> Watch now
               </button>
               
