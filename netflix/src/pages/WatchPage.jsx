@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 const WatchPage = () => {
   const [showUI, setShowUI] = useState(true);
   const { id } = useParams();
-   useEffect(() => {
+  useEffect(() => {
     const fetchMovie = async () => {
       try {
         const response = await axios.get(`https://cinemo-ashy.vercel.app/api/show/movi/${id}`);
@@ -21,7 +21,7 @@ const WatchPage = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
 
 
   useEffect(() => {
@@ -37,6 +37,32 @@ const WatchPage = () => {
       clearTimeout(timer);
     };
   }, []);
+
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Loading movie details...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Error: {error}
+      </div>
+    );
+  }
+
+  if (!movie) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Movie not found.
+      </div>
+    );
+  }
+
 
   return (
     <div className="bg-black text-white h-screen overflow-hidden relative">
