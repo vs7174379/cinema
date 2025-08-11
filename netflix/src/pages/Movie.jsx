@@ -1,5 +1,5 @@
 import React, {  useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const Movie = () => {
@@ -7,6 +7,7 @@ const Movie = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -78,11 +79,10 @@ const Movie = () => {
               {movie.genre }
             </div>
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
-              <a href="/movies/:id/watch">
-              <button className="bg-white text-black font-semibold px-6 py-3 rounded flex items-center gap-2 text-lg">
+             
+              <button onClick={navigate(`/movies/${id}/watch`)} className="bg-white text-black font-semibold px-6 py-3 rounded flex items-center gap-2 text-lg">
                 <i className="fas fa-play" /> Watch now
               </button>
-              </a>
               
 
             </div>
