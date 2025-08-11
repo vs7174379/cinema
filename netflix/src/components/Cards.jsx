@@ -1,12 +1,13 @@
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 
 
 const Cards = ({ video, configBaseUrl }) => {
+  const navigate = useNavigate();
   return (
-   <a href={`/movies/${video._id}`} >
-     <div
+        <div onClick={() => navigate(`/movies/${video._id}`)}
 
       className="min-w-[14rem] h-36 rounded-2xl shadow-lg bg-cover bg-top flex-shrink-0 relative"
       style={{ backgroundImage: `url('${video.poster} ')` }}
@@ -18,7 +19,7 @@ const Cards = ({ video, configBaseUrl }) => {
         </p>
       </div>
     </div>
-   </a>
+ 
   );
 };
 
