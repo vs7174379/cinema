@@ -12,6 +12,7 @@ const WatchPage = () => {
  
 
   useEffect(() => {
+    // Fetch movie details
     const fetchMovie = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}show/movie/${id}`);
