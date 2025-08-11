@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const WatchPage = () => {
+const Watch = () => {
   const [showUI, setShowUI] = useState(true);
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
@@ -86,4 +86,4 @@ const WatchPage = () => {
   );
 };
 
-export default WatchPage;
+export default Watch;
