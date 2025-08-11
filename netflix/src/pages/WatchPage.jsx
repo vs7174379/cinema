@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 
 const WatchPage = () => {
   const [showUI, setShowUI] = useState(true);
+   const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { id } = useParams();
    useEffect(() => {
     const fetchMovie = async () => {
@@ -18,9 +21,7 @@ const WatchPage = () => {
     };
     fetchMovie();
   }, [id]);
-  const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+ 
 
   if (loading) {
     return (
