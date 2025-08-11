@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
+import { useParams } from "react-router-dom";
 
 const WatchPage = () => {
   const [showUI, setShowUI] = useState(true);
+  const { id } = useParams();
 
   useEffect(() => {
     let timer;
@@ -20,6 +22,7 @@ const WatchPage = () => {
 
   return (
     <div className="bg-black text-white h-screen overflow-hidden relative">
+      {id}
       {/* YouTube Player */}
       <iframe
         width="100%"
