@@ -16,7 +16,6 @@ import Movie from './pages/Movie'
 import Thriller from './pages/Thriller'
 import New from './pages/New'
 import WatchPage from './pages/WatchPage'
-import Watch from './pages/Watch'
 
 const App = () => {
   const [id, setid] = useState('');
@@ -41,7 +40,7 @@ const App = () => {
        
         
         <Route path='/movies/:id' element={<Movie />} />
-        <Route path='/movies/:id/watch' element={<Watch />} />
+        <Route path='/movies/:id/watch' element={<WatchPage />} />
       </Routes>
       
       {error && (
