@@ -32,15 +32,14 @@ const App = () => {
         <Route path='/browser' element={<Browser movieId={1142127} />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/movies' element={<MyList head={"movies"} />} />
+        <Route path='/movies/:id' element={<Movie />} />
+        <Route path='/movies/:id/watch' element={<WatchPage/>}/>
         <Route path='/tv-series' element={<TV/>} />
         <Route path='/animation' element={<MyList head={"animation"} />} />
         <Route path='/thriller' element={<Thriller/>} />
         <Route path='/drama' element={<New/>} />
-        <Route path='/mylist' element={<MyList head={"My-list"} />} />
-       
+        <Route path='/mylist' element={<MyList head={"My-list"} />} />      
         
-        <Route path='/movies/:id' element={<Movie />} />
-        <Route path='/movies/:id/watch' element={<WatchPage/>}/>
       </Routes>
       
       {error && (
