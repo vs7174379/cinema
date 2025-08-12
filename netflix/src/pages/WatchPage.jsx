@@ -1,39 +1,33 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const WatchPage = () => {
+  const { id } = useParams();
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showUI, setShowUI] = useState(true);
   const timerRef = useRef(null);
 
-  // Movie data from given JSON
-  const movie = {
-    _id: "6894dd728a55c95d518c8738",
-    title: "Kuch Kuch Hota Hai",
-    backdrop:
-      "https://image.tmdb.org/t/p/original/iQJZMLr5cdn7Al2Av4V1VEzPDoQ.jpg",
-    cast: [
-      { name: "Shah Rukh Khan" },
-      { name: "Kajol" },
-      { name: "Rani Mukerji" },
-      { name: "Sana Saeed" },
-      { name: "Farida Jalal" },
-      { name: "Salman Khan" },
-      { name: "Johny Lever" },
-      { name: "Archana Puran Singh" },
-      { name: "Anupam Kher" },
-      { name: "Reema Lagoo" },
-    ],
-    description:
-      "Per her mother's last wish, an 8 year old girl sets out to reunite her father with his college best friend who was in love with him.",
-    duration: 185,
-    genre: ["Romance", "Drama", "Comedy"],
-    language: "hi",
-    poster:
-      "https://image.tmdb.org/t/p/w500/wjTPPVRz4ZA1GgCNnvcBTBc9aEF.jpg",
-    rating: 7.47,
-    releaseDate: "1998-10-16T00:00:00.000Z",
-    trailerUrl: "https://www.youtube.com/embed/IxnUHB64NcU",
-  };
+  // Fetch movie data
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `https://cinema-flame-seven.vercel.app/api/show/movi/${id}`
+        );
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        const data = await res.json();
+        setMovie(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMovie();
+  }, [id]);
 
   // Inactivity detection
   useEffect(() => {
@@ -51,6 +45,18 @@ const WatchPage = () => {
       clearTimeout(timerRef.current);
     };
   }, [showUI]);
+
+  if (loading) {
+    return <div className="h-screen bg-black text-white flex items-center justify-center">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="h-screen bg-black text-red-500 flex items-center justify-center">{error}</div>;
+  }
+
+  if (!movie) {
+    return <div className="h-screen bg-black text-white flex items-center justify-center">Movie not found</div>;
+  }
 
   return (
     <div className="bg-black text-white h-screen relative overflow-hidden">
@@ -85,8 +91,8 @@ const WatchPage = () => {
       >
         <h2 className="text-2xl font-bold">{movie.title}</h2>
         <p className="text-gray-300 text-sm mt-1">
-          {new Date(movie.releaseDate).getFullYear()} • {movie.genre.join(", ")}{" "}
-          • {movie.duration} min • Rating: {movie.rating.toFixed(1)}
+          {new Date(movie.releaseDate).getFullYear()} • {movie.genre?.join(", ")}{" "}
+          • {movie.duration} min • Rating: {movie.rating?.toFixed(1)}
         </p>
         <p className="mt-3 text-gray-200 max-w-2xl">{movie.description}</p>
 
@@ -94,7 +100,7 @@ const WatchPage = () => {
         <div className="mt-4">
           <h3 className="font-semibold">Cast:</h3>
           <p className="text-gray-300 text-sm">
-            {movie.cast.map((actor) => actor.name).join(", ")}
+            {movie.cast?.map((actor) => actor.name).join(", ")}
           </p>
         </div>
       </div>
