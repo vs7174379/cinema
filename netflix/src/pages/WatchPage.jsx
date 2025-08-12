@@ -6,17 +6,28 @@ const WatchPage = () => {
   const [showUI, setShowUI] = useState(true);
   const timerRef = useRef(null);
   const [movie, setMovie] = useState(null);
-  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { id } = useParams(); // Assuming you are using react-router-dom for routing
 
-
+  // Movie data from given JSON
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/${id}`);
+        setMovie(response.data.movie);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+    fetchMovie();
+  }, [id]);
 
 
   // Inactivity detection
-  useEffect(async () => {
-    
-    const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/${id}`);
-    setMovie(response.data.movie);
+  useEffect(() => {
     const resetTimer = () => {
       if (!showUI) setShowUI(true);
       clearTimeout(timerRef.current);
@@ -32,7 +43,6 @@ const WatchPage = () => {
     };
   }, [showUI]);
 
-
   return (
     <div className="bg-black text-white h-screen relative overflow-hidden">
       {/* Trailer Video */}
@@ -47,8 +57,9 @@ const WatchPage = () => {
 
       {/* Top Bar */}
       <div
-        className={`absolute top-0 left-0 w-full p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-500 ${showUI ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
+        className={`absolute top-0 left-0 w-full p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-500 ${
+          showUI ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
       >
         <Link to="/movies" className="font-bold hover:underline">
           ⬅ Back
@@ -59,8 +70,9 @@ const WatchPage = () => {
 
       {/* Bottom Info */}
       <div
-        className={`absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-500 ${showUI ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
+        className={`absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-500 ${
+          showUI ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
       >
         <h2 className="text-2xl font-bold">{movie.title}</h2>
         <p className="text-gray-300 text-sm mt-1">
