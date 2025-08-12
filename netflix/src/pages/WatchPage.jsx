@@ -1,39 +1,30 @@
+import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const WatchPage = () => {
   const [showUI, setShowUI] = useState(true);
   const timerRef = useRef(null);
+  const [movie, setMovie] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { id } = useParams(); // Assuming you are using react-router-dom for routing
 
   // Movie data from given JSON
-  const movie = {
-    _id: "6894dd728a55c95d518c8738",
-    title: "Kuch Kuch Hota Hai",
-    backdrop:
-      "https://image.tmdb.org/t/p/original/iQJZMLr5cdn7Al2Av4V1VEzPDoQ.jpg",
-    cast: [
-      { name: "Shah Rukh Khan" },
-      { name: "Kajol" },
-      { name: "Rani Mukerji" },
-      { name: "Sana Saeed" },
-      { name: "Farida Jalal" },
-      { name: "Salman Khan" },
-      { name: "Johny Lever" },
-      { name: "Archana Puran Singh" },
-      { name: "Anupam Kher" },
-      { name: "Reema Lagoo" },
-    ],
-    description:
-      "Per her mother's last wish, an 8 year old girl sets out to reunite her father with his college best friend who was in love with him.",
-    duration: 185,
-    genre: ["Romance", "Drama", "Comedy"],
-    language: "hi",
-    poster:
-      "https://image.tmdb.org/t/p/w500/wjTPPVRz4ZA1GgCNnvcBTBc9aEF.jpg",
-    rating: 7.47,
-    releaseDate: "1998-10-16T00:00:00.000Z",
-    trailerUrl: "https://www.youtube.com/embed/IxnUHB64NcU",
-  };
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/${id}`);
+        setMovie(response.data.movie);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+    fetchMovie();
+  }, [id]);
+
 
   // Inactivity detection
   useEffect(() => {
