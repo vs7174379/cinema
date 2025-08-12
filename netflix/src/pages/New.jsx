@@ -18,7 +18,7 @@ export default function New() {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axios.get('https://cinemo-ashy.vercel.app/api/show/movie');
+        const response = await axios.get('https://cinema-flame-seven.vercel.app/api/show/movie');
         const data = response.data.movies
         if (response.data.success) {
           setMovie(data);

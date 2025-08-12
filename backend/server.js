@@ -30,7 +30,7 @@ app.use(cookieParser());
 const allowedOrigins = [
     'http://localhost:5173',
     'https://cinemo-5p8g.vercel.app',
-    'https://cinemo-ashy.vercel.app'
+    'https://cinema-flame-seven.vercel.app'
 ];
 
 const corsOptions = {

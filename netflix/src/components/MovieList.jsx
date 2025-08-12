@@ -9,7 +9,7 @@ const MovieList = ({ title, movies, searchMovies = false }) => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axios.get('https://cinemo-ashy.vercel.app/api/show/movie');
+        const response = await axios.get('https://cinema-flame-seven.vercel.app/api/show/movie');
         const data = await response.json();
         if (data.success) {
           setMovies(data.movies);

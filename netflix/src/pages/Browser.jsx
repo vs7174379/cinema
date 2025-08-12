@@ -49,7 +49,7 @@ const Browser = ({ movieId }) => {
   useEffect(() => {
     const fetchNowPlaying = async () => {
       try {
-        const response = await axios.get('https://cinemo-ashy.vercel.app/api/show/popular-movies');
+        const response = await axios.get('https://cinema-flame-seven.vercel.app/api/show/popular-movies');
         if (response.data.success) {
           setMovies(response.data.movies);
         }
@@ -64,7 +64,7 @@ const Browser = ({ movieId }) => {
   useEffect(() => {
     const fetchUpComingMovies = async () => {
       try {
-        const response = await axios.get('https://cinemo-ashy.vercel.app/api/show/upcomming-movies');
+        const response = await axios.get('https://cinema-flame-seven.vercel.app/api/show/upcomming-movies');
         if (response.data.success) {
           setUpComingMovies(response.data.movies);
         }
@@ -79,7 +79,7 @@ const Browser = ({ movieId }) => {
   useEffect(() => {
     const fetchTrailer = async () => {
       try {
-        const response = await axios.get(`https://cinemo-ashy.vercel.app/api/show/movie/${movieId}`);
+        const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movie/${movieId}`);
         setTrailerUrl(response.data.url);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch trailer');

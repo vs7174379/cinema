@@ -12,7 +12,7 @@ const Movie = () => {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const response = await axios.get(`https://cinemo-ashy.vercel.app/api/show/movi/${id}`);
+        const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/${id}`);
         setMovie(response.data.movie);
         setLoading(false);
       } catch (err) {
