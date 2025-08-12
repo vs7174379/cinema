@@ -6,43 +6,31 @@ const WatchPage = () => {
   const [showUI, setShowUI] = useState(true);
   const timerRef = useRef(null);
   const [movie, setMovie] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  
   const { id } = useParams(); // Assuming you are using react-router-dom for routing
 
-  // Movie data from given JSON
-  useEffect(() => {
-    const fetchMovi = async () => {
-      try {
-        const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/${id}`);
-        setMovie(response.data.movie);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-    fetchMovi();
-  }, [id]);
+
 
 
   // Inactivity detection
-useEffect(() => {
-  if (loading) return; // wait until video is ready
-  const resetTimer = () => {
-    if (!showUI) setShowUI(true);
-    clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => setShowUI(false), 3000);
-  };
+  useEffect(async () => {
+    
+    const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/${id}`);
+    setMovie(response.data.movie);
+    const resetTimer = () => {
+      if (!showUI) setShowUI(true);
+      clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setShowUI(false), 3000);
+    };
 
-  const events = ["mousemove", "click", "keydown", "touchstart"];
-  events.forEach((e) => window.addEventListener(e, resetTimer));
+    const events = ["mousemove", "click", "keydown", "touchstart"];
+    events.forEach((e) => window.addEventListener(e, resetTimer));
 
-  return () => {
-    events.forEach((e) => window.removeEventListener(e, resetTimer));
-    clearTimeout(timerRef.current);
-  };
-}, [showUI, loading]);
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, resetTimer));
+      clearTimeout(timerRef.current);
+    };
+  }, [showUI]);
 
 
   return (
@@ -59,9 +47,8 @@ useEffect(() => {
 
       {/* Top Bar */}
       <div
-        className={`absolute top-0 left-0 w-full p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-500 ${
-          showUI ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`absolute top-0 left-0 w-full p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-500 ${showUI ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
       >
         <Link to="/movies" className="font-bold hover:underline">
           ⬅ Back
@@ -72,9 +59,8 @@ useEffect(() => {
 
       {/* Bottom Info */}
       <div
-        className={`absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-500 ${
-          showUI ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-500 ${showUI ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
       >
         <h2 className="text-2xl font-bold">{movie.title}</h2>
         <p className="text-gray-300 text-sm mt-1">
