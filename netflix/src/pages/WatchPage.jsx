@@ -3,12 +3,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 
 const WatchPage = () => {
-  const [showUI, setShowUI] = useState(true);
-  const timerRef = useRef(null);
+  const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { id } = useParams(); // Assuming you are using react-router-dom for routing
+  const [showUI, setShowUI] = useState(true);
+  const timerRef = useRef(null);
 
   // Movie data from given JSON
   useEffect(() => {
@@ -57,9 +57,8 @@ const WatchPage = () => {
 
       {/* Top Bar */}
       <div
-        className={`absolute top-0 left-0 w-full p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-500 ${
-          showUI ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`absolute top-0 left-0 w-full p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-500 ${showUI ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
       >
         <Link to="/movies" className="font-bold hover:underline">
           ⬅ Back
@@ -70,9 +69,8 @@ const WatchPage = () => {
 
       {/* Bottom Info */}
       <div
-        className={`absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-500 ${
-          showUI ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-500 ${showUI ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
       >
         <h2 className="text-2xl font-bold">{movie.title}</h2>
         <p className="text-gray-300 text-sm mt-1">
