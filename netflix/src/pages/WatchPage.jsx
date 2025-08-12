@@ -25,15 +25,7 @@ const WatchPage = () => {
 
   return (
     <div>
-       <iframe
-        width="100%"
-        height="100%"
-        src={`${movie.trailerUrl}?autoplay=1&controls=1`} // Use movie.videoUrl
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      ></iframe>
+      {movie.trailerUrl}
     </div>
   )
 }
