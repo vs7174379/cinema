@@ -15,7 +15,8 @@ import TV from './pages/TV'
 import Movie from './pages/Movie'
 import Thriller from './pages/Thriller'
 import New from './pages/New'
-import WatchPage from './pages/WatchPage'
+
+import Watch from './Watch'
 
 const App = () => {
   const [id, setid] = useState('');
@@ -33,7 +34,7 @@ const App = () => {
         <Route path='/profile' element={<Profile />} />
         <Route path='/movies' element={<MyList head={"movies"} />} />
         <Route path='/movies/:id' element={<Movie />} />
-        <Route path='/movies/:id/watch' element={<WatchPage/>}/>
+        <Route path='/movies/:id/watch' element={<Watch/>}/>
         <Route path='/tv-series' element={<TV/>} />
         <Route path='/animation' element={<MyList head={"animation"} />} />
         <Route path='/thriller' element={<Thriller/>} />
