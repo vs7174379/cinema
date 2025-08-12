@@ -55,13 +55,14 @@ const WatchPage = () => {
   return (
     <div className="bg-black h-screen w-screen relative">
       {/* Video Player */}
-      <video
-        ref={videoRef}
-        src={movie.videoUrl} // backend should provide this
-        className="h-full w-full object-cover"
-        controls={false}
-        autoPlay
-      />
+      <iframe
+        className="w-full h-full"
+        src={`${movie.trailerUrl}?autoplay=1&controls=1`}
+        title={movie.title}
+        frameBorder="0"
+        allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+        allowFullScreen
+      ></iframe>
 
       {/* Controls */}
       {showUI && (
