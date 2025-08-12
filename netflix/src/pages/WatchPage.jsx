@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 const WatchPage = () => {
   const [showUI, setShowUI] = useState(true);
   const timerRef = useRef(null);
-  const [movie, setMovie] = useState({});
+  const [movie, setMovie] = useState(null);
   
   const { id } = useParams(); // Assuming you are using react-router-dom for routing
 
