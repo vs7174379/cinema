@@ -15,7 +15,7 @@ const WatchPage = () => {
     // Fetch movie details
     const fetchMovie = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}show/movie/${id}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}show/movi/${id}`);
         if (response.data.success) {
           setMovie(response.data.movie);
         } else {
