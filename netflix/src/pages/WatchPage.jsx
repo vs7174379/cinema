@@ -1,30 +1,39 @@
-import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const WatchPage = () => {
-  const { id } = useParams();
-  const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showUI, setShowUI] = useState(true);
   const timerRef = useRef(null);
 
   // Movie data from given JSON
-  useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/${id}`);
-        setMovie(response.data.movie);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-    fetchMovie();
-  }, [id]);
-
+  const movie = {
+    _id: "6894dd728a55c95d518c8738",
+    title: "Kuch Kuch Hota Hai",
+    backdrop:
+      "https://image.tmdb.org/t/p/original/iQJZMLr5cdn7Al2Av4V1VEzPDoQ.jpg",
+    cast: [
+      { name: "Shah Rukh Khan" },
+      { name: "Kajol" },
+      { name: "Rani Mukerji" },
+      { name: "Sana Saeed" },
+      { name: "Farida Jalal" },
+      { name: "Salman Khan" },
+      { name: "Johny Lever" },
+      { name: "Archana Puran Singh" },
+      { name: "Anupam Kher" },
+      { name: "Reema Lagoo" },
+    ],
+    description:
+      "Per her mother's last wish, an 8 year old girl sets out to reunite her father with his college best friend who was in love with him.",
+    duration: 185,
+    genre: ["Romance", "Drama", "Comedy"],
+    language: "hi",
+    poster:
+      "https://image.tmdb.org/t/p/w500/wjTPPVRz4ZA1GgCNnvcBTBc9aEF.jpg",
+    rating: 7.47,
+    releaseDate: "1998-10-16T00:00:00.000Z",
+    trailerUrl: "https://www.youtube.com/embed/IxnUHB64NcU",
+  };
 
   // Inactivity detection
   useEffect(() => {
@@ -57,8 +66,9 @@ const WatchPage = () => {
 
       {/* Top Bar */}
       <div
-        className={`absolute top-0 left-0 w-full p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-500 ${showUI ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
+        className={`absolute top-0 left-0 w-full p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-500 ${
+          showUI ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
       >
         <Link to="/movies" className="font-bold hover:underline">
           ⬅ Back
@@ -69,8 +79,9 @@ const WatchPage = () => {
 
       {/* Bottom Info */}
       <div
-        className={`absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-500 ${showUI ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
+        className={`absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-500 ${
+          showUI ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
       >
         <h2 className="text-2xl font-bold">{movie.title}</h2>
         <p className="text-gray-300 text-sm mt-1">
