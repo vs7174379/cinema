@@ -12,7 +12,7 @@ const WatchPage = () => {
 
   // Movie data from given JSON
   useEffect(() => {
-    const fetchMovie = async () => {
+    const fetchMovi = async () => {
       try {
         const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/${id}`);
         setMovie(response.data.movie);
@@ -22,7 +22,7 @@ const WatchPage = () => {
         setLoading(false);
       }
     };
-    fetchMovie();
+    fetchMovi();
   }, [id]);
 
 
