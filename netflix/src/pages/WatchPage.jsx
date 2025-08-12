@@ -27,21 +27,23 @@ const WatchPage = () => {
 
 
   // Inactivity detection
-  useEffect(() => {
-    const resetTimer = () => {
-      if (!showUI) setShowUI(true);
-      clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => setShowUI(false), 3000);
-    };
+useEffect(() => {
+  if (loading) return; // wait until video is ready
+  const resetTimer = () => {
+    if (!showUI) setShowUI(true);
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => setShowUI(false), 3000);
+  };
 
-    const events = ["mousemove", "click", "keydown", "touchstart"];
-    events.forEach((e) => window.addEventListener(e, resetTimer));
+  const events = ["mousemove", "click", "keydown", "touchstart"];
+  events.forEach((e) => window.addEventListener(e, resetTimer));
 
-    return () => {
-      events.forEach((e) => window.removeEventListener(e, resetTimer));
-      clearTimeout(timerRef.current);
-    };
-  }, [showUI]);
+  return () => {
+    events.forEach((e) => window.removeEventListener(e, resetTimer));
+    clearTimeout(timerRef.current);
+  };
+}, [showUI, loading]);
+
 
   return (
     <div className="bg-black text-white h-screen relative overflow-hidden">
