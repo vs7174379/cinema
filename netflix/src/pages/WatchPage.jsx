@@ -1,25 +1,33 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 const WatchPage = () => {
+  const { id } = useParams();
   const [showUI, setShowUI] = useState(true);
   const timerRef = useRef(null);
   const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Movie data from given JSON
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/6894dd748a55c95d518c873b`);
-        setMovie(response.data.movie);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}show/movie/${id}`);
+        if (response.data.success) {
+          setMovie(response.data.movie);
+        } else {
+          setError(response.data.message || "Movie not found");
+        }
         setLoading(false);
       } catch (err) {
-        setError(err.message);
+        setError(err.message || "Failed to load movie");
+        console.error("Error fetching movie:", err);
         setLoading(false);
       }
     };
+
     fetchMovie();
   }, [id]);
 
@@ -39,6 +47,30 @@ const WatchPage = () => {
       clearTimeout(timerRef.current);
     };
   }, [showUI]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Loading movie details...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Error: {error}
+      </div>
+    );
+  }
+
+  if (!movie) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Movie not found.
+      </div>
+    );
+  }
 
   return (
     <div className="bg-black text-white h-screen relative overflow-hidden">
