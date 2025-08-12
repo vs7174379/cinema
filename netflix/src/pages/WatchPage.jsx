@@ -53,7 +53,7 @@ const WatchPage = () => {
   }, [showUI]);
 
   return (
-    <div className="bg-black text-white h-screen relative overflow-hidden">
+    <div className="bg-black text-white h-screen relative overflow-hidden top-36">
       {/* Trailer Video */}
       <iframe
         className="w-full h-full"
