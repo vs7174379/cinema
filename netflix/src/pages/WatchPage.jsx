@@ -1,118 +1,103 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const WatchPage = () => {
   const [showUI, setShowUI] = useState(true);
-  const { id } = useParams();
-  const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const timerRef = useRef(null);
 
-  // Fetch movie details
-  useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/show/movi/${id}`
-        );
-        if (response.data.success) {
-          setMovie(response.data.movie);
-        } else {
-          setError(response.data.message || "Movie not found");
-        }
-      } catch (err) {
-        setError(err.message || "Failed to load movie");
-        console.error("Error fetching movie:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Movie data from given JSON
+  const movie = {
+    _id: "6894dd728a55c95d518c8738",
+    title: "Kuch Kuch Hota Hai",
+    backdrop:
+      "https://image.tmdb.org/t/p/original/iQJZMLr5cdn7Al2Av4V1VEzPDoQ.jpg",
+    cast: [
+      { name: "Shah Rukh Khan" },
+      { name: "Kajol" },
+      { name: "Rani Mukerji" },
+      { name: "Sana Saeed" },
+      { name: "Farida Jalal" },
+      { name: "Salman Khan" },
+      { name: "Johny Lever" },
+      { name: "Archana Puran Singh" },
+      { name: "Anupam Kher" },
+      { name: "Reema Lagoo" },
+    ],
+    description:
+      "Per her mother's last wish, an 8 year old girl sets out to reunite her father with his college best friend who was in love with him.",
+    duration: 185,
+    genre: ["Romance", "Drama", "Comedy"],
+    language: "hi",
+    poster:
+      "https://image.tmdb.org/t/p/w500/wjTPPVRz4ZA1GgCNnvcBTBc9aEF.jpg",
+    rating: 7.47,
+    releaseDate: "1998-10-16T00:00:00.000Z",
+    trailerUrl: "https://www.youtube.com/embed/IxnUHB64NcU",
+  };
 
-    fetchMovie();
-  }, [id]);
-
-  // UI hide/show timer for inactivity
+  // Inactivity detection
   useEffect(() => {
     const resetTimer = () => {
-      if (!showUI) setShowUI(true); // Only update if currently hidden
+      if (!showUI) setShowUI(true);
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => setShowUI(false), 3000);
     };
 
-    // Trigger on multiple events, not just mouse move
     const events = ["mousemove", "click", "keydown", "touchstart"];
-    events.forEach((event) => window.addEventListener(event, resetTimer));
+    events.forEach((e) => window.addEventListener(e, resetTimer));
 
     return () => {
-      events.forEach((event) =>
-        window.removeEventListener(event, resetTimer)
-      );
+      events.forEach((e) => window.removeEventListener(e, resetTimer));
       clearTimeout(timerRef.current);
     };
   }, [showUI]);
 
-  // Handle loading & error
-  if (loading) {
-    return (
-      <div className="bg-black text-white h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-black text-red-500 h-screen flex items-center justify-center">
-        {error}
-      </div>
-    );
-  }
-
   return (
-    <div className="bg-black text-white h-screen overflow-hidden relative">
-      {/* Video Player */}
-      {movie?.trailerUrl ? (
-        <iframe
-          width="100%"
-          height="100%"
-          src={`${movie.trailerUrl}?autoplay=1&controls=1`}
-          title={movie?.title || "Video Player"}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
-      ) : (
-        <div className="flex items-center justify-center h-full">
-          <p>No video available</p>
-        </div>
-      )}
+    <div className="bg-black text-white h-screen relative overflow-hidden">
+      {/* Trailer Video */}
+      <iframe
+        className="w-full h-full"
+        src={`${movie.trailerUrl}?autoplay=1&controls=1`}
+        title={movie.title}
+        frameBorder="0"
+        allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+        allowFullScreen
+      ></iframe>
 
       {/* Top Bar */}
-      {showUI && (
-        <div className="absolute top-0 left-0 w-full p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
-          <a href="/movies" className="font-bold hover:underline">
-            ⬅ Back
-          </a>
-          <h1 className="text-xl font-semibold">{movie?.title}</h1>
-          <div></div>
-        </div>
-      )}
+      <div
+        className={`absolute top-0 left-0 w-full p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-500 ${
+          showUI ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <Link to="/movies" className="font-bold hover:underline">
+          ⬅ Back
+        </Link>
+        <h1 className="text-xl font-semibold">{movie.title}</h1>
+        <div></div>
+      </div>
 
       {/* Bottom Info */}
-      {showUI && (
-        <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent">
-          <h2 className="text-2xl font-bold">{movie?.title}</h2>
-          <p className="text-gray-300 text-sm mt-1">
-            {movie?.releaseDate ? new Date(movie.releaseDate).getFullYear() : "Unknown Year"} •{" "}
-            {movie?.genre || "Unknown Genre"}
-          </p>
-          <p className="mt-3 text-gray-200 max-w-2xl">
-            {movie?.description || "No description available."}
+      <div
+        className={`absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-500 ${
+          showUI ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <h2 className="text-2xl font-bold">{movie.title}</h2>
+        <p className="text-gray-300 text-sm mt-1">
+          {new Date(movie.releaseDate).getFullYear()} • {movie.genre.join(", ")}{" "}
+          • {movie.duration} min • Rating: {movie.rating.toFixed(1)}
+        </p>
+        <p className="mt-3 text-gray-200 max-w-2xl">{movie.description}</p>
+
+        {/* Cast */}
+        <div className="mt-4">
+          <h3 className="font-semibold">Cast:</h3>
+          <p className="text-gray-300 text-sm">
+            {movie.cast.map((actor) => actor.name).join(", ")}
           </p>
         </div>
-      )}
+      </div>
     </div>
   );
 };
