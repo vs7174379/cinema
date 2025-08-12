@@ -73,11 +73,11 @@ const WatchPage = () => {
   return (
     <div className="bg-black text-white h-screen overflow-hidden relative">
       {/* Video Player */}
-      {movie?.videoUrl ? (
+      {movie?.trailerUrl ? (
         <iframe
           width="100%"
           height="100%"
-          src={`${movie.videoUrl}?autoplay=1&controls=1`}
+          src={`${movie.trailerUrl}?autoplay=1&controls=1`}
           title={movie?.title || "Video Player"}
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -105,7 +105,7 @@ const WatchPage = () => {
         <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent">
           <h2 className="text-2xl font-bold">{movie?.title}</h2>
           <p className="text-gray-300 text-sm mt-1">
-            {movie?.year ? new Date(movie.year).getFullYear() : "Unknown Year"} •{" "}
+            {movie?.releaseDate ? new Date(movie.releaseDate).getFullYear() : "Unknown Year"} •{" "}
             {movie?.genre || "Unknown Genre"}
           </p>
           <p className="mt-3 text-gray-200 max-w-2xl">
