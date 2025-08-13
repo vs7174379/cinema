@@ -60,7 +60,7 @@ const Watch = () => {
   };
 
   return (
-    <div className="bg-black h-full flex flex-col overflow-hidden ">
+    <div className="bg-black h-full  overflow-hidden ">
 
 
       {/* Video player */}
