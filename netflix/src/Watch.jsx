@@ -64,7 +64,7 @@ const Watch = () => {
 
 
       {/* Video player */}
-      <div className="flex-1 flex items-center justify-center ">
+      <div className="flex-1 flex h-full items-center ">
       
         {movie.trailerUrl && movie.trailerUrl.includes("youtube") ? (
           <iframe
@@ -83,15 +83,7 @@ const Watch = () => {
           </video>
         ) : null}
       </div>
-        <div className="fixed flex justify-center px-4 py-3 text-white  w-full ">
-          <button
-            onClick={() => navigate(-1)}
-            className="mr-3 text-lg hover:text-red-500 transition-colors"
-          >
-            ← Back
-          </button>
-          <span className="text-lg font-bold">{movie.title}</span>
-        </div>
+       
     </div>
   );
 };
