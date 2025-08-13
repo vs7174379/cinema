@@ -61,19 +61,11 @@ const Watch = () => {
 
   return (
     <div className="bg-black h-full flex flex-col overflow-hidden ">
-     
-    
+
+
       {/* Video player */}
-      <div className="flex-1 flex items-center justify-center mt-12">
-        <div className="flex items-center px-4 py-3 text-white  w-full ">
-        <button
-          onClick={() => navigate(-1)}
-          className="mr-3 text-lg hover:text-red-500 transition-colors"
-        >
-          ← Back
-        </button>
-        <span className="text-lg font-bold">{movie.title}</span>
-      </div>
+      <div className="flex-1 flex items-center justify-center ">
+      
         {movie.trailerUrl && movie.trailerUrl.includes("youtube") ? (
           <iframe
             className="w-full h-full"
@@ -91,6 +83,15 @@ const Watch = () => {
           </video>
         ) : null}
       </div>
+        <div className="absolute flex justify-center px-4 py-3 text-white  w-full ">
+          <button
+            onClick={() => navigate(-1)}
+            className="mr-3 text-lg hover:text-red-500 transition-colors"
+          >
+            ← Back
+          </button>
+          <span className="text-lg font-bold">{movie.title}</span>
+        </div>
     </div>
   );
 };
