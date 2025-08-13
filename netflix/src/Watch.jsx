@@ -42,15 +42,16 @@ const Watch = () => {
       <h1>{movie.title}</h1>
       <p>{movie.description}</p>
       {movie.trailerUrl && (
-        <iframe
-          width="100%"
-          height="500"
-          src={`${movie.trailerUrl}?autoplay=1&controls=1`}
-          title={movie.title}
-          frameBorder="0"
-          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+      <iframe
+              ref={iframeRef}
+              className="w-full h-full"
+              src={`${movie.trailerUrl.replace('watch?v=', 'embed/')}?autoplay=1&controls=1`}
+              title="Movie Trailer"
+              frameBorder="0"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              playsInline
+            ></iframe>
       )}
     </div>
   );
