@@ -83,7 +83,7 @@ const Watch = () => {
           </video>
         ) : null}
       </div>
-        <div className="absolute flex justify-center px-4 py-3 text-white  w-full ">
+        <div className="fixed flex justify-center px-4 py-3 text-white  w-full ">
           <button
             onClick={() => navigate(-1)}
             className="mr-3 text-lg hover:text-red-500 transition-colors"
