@@ -11,7 +11,6 @@ const Browser = ({ movieId }) => {
   const [upComingmovies, setUpComingMovies] = useState([]);
   const [muted, setMuted] = useState(true);
   const [volume, setVolume] = useState(50);
-  const [selectedMovie, setSelectedMovie] = useState(null); // State for selected movie
 
   const iframeRef = useRef(null);
 
@@ -50,17 +49,12 @@ const Browser = ({ movieId }) => {
   useEffect(() => {
     const fetchNowPlaying = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}show/popular-movies`);
+        const response = await axios.get('https://cinema-flame-seven.vercel.app/api/show/popular-movies');
         if (response.data.success) {
           setMovies(response.data.movies);
-          // Select the first movie as the default selected movie
-          if (response.data.movies.length > 0) {
-            setSelectedMovie(response.data.movies[0]);
-          }
         }
       } catch (error) {
         console.error('Error fetching now playing movies:', error.message);
-        setError(error.message || "Failed to load popular movies");
       }
     };
 
@@ -70,13 +64,12 @@ const Browser = ({ movieId }) => {
   useEffect(() => {
     const fetchUpComingMovies = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}show/upcomming-movies`);
+        const response = await axios.get('https://cinema-flame-seven.vercel.app/api/show/upcomming-movies');
         if (response.data.success) {
           setUpComingMovies(response.data.movies);
         }
       } catch (error) {
         console.error('Error fetching upcoming movies:', error.message);
-        setError(error.message || "Failed to load upcoming movies");
       }
     };
 
@@ -86,39 +79,24 @@ const Browser = ({ movieId }) => {
   useEffect(() => {
     const fetchTrailer = async () => {
       try {
-        if (selectedMovie) {
-          const response = await axios.get(`${import.meta.env.VITE_API_URL}show/movie/${selectedMovie.id}`);
-          if (response.data) {
-            setTrailerUrl(response.data.url);
-          } else {
-            setError("Trailer not found for selected movie");
-            setTrailerUrl('');
-          }
-        }
+        const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movie/${movieId}`);
+        setTrailerUrl(response.data.url);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch trailer');
-        setTrailerUrl('');
-        console.error("Error fetching trailer:", err);
       }
     };
 
-    if (selectedMovie) {
+    if (movieId) {
       fetchTrailer();
     }
-  }, [selectedMovie]);
-
-  // Function to handle movie selection
-  const handleMovieSelect = (movie) => {
-    setSelectedMovie(movie);
-  };
+  }, [movieId]);
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!selectedMovie) return <p>Loading movies...</p>;
   if (!trailerUrl) return <p>Loading trailer...</p>;
 
   return (
     <div className="flex flex-col xl:flex-row gap-4 p-4">
-      <Sidebar movies={movies} upcoming={upComingmovies} onMovieSelect={handleMovieSelect} />
+      <Sidebar movies={movies} upcoming={upComingmovies} />
 
       <section className="w-full xl:w-3/4 space-y-6">
         <div className="glass relative w-full lg:h-[30rem] lg:w-[55rem] rounded-2xl overflow-hidden lg:ml-20">
@@ -155,9 +133,9 @@ const Browser = ({ movieId }) => {
             <span className="bg-yellow-500 text-black px-2 py-1 rounded text-xs w-fit">
               Trending Now
             </span>
-            <h2 className="text-2xl font-bold">{selectedMovie.title}</h2>
+            <h2 className="text-2xl font-bold">Mission Impossible</h2>
             <p className='hidden sm:flex text-sm sm:font-medium w-1/2 text-gray-200'>
-              {selectedMovie.description}
+              Pradeep Ranganathan stars as Dragon, a heartbroken college dropout determined to succeed — even if it means conning his way to the top.
             </p>
 
             <div className="mt-3 flex gap-2">
