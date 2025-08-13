@@ -60,11 +60,11 @@ const Watch = () => {
   };
 
   return (
-    <div className="bg-black h-full  overflow-hidden ">
+    <div className="bg-black   overflow-hidden ">
 
 
       {/* Video player */}
-      <div className="flex-1 flex h-full items-center ">
+      <div className=" h-full items-center ">
       
         {movie.trailerUrl && movie.trailerUrl.includes("youtube") ? (
           <iframe
