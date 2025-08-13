@@ -45,7 +45,7 @@ const Watch = () => {
       <iframe
               ref={iframeRef}
               className="w-full h-full"
-              src={`${movie.trailerUrl.replace('watch?v=', 'embed/')}?autoplay=1&controls=1`}
+              src={`${movie.trailerUrl.replace('watch?v=', 'embed/')}?autoplay=1&loop=1&playlist=${movie.trailerUrl.split('v=')[1]}&mute=${muted ? 1 : 0}&controls=0&rel=0&modestbranding=1&enablejsapi=1`}
               title="Movie Trailer"
               frameBorder="0"
               allow="autoplay; encrypted-media"
