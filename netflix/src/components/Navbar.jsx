@@ -7,7 +7,7 @@ const Navbar = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const res = await fetch(`https://cinemo-ashy.vercel.app/api/user/profile`, {
+                const res = await fetch(`https://cinema-flame-seven.vercel.app/api/user/profile`, {
                     method: "GET",
                     credentials: "include", // sends cookies
                 });
