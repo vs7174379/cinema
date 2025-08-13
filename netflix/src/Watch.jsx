@@ -60,7 +60,7 @@ const Watch = () => {
   };
 
   return (
-    <div className="bg-black h-screen flex flex-col overflow-hidden">
+    <div className="bg-black h-screen flex flex-col overflow-hidden ">
       {/* Navbar */}
       <div className="flex items-center px-4 py-3 bg-black/70 text-white fixed top-0 w-full z-10">
         <button

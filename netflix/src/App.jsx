@@ -27,7 +27,7 @@ const App = () => {
   return (
     <>
       <Toaster />
-      <Navbar />
+    
       <Routes>
         <Route path='/' element={<LoginSignup />} />
         <Route path='/browser' element={<Browser movieId={1142127} />} />
