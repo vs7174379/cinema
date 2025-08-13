@@ -1,9 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import videojs from "video.js";
-import "video.js/dist/video-js.css";
-import "videojs-youtube";
 
 const Watch = () => {
   const { id } = useParams();
@@ -11,8 +8,6 @@ const Watch = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const videoRef = useRef(null);
-  const playerRef = useRef(null);
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -20,7 +15,6 @@ const Watch = () => {
         const response = await axios.get(
           `https://cinema-flame-seven.vercel.app/api/show/movi/${id}`
         );
-
         setMovie(response.data.movie || response.data);
         setLoading(false);
       } catch (err) {
@@ -32,61 +26,44 @@ const Watch = () => {
     fetchMovie();
   }, [id]);
 
-  useEffect(() => {
-    if (movie?.trailerUrl && videoRef.current) {
-      let type = "video/mp4";
-      let src = movie.trailerUrl;
-
-      // Detect YouTube URL
-      if (src.includes("youtube.com") || src.includes("youtu.be")) {
-        type = "video/youtube";
-      }
-
-      if (!playerRef.current) {
-        playerRef.current = videojs(videoRef.current, {
-          controls: true,
-          autoplay: true,
-          preload: "auto",
-          fluid: true,
-          techOrder: ["youtube", "html5"],
-          sources: [
-            {
-              src,
-              type,
-            },
-          ],
-        });
-      } else {
-        playerRef.current.src({ src, type });
-      }
-    }
-
-    return () => {
-      if (playerRef.current) {
-        playerRef.current.dispose();
-        playerRef.current = null;
-      }
-    };
-  }, [movie]);
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!movie) return <div>No movie found</div>;
+
+  // Convert normal YouTube watch links to embed links
+  const getEmbedUrl = (url) => {
+    if (url.includes("youtube.com/watch")) {
+      const videoId = new URL(url).searchParams.get("v");
+      return `https://www.youtube.com/embed/${videoId}`;
+    } else if (url.includes("youtu.be")) {
+      const videoId = url.split("/").pop();
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    return url; // if already embed link or MP4
+  };
 
   return (
     <div style={{ padding: "20px" }}>
       <h1>{movie.title}</h1>
       <p>{movie.description}</p>
 
-      {movie.trailerUrl && (
-        <div data-vjs-player>
-          <video
-            ref={videoRef}
-            className="video-js vjs-big-play-centered"
-            playsInline
-          />
-        </div>
-      )}
+      {movie.trailerUrl && movie.trailerUrl.includes("youtube") ? (
+        <iframe
+          width="100%"
+          height="500"
+          src={`${getEmbedUrl(movie.trailerUrl)}?autoplay=1&controls=1`}
+          title={movie.title}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        ></iframe>
+      ) : movie.trailerUrl ? (
+        <video width="100%" height="500" controls autoPlay>
+          <source src={movie.trailerUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      ) : null}
     </div>
   );
 };
