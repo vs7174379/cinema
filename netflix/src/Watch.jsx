@@ -1,6 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import videojs from "video.js";
+import "video.js/dist/video-js.css";
+import "videojs-youtube";
 
 const Watch = () => {
   const { id } = useParams();
@@ -8,6 +11,8 @@ const Watch = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const videoRef = useRef(null);
+  const playerRef = useRef(null);
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -16,13 +21,7 @@ const Watch = () => {
           `https://cinema-flame-seven.vercel.app/api/show/movi/${id}`
         );
 
-        // Check actual API shape
-        if (response.data.movie) {
-          setMovie(response.data.movie);
-        } else {
-          setMovie(response.data); // fallback if no "movie" key
-        }
-
+        setMovie(response.data.movie || response.data);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -33,24 +32,60 @@ const Watch = () => {
     fetchMovie();
   }, [id]);
 
+  useEffect(() => {
+    if (movie?.trailerUrl && videoRef.current) {
+      let type = "video/mp4";
+      let src = movie.trailerUrl;
+
+      // Detect YouTube URL
+      if (src.includes("youtube.com") || src.includes("youtu.be")) {
+        type = "video/youtube";
+      }
+
+      if (!playerRef.current) {
+        playerRef.current = videojs(videoRef.current, {
+          controls: true,
+          autoplay: true,
+          preload: "auto",
+          fluid: true,
+          techOrder: ["youtube", "html5"],
+          sources: [
+            {
+              src,
+              type,
+            },
+          ],
+        });
+      } else {
+        playerRef.current.src({ src, type });
+      }
+    }
+
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.dispose();
+        playerRef.current = null;
+      }
+    };
+  }, [movie]);
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!movie) return <div>No movie found</div>;
 
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
       <h1>{movie.title}</h1>
       <p>{movie.description}</p>
+
       {movie.trailerUrl && (
-        <iframe
-          width="100%"
-          height="500"
-          src={`${movie.trailerUrl}?autoplay=1&controls=1`}
-          title={movie.title}
-          frameBorder="0"
-          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+        <div data-vjs-player>
+          <video
+            ref={videoRef}
+            className="video-js vjs-big-play-centered"
+            playsInline
+          />
+        </div>
       )}
     </div>
   );
