@@ -26,9 +26,26 @@ const Watch = () => {
     fetchMovie();
   }, [id]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!movie) return <div>No movie found</div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen bg-black text-white text-lg">
+        Loading...
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="flex items-center justify-center h-screen bg-black text-white text-lg">
+        Error: {error}
+      </div>
+    );
+
+  if (!movie)
+    return (
+      <div className="flex items-center justify-center h-screen bg-black text-white text-lg">
+        No movie found
+      </div>
+    );
 
   // Convert normal YouTube watch links to embed links
   const getEmbedUrl = (url) => {
@@ -43,27 +60,37 @@ const Watch = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>{movie.title}</h1>
-      <p>{movie.description}</p>
+    <div className="bg-black h-screen flex flex-col overflow-hidden">
+      {/* Navbar */}
+      <div className="flex items-center px-4 py-3 bg-black/70 text-white fixed top-0 w-full z-10">
+        <button
+          onClick={() => navigate(-1)}
+          className="mr-3 text-lg hover:text-red-500 transition-colors"
+        >
+          ← Back
+        </button>
+        <span className="text-lg font-bold">{movie.title}</span>
+      </div>
 
-      {movie.trailerUrl && movie.trailerUrl.includes("youtube") ? (
-        <iframe
-          width="100%"
-          height="500"
-          src={`${getEmbedUrl(movie.trailerUrl)}?autoplay=1&controls=1`}
-          title={movie.title}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-        ></iframe>
-      ) : movie.trailerUrl ? (
-        <video width="100%" height="500" controls autoPlay>
-          <source src={movie.trailerUrl} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      ) : null}
+      {/* Video player */}
+      <div className="flex-1 flex items-center justify-center mt-12">
+        {movie.trailerUrl && movie.trailerUrl.includes("youtube") ? (
+          <iframe
+            className="w-full h-full"
+            src={`${getEmbedUrl(movie.trailerUrl)}?autoplay=1&controls=1&modestbranding=1&rel=0`}
+            title={movie.title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          ></iframe>
+        ) : movie.trailerUrl ? (
+          <video className="w-full h-full object-cover" controls autoPlay>
+            <source src={movie.trailerUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ) : null}
+      </div>
     </div>
   );
 };
