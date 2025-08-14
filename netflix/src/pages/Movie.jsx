@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../components/Loader';
@@ -8,7 +8,7 @@ const Movie = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -29,7 +29,7 @@ const Movie = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-white">
-        <Loader/>
+        <Loader />
       </div>
     );
   }
@@ -77,14 +77,14 @@ const Movie = () => {
               {/* Add other relevant details as needed */}
             </div>
             <div className="text-sm text-blue-400 font-semibold mb-6 flex flex-wrap gap-3">
-              {movie.genre }
+              {movie.genre}
             </div>
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
-             
-              <button onClick={()=>navigate(`/movies/${id}/watch`)} className="bg-white text-black font-semibold px-6 py-3 rounded flex items-center gap-2 text-lg">
+
+              <button onClick={() => navigate(`/movies/${id}/watch`)} className="bg-white text-black font-semibold px-6 py-3 rounded flex items-center gap-2 text-lg">
                 <i className="fas fa-play" /> Watch now
               </button>
-              
+
 
             </div>
 
@@ -102,6 +102,9 @@ const Movie = () => {
                 <i className="fas fa-share" />
               </button>
             </div>
+            <button onClick={() => navigate(`/edit`)} className="flex items-center gap-1 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm">
+              Edit
+            </button>
 
           </div>
         </section>

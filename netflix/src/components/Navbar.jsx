@@ -81,6 +81,7 @@ const Navbar = () => {
                                 <a href="/profile" className="block px-4 py-2 hover:bg-gray-100 ">My Profile</a>
                                 <a href="/profile" className="block px-4 py-2 hover:bg-gray-100">Settings</a>
                                 <a href="/mylist" className="block px-4 py-2 hover:bg-gray-100">Watchlist</a>
+                                <a href="/new" className="block px-4 py-2 hover:bg-gray-100">Add Content</a>
                                 <button className="w-full text-center px-4 py-2 hover:bg-gray-100">Logout</button>
                             </div>
                         </div>
@@ -106,6 +107,7 @@ const Navbar = () => {
                 <a href="/thriller" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Thriller</a>
                 <a href="/drama" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Drama</a>
                 <a href="/mylist" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">More</a>
+                <a href="/Sbskripsn" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Subscribe</a>
 
 
             </div>
