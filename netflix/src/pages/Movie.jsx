@@ -1,6 +1,7 @@
 import React, {  useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import Loader from '../components/Loader';
 
 const Movie = () => {
   const { id } = useParams();
@@ -28,7 +29,7 @@ const Movie = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-white">
-        Loading movie details...
+        <Loader/>
       </div>
     );
   }
