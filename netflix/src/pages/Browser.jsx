@@ -3,6 +3,7 @@ import axios from "axios";
 import MovieContainer from '../components/MovieContainer';
 import Sidebar from '../components/Sidebar';
 import { VolumeX, Volume2 } from 'lucide-react';
+import Loader from '../components/Loader';
 
 const Browser = ({ movieId }) => {
   const [trailerUrl, setTrailerUrl] = useState('');
@@ -92,7 +93,7 @@ const Browser = ({ movieId }) => {
   }, [movieId]);
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!trailerUrl) return <p>Loading trailer...</p>;
+  if (!trailerUrl) return <p><Loader/></p>;
 
   return (
     <div className="flex flex-col xl:flex-row gap-4 p-4">
