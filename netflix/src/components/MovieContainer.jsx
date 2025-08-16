@@ -56,25 +56,10 @@ const MovieContainer = () => {
         fetchMovies();
     }, []);
 
-    useEffect(() => {
-        const fetchNowPlaying = async () => {
-            try {
-                const response = await axios.get('https://cinema-flame-seven.vercel.app/api/show/toprated-movies');
-                if (response.data.success) {
-                    setMovies(response.data.movies);
-                }
-            } catch (error) {
-                console.error('Error fetching now playing movies:', error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchNowPlaying();
-    }, []);
+    
 
     if (loading) {
-        return <div className="flex z-30 items-center justify-center px-6 py-52 text-white"><Loader /></div>;
+        return <div className="flex z-52 items-center justify-center px-6 py-52 text-white"><Loader /></div>;
     }
 
     return (
