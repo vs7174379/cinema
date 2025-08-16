@@ -1,16 +1,18 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Add() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     title: "",
     type: "",
     description: "",
-    genre: [],              // array of strings
-    releaseDate: "",        // will be a string from input (convert to Date when sending)
+    genre: "", // <-- string here (convert to array on submit)
+    releaseDate: "",
     duration: 0,
-    language: "English",    // default value same as backend
+    language: "English",
     poster: "",
     backdrop: "",
     trailerUrl: "",
@@ -18,30 +20,55 @@ export default function Add() {
       {
         name: "",
         role: "",
-        image: ""
-      }
-    ],                      // array of objects
-    rating: 0,              // default
-    isFeatured: false       // default
+        image: "",
+      },
+    ],
+    rating: 0,
+    isFeatured: false,
   });
 
-
+  // Handle normal inputs
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  const payload = {
-    ...formData,
-    genre: formData.genre.split(",").map(g => g.trim()), // convert to array
+  // Handle cast input change
+  const handleCastChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedCast = [...formData.cast];
+    updatedCast[index][name] = value;
+    setFormData({ ...formData, cast: updatedCast });
   };
 
-  await axios.post(`${import.meta.env.VITE_API_URL}show/addMovie`, payload);
-  redirect("/browser");
-};
+  // Add new cast member
+  const addCastMember = () => {
+    setFormData({
+      ...formData,
+      cast: [...formData.cast, { name: "", role: "", image: "" }],
+    });
+  };
 
+  // Remove cast member
+  const removeCastMember = (index) => {
+    const updatedCast = formData.cast.filter((_, i) => i !== index);
+    setFormData({ ...formData, cast: updatedCast });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      ...formData,
+      genre: formData.genre.split(",").map((g) => g.trim()), // convert to array
+    };
+
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}show/addMovie`, payload);
+      navigate("/browser"); // ✅ use navigate instead of redirect()
+    } catch (error) {
+      console.error("Error saving movie:", error);
+    }
+  };
 
   return (
     <div className="h-full bg-gray-900/20 backdrop-blur-md glass text-white p-6 flex justify-center items-center">
@@ -152,6 +179,58 @@ export default function Add() {
             onChange={handleChange}
             className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
           />
+
+          {/* Cast Section */}
+          <div className="space-y-3">
+            <h2 className="text-lg font-semibold mt-6">Cast</h2>
+            {formData.cast.map((member, index) => (
+              <div
+                key={index}
+                className="grid grid-cols-3 gap-2 items-center"
+              >
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Actor Name"
+                  value={member.name}
+                  onChange={(e) => handleCastChange(index, e)}
+                  className="p-2 rounded bg-white/20 focus:outline-none"
+                />
+                <input
+                  type="text"
+                  name="role"
+                  placeholder="Role"
+                  value={member.role}
+                  onChange={(e) => handleCastChange(index, e)}
+                  className="p-2 rounded bg-white/20 focus:outline-none"
+                />
+                <input
+                  type="url"
+                  name="image"
+                  placeholder="Image URL"
+                  value={member.image}
+                  onChange={(e) => handleCastChange(index, e)}
+                  className="p-2 rounded bg-white/20 focus:outline-none"
+                />
+                {formData.cast.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeCastMember(index)}
+                    className="col-span-3 text-red-400 hover:text-red-600 text-sm"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addCastMember}
+              className="text-blue-400 hover:text-blue-600 text-sm"
+            >
+              + Add Cast Member
+            </button>
+          </div>
         </div>
 
         <button
@@ -163,5 +242,4 @@ export default function Add() {
       </form>
     </div>
   );
-
 }
