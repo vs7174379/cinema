@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../components/Loader';
 
+
 const Movie = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
@@ -45,7 +46,7 @@ const Movie = () => {
   if (!movie) {
     return (
       <div className="flex items-center justify-center min-h-screen text-white">
-        Movie not found.
+        <Loader />
       </div>
     );
   }

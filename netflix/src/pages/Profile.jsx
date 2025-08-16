@@ -129,30 +129,30 @@ const Profile = () => {
   const [showEditModal, setShowEditModal] = useState(false);
 
   useEffect(() => {
-  const fetchProfile = async () => {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}user/profile`, {
-        credentials: 'include',
-      });
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}user/profile`, {
+          credentials: 'include',
+        });
 
-      console.log('Fetch status:', res.status);
-      const data = await res.json();
-      console.log('Profile data:', data);
+        console.log('Fetch status:', res.status);
+        const data = await res.json();
+        console.log('Profile data:', data);
 
-      if (res.ok && data.user) {
-        setUser(data.user);
-      } else {
-        setUser(null);
+        if (res.ok && data.user) {
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
+      } catch (err) {
+        console.error('Error fetching profile:', err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error('Error fetching profile:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  fetchProfile();
-}, []);
+    fetchProfile();
+  }, []);
 
 
   const handleLogout = async () => {
@@ -174,7 +174,7 @@ const Profile = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-white">
-        Loading profile...
+        <Loader />
       </div>
     );
   }
