@@ -43,7 +43,7 @@ const App = () => {
         <Route path='/thriller' element={<Thriller />} />
         <Route path='/drama' element={<New />} />
         <Route path='/new' element={<Add/>} />
-        <Route path='/edit' element={<Edit/>} />
+        <Route path='/:id' element={<Edit/>} />
         <Route path='/Sbskripsn' element={<Subscription/>} />
         <Route path='/mylist' element={<MyList head={"My-list"} />} />
 

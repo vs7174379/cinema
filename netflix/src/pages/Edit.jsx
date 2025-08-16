@@ -26,7 +26,7 @@ export default function Edit() {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}show/${id}`);
+        const res = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/${id}`);
         const movie = res.data;
 
         setFormData({

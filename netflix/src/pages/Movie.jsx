@@ -97,7 +97,7 @@ const Movie = () => {
                 <i className="fas fa-share" />
               </button>
             </div>
-            <button onClick={() => navigate(`/edit`)} className="flex items-center gap-1 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm">
+            <button onClick={() => navigate(`/${id}`)} className="flex items-center gap-1 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm">
               Edit
             </button>
 
