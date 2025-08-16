@@ -12,6 +12,6 @@ showRouter.get('/movie/:id', getMovieById);
 showRouter.get('/movi/:id', getMoviById);
 showRouter.get('/movie', getmovie)
 showRouter.post('/addMovie',addMovie)
-router.put("/:id", edit);
+showRouter.put("/:id", edit);
 
 export default showRouter
