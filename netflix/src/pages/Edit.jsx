@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function Edit() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ export default function Edit() {
     isFeatured: false,
   });
 
-  // Fetch movie details
+  // Fetch movie details and fill form
   useEffect(() => {
     const fetchMovie = async () => {
       try {
@@ -32,14 +32,24 @@ export default function Edit() {
         const movie = res.data;
 
         setFormData({
-          ...movie,
-          genre: movie.genre?.join(", ") || "",
+          title: movie.title || "",
+          type: movie.type || "",
+          description: movie.description || "",
+          genre: movie.genre?.join(", ") || "", // convert array to comma-separated
           releaseDate: movie.releaseDate
-            ? movie.releaseDate.split("T")[0]
+            ? new Date(movie.releaseDate).toISOString().split("T")[0]
             : "",
-          cast: movie.cast?.length
-            ? movie.cast
-            : [{ name: "", role: "", image: "" }],
+          duration: movie.duration || 0,
+          language: movie.language || "English",
+          poster: movie.poster || "",
+          backdrop: movie.backdrop || "",
+          trailerUrl: movie.trailerUrl || "",
+          cast:
+            movie.cast && movie.cast.length > 0
+              ? movie.cast
+              : [{ name: "", role: "", image: "" }],
+          rating: movie.rating || 0,
+          isFeatured: movie.isFeatured || false,
         });
       } catch (err) {
         console.error("Error fetching movie:", err);
@@ -51,9 +61,10 @@ export default function Edit() {
 
   // Handle input change
   const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -87,19 +98,19 @@ export default function Edit() {
 
     const payload = {
       ...formData,
-      genre: formData.genre.split(",").map((g) => g.trim()),
+      genre: formData.genre.split(",").map((g) => g.trim()), // convert back to array
     };
 
     try {
       await axios.put(`${import.meta.env.VITE_API_URL}show/${id}`, payload);
-      navigate("/browser"); 
+      navigate("/browser");
     } catch (error) {
       console.error("Error updating movie:", error);
     }
   };
 
   return (
-    <div className="h-full bg-gray-900/20 backdrop-blur-md glass text-white p-6 flex justify-center items-center">
+    <div className="h-full bg-gray-900/20 backdrop-blur-md text-white p-6 flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
         className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-lg w-full max-w-2xl"
@@ -207,6 +218,29 @@ export default function Edit() {
             onChange={handleChange}
             className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
           />
+
+          {/* Rating */}
+          <input
+            type="number"
+            step="0.1"
+            name="rating"
+            placeholder="Rating"
+            value={formData.rating}
+            onChange={handleChange}
+            className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
+          />
+
+          {/* Is Featured */}
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="isFeatured"
+              checked={formData.isFeatured}
+              onChange={handleChange}
+              className="w-4 h-4"
+            />
+            Featured Movie
+          </label>
 
           {/* Cast Section */}
           <div className="space-y-3">
