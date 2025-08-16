@@ -15,7 +15,7 @@ const MovieContainer = () => {
     const comedyMovies = movie.filter(m =>
         m.type === 'top comedy indian movies'
     );
-    const marvel= movie.filter(m =>
+    const marvel = movie.filter(m =>
         m.type === 'marvel movies'
     );
     const emotional = movie.filter(m =>
@@ -34,7 +34,7 @@ const MovieContainer = () => {
         m.type === 'hollywood romantic movies'
     );
 
-        
+
 
 
     useEffect(() => {
@@ -71,7 +71,9 @@ const MovieContainer = () => {
         fetchNowPlaying();
     }, []);
 
-    if (loading) return <p className="text-center text-white">Loading...</p>;
+    if (loading) return <div className="flex items-center justify-center min-h-screen text-white">
+        <Loader />
+    </div>;
 
     return (
         <div>
@@ -83,7 +85,7 @@ const MovieContainer = () => {
             <MovieList title={"Thriller-Movies"} movies={thriller} />
             <MovieList title={"Hollywood-Movies"} movies={hollywood} />
             <MovieList title={"Hollywood-Romantic-Movies"} movies={hollywoodRomantic} />
-            
+
 
 
         </div>
