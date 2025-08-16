@@ -7,6 +7,7 @@ import MovieList from '../components/MovieList';
 
 export default function Thriller() {
   const [movie, setMovie] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const marvel = movie.filter(m =>
     m.type === 'marvel movies'
@@ -33,6 +34,7 @@ export default function Thriller() {
         const data = response.data.movies
         if (response.data.success) {
           setMovie(data);
+          setLoading(false);
         } else {
           console.error('Failed to fetch movies:', data.message);
         }
@@ -42,6 +44,14 @@ export default function Thriller() {
     }
     fetchMovies();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center px-6 py-52 text-white">
+        <Loader />
+      </div>
+    );
+  }
 
  
   return (

@@ -7,6 +7,7 @@ import MovieList from '../components/MovieList';
 
 export default function TV() {
   const [movie, setMovie] = useState([]);
+  const [loading, setLoading] = useState(true);
   const top = movie.filter(m =>
     m.type === 'romantic indian movies'
   );
@@ -41,6 +42,7 @@ export default function TV() {
         const data = response.data.movies
         if (response.data.success) {
           setMovie(data);
+          setLoading(false);
         } else {
           console.error('Failed to fetch movies:', data.message);
         }
@@ -50,6 +52,14 @@ export default function TV() {
     }
     fetchMovies();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center px-6 py-52 text-white">
+        <Loader />
+      </div>
+    );
+  }
 
  
   return (

@@ -7,6 +7,7 @@ import MovieList from '../components/MovieList';
 
 export default function New() {
   const [movie, setMovie] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const nw= movie.filter(m =>
     m.type === 'coming this week"' 
@@ -22,6 +23,7 @@ export default function New() {
         const data = response.data.movies
         if (response.data.success) {
           setMovie(data);
+          setLoading(false);
         } else {
           console.error('Failed to fetch movies:', data.message);
         }
@@ -31,6 +33,14 @@ export default function New() {
     }
     fetchMovies();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center px-6 py-52 text-white">
+        <Loader />
+      </div>
+    );
+  }
 
  
   return (
