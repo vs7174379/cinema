@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Edit, LogOut } from 'lucide-react';
+import Loader from '../components/Loader';
 
 // Dummy Continue Watching List
 const continueWatching = [

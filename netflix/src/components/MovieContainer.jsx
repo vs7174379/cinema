@@ -71,9 +71,9 @@ const MovieContainer = () => {
         fetchNowPlaying();
     }, []);
 
-    if (loading) return <div className="flex items-center justify-center min-h-screen text-white">
-        <Loader />
-    </div>;
+    if (loading) {
+        return <div className="flex items-center justify-center min-h-screen text-white"><Loader /></div>;
+    }
 
     return (
         <div>
