@@ -37,7 +37,7 @@ export default function Add() {
     genre: formData.genre.split(",").map(g => g.trim()), // convert to array
   };
 
-  await axios.post("/api/movies", payload);
+  await axios.post(`${import.meta.env.VITE_API_URL}show/addMovie`, payload);
 };
 
 
