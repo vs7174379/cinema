@@ -174,7 +174,7 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen text-white">
+      <div className="flex items-center justify-center h-full text-white">
         <Loader />
       </div>
     );
