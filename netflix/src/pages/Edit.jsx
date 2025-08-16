@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-export default function Edit() {
-  const { id } = useParams(); 
+export default function EditMovie() {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -13,24 +13,21 @@ export default function Edit() {
     genre: "",
     releaseDate: "",
     duration: 0,
-    language: "English",
+    language: "",
     poster: "",
     backdrop: "",
     trailerUrl: "",
-    cast: [{ name: "", role: "", image: "" }],
     rating: 0,
-    isFeatured: false,
+    cast: [{ name: "", role: "", image: "" }],
   });
 
   const [loading, setLoading] = useState(true);
 
-  // ✅ Fetch movie details
+  // ✅ Fetch movie details from backend and pre-fill inputs
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}show/movi/${id}`
-        );
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/show/${id}`);
         const movie = res.data;
 
         setFormData({
@@ -40,15 +37,12 @@ export default function Edit() {
           genre: movie.genre?.join(", ") || "",
           releaseDate: movie.releaseDate ? movie.releaseDate.split("T")[0] : "",
           duration: movie.duration || 0,
-          language: movie.language || "English",
+          language: movie.language || "",
           poster: movie.poster || "",
           backdrop: movie.backdrop || "",
           trailerUrl: movie.trailerUrl || "",
-          cast: movie.cast?.length
-            ? movie.cast
-            : [{ name: "", role: "", image: "" }],
           rating: movie.rating || 0,
-          isFeatured: movie.isFeatured || false,
+          cast: movie.cast?.length ? movie.cast : [{ name: "", role: "", image: "" }],
         });
 
         setLoading(false);
@@ -61,210 +55,170 @@ export default function Edit() {
     fetchMovie();
   }, [id]);
 
-  // ✅ Input Change
+  // ✅ Handle text input
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ Cast Input Change
+  // ✅ Handle cast inputs
   const handleCastChange = (index, e) => {
     const { name, value } = e.target;
     const updatedCast = [...formData.cast];
     updatedCast[index][name] = value;
-    setFormData((prev) => ({ ...prev, cast: updatedCast }));
+    setFormData({ ...formData, cast: updatedCast });
   };
 
-  // ✅ Add/Remove Cast
-  const addCastMember = () => {
-    setFormData((prev) => ({
-      ...prev,
-      cast: [...prev.cast, { name: "", role: "", image: "" }],
-    }));
-  };
-
-  const removeCastMember = (index) => {
-    setFormData((prev) => ({
-      ...prev,
-      cast: prev.cast.filter((_, i) => i !== index),
-    }));
-  };
-
-  // ✅ Submit Update
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const payload = {
       ...formData,
-      genre: formData.genre.split(",").map((g) => g.trim()),
+      genre: formData.genre.split(",").map((g) => g.trim()), // Convert back to array
     };
 
     try {
-      await axios.put(`${import.meta.env.VITE_API_URL}show/${id}`, payload);
-      navigate("/browser"); 
+      await axios.put(`${import.meta.env.VITE_API_URL}/show/${id}`, payload);
+      navigate("/browser"); // redirect after update
     } catch (error) {
       console.error("Error updating movie:", error);
     }
   };
 
-  if (loading) return <p className="text-white">Loading movie...</p>;
+  if (loading) return <p className="text-white">Loading movie details...</p>;
 
   return (
-    <div className="h-full bg-gray-900/20 backdrop-blur-md glass text-white p-6 flex justify-center items-center">
+    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-6">
       <form
         onSubmit={handleSubmit}
-        className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-lg w-full max-w-2xl"
+        className="bg-gray-800 p-6 rounded-xl w-full max-w-2xl space-y-4"
       >
-        <h1 className="text-2xl font-bold mb-6">Edit Movie</h1>
+        <h1 className="text-2xl font-bold">Edit Movie</h1>
 
-        <div className="space-y-4">
-          {/* ✅ All fields will now show previous values because of value={formData.field} */}
-          <input
-            type="text"
-            name="title"
-            placeholder="Title"
-            value={formData.title}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
-            required
-          />
+        {/* ✅ Now all inputs will show previous values */}
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          placeholder="Movie Title"
+          className="w-full p-3 rounded bg-gray-700"
+        />
 
-          <input
-            type="text"
-            name="type"
-            placeholder="Type (Movie / Series)"
-            value={formData.type}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
-          />
+        <input
+          type="text"
+          name="type"
+          value={formData.type}
+          onChange={handleChange}
+          placeholder="Type (Movie / Series)"
+          className="w-full p-3 rounded bg-gray-700"
+        />
 
-          <textarea
-            name="description"
-            placeholder="Description"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
-            rows="4"
-            required
-          />
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          placeholder="Description"
+          className="w-full p-3 rounded bg-gray-700"
+        />
 
-          <input
-            type="text"
-            name="genre"
-            placeholder="Genre (comma separated)"
-            value={formData.genre}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
-          />
+        <input
+          type="text"
+          name="genre"
+          value={formData.genre}
+          onChange={handleChange}
+          placeholder="Genre (comma separated)"
+          className="w-full p-3 rounded bg-gray-700"
+        />
 
-          <input
-            type="date"
-            name="releaseDate"
-            value={formData.releaseDate}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
-          />
+        <input
+          type="date"
+          name="releaseDate"
+          value={formData.releaseDate}
+          onChange={handleChange}
+          className="w-full p-3 rounded bg-gray-700"
+        />
 
-          <input
-            type="number"
-            name="duration"
-            placeholder="Duration (minutes)"
-            value={formData.duration}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
-          />
+        <input
+          type="number"
+          name="duration"
+          value={formData.duration}
+          onChange={handleChange}
+          placeholder="Duration (minutes)"
+          className="w-full p-3 rounded bg-gray-700"
+        />
 
-          <input
-            type="text"
-            name="language"
-            placeholder="Language"
-            value={formData.language}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
-          />
+        <input
+          type="text"
+          name="language"
+          value={formData.language}
+          onChange={handleChange}
+          placeholder="Language"
+          className="w-full p-3 rounded bg-gray-700"
+        />
 
-          <input
-            type="url"
-            name="poster"
-            placeholder="Poster Image URL"
-            value={formData.poster}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
-          />
+        <input
+          type="url"
+          name="poster"
+          value={formData.poster}
+          onChange={handleChange}
+          placeholder="Poster URL"
+          className="w-full p-3 rounded bg-gray-700"
+        />
 
-          <input
-            type="url"
-            name="backdrop"
-            placeholder="Backdrop Image URL"
-            value={formData.backdrop}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
-          />
+        <input
+          type="url"
+          name="backdrop"
+          value={formData.backdrop}
+          onChange={handleChange}
+          placeholder="Backdrop URL"
+          className="w-full p-3 rounded bg-gray-700"
+        />
 
-          <input
-            type="url"
-            name="trailerUrl"
-            placeholder="Trailer URL"
-            value={formData.trailerUrl}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
-          />
+        <input
+          type="url"
+          name="trailerUrl"
+          value={formData.trailerUrl}
+          onChange={handleChange}
+          placeholder="Trailer URL"
+          className="w-full p-3 rounded bg-gray-700"
+        />
 
-          {/* ✅ Cast Section */}
-          <div className="space-y-3">
-            <h2 className="text-lg font-semibold mt-6">Cast</h2>
-            {formData.cast.map((member, index) => (
-              <div key={index} className="grid grid-cols-3 gap-2 items-center">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Actor Name"
-                  value={member.name}
-                  onChange={(e) => handleCastChange(index, e)}
-                  className="p-2 rounded bg-white/20 focus:outline-none"
-                />
-                <input
-                  type="text"
-                  name="role"
-                  placeholder="Role"
-                  value={member.role}
-                  onChange={(e) => handleCastChange(index, e)}
-                  className="p-2 rounded bg-white/20 focus:outline-none"
-                />
-                <input
-                  type="url"
-                  name="image"
-                  placeholder="Image URL"
-                  value={member.image}
-                  onChange={(e) => handleCastChange(index, e)}
-                  className="p-2 rounded bg-white/20 focus:outline-none"
-                />
-                {formData.cast.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeCastMember(index)}
-                    className="col-span-3 text-red-400 hover:text-red-600 text-sm"
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={addCastMember}
-              className="text-blue-400 hover:text-blue-600 text-sm"
-            >
-              + Add Cast Member
-            </button>
-          </div>
+        {/* ✅ Cast Section */}
+        <div>
+          <h2 className="text-lg font-semibold">Cast</h2>
+          {formData.cast.map((member, index) => (
+            <div key={index} className="grid grid-cols-3 gap-2 mt-2">
+              <input
+                type="text"
+                name="name"
+                value={member.name}
+                onChange={(e) => handleCastChange(index, e)}
+                placeholder="Actor Name"
+                className="p-2 rounded bg-gray-700"
+              />
+              <input
+                type="text"
+                name="role"
+                value={member.role}
+                onChange={(e) => handleCastChange(index, e)}
+                placeholder="Role"
+                className="p-2 rounded bg-gray-700"
+              />
+              <input
+                type="url"
+                name="image"
+                value={member.image}
+                onChange={(e) => handleCastChange(index, e)}
+                placeholder="Image URL"
+                className="p-2 rounded bg-gray-700"
+              />
+            </div>
+          ))}
         </div>
 
         <button
           type="submit"
-          className="mt-6 w-full bg-green-500 hover:bg-green-600 p-3 rounded-lg font-semibold"
+          className="w-full bg-green-500 hover:bg-green-600 p-3 rounded font-bold"
         >
           Update Movie
         </button>
