@@ -7,6 +7,7 @@ import Loader from '../components/Loader';
 
 const Browser = ({ movieId }) => {
   const [trailerUrl, setTrailerUrl] = useState('');
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [movies, setMovies] = useState([]);
   const [upComingmovies, setUpComingMovies] = useState([]);
@@ -82,6 +83,7 @@ const Browser = ({ movieId }) => {
       try {
         const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movie/${movieId}`);
         setTrailerUrl(response.data.url);
+        setLoading(false);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch trailer');
       }
@@ -93,8 +95,8 @@ const Browser = ({ movieId }) => {
   }, [movieId]);
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!trailerUrl) return <div className="flex items-center justify-center px-6 py-52 text-white">
-    .....
+  if (loading) return <div className="flex items-center justify-center px-6 py-52 text-white">
+    <Loader />
   </div>;
 
   return (
