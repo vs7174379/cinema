@@ -16,7 +16,7 @@ export default function Subscription() {
   ];
 
   return (
-    <div className=" h-full text-white flex justify-center items-center ">
+    <div className=" px-6 py-10 text-white flex justify-center items-center ">
       <form
         onSubmit={handleSubmit}
         className="glass bg-white/10 backdrop-blur-md  rounded-2xl shadow-lg w-full max-w-3xl p-8"
