@@ -116,4 +116,57 @@ export const getMoviById = async (req, res) => {
     console.error('Error fetching movie by ID:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch movie' });
   }
-} 
+}
+
+
+
+export const addMovie = async (req, res) => {
+  try {
+    const {
+      title,
+      type,
+      description,
+      genre,
+      releaseDate,
+      duration,
+      language,
+      poster,
+      backdrop,
+      trailerUrl,
+      cast,
+      rating
+
+    } = req.body;
+
+    // Create new movie
+    const newMovie = new Movie({
+      title,
+      type,
+      description,
+      genre,
+      releaseDate,
+      duration,
+      language,
+      poster,
+      backdrop,
+      trailerUrl,
+      cast,
+      rating
+     
+    });
+
+    // Save movie
+    const savedMovie = await newMovie.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Movie added successfully",
+      movie: savedMovie,
+    });
+  } catch (error) {
+    console.error("Error adding movie:", error.message);
+    res.status(500).json({ success: false, error: "Server error" });
+  }
+}
+
+

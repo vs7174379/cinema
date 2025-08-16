@@ -1,5 +1,5 @@
 import express from "express";
-import { getMoviById, getmovie, getMovieById, getNowPlayingMovies, getPopularMovies, getTopRatedMovies, getUpcommingMovies } from "../controllers/showController.js";
+import { addMovie, getMoviById, getmovie, getMovieById, getNowPlayingMovies, getPopularMovies, getTopRatedMovies, getUpcommingMovies } from "../controllers/showController.js";
 
 const showRouter = express.Router();
 showRouter.get('/now-playing', getNowPlayingMovies)
@@ -11,4 +11,6 @@ showRouter.get('/toprated-movies', getTopRatedMovies)
 showRouter.get('/movie/:id', getMovieById);
 showRouter.get('/movi/:id', getMoviById);
 showRouter.get('/movie', getmovie)
+showRouter.post('/addMovie',addMovie)
+
 export default showRouter
