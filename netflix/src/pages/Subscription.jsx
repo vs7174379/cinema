@@ -16,10 +16,10 @@ export default function Subscription() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white flex justify-center items-center p-6">
+    <div className="h-full  text-white flex justify-center items-center ">
       <form
         onSubmit={handleSubmit}
-        className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-lg w-full max-w-3xl"
+        className="glass bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-lg w-full max-w-3xl"
       >
         <h1 className="text-3xl font-bold mb-6 text-center">Choose Your Cinema Plan</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -40,7 +40,7 @@ export default function Subscription() {
               <p className="text-2xl font-bold">{p.price}</p>
               <p className="mt-2 text-sm">Quality: {p.quality}</p>
               <p className="text-sm">Devices: {p.devices}</p>
-              <ul className="mt-2 text-xs text-gray-300 list-disc list-inside">
+              <ul className="mt-2 text-xs text-gray-300 backdrop-blur-lg list-disc list-inside">
                 {p.devicesList.map((device) => (
                   <li key={device}>{device}</li>
                 ))}
