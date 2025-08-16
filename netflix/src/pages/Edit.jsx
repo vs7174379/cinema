@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function Edit() {
-  const { id } = useParams(); // movie id from URL
+  const { id } = useParams(); 
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -26,7 +26,9 @@ export default function Edit() {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const res = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/${id}`);
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}show/movi/${id}`
+        );
         const movie = res.data;
 
         setFormData({
@@ -35,6 +37,9 @@ export default function Edit() {
           releaseDate: movie.releaseDate
             ? movie.releaseDate.split("T")[0]
             : "",
+          cast: movie.cast?.length
+            ? movie.cast
+            : [{ name: "", role: "", image: "" }],
         });
       } catch (err) {
         console.error("Error fetching movie:", err);
@@ -46,7 +51,10 @@ export default function Edit() {
 
   // Handle input change
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   // Handle cast change
@@ -54,21 +62,23 @@ export default function Edit() {
     const { name, value } = e.target;
     const updatedCast = [...formData.cast];
     updatedCast[index][name] = value;
-    setFormData({ ...formData, cast: updatedCast });
+    setFormData((prev) => ({ ...prev, cast: updatedCast }));
   };
 
   // Add cast member
   const addCastMember = () => {
-    setFormData({
-      ...formData,
-      cast: [...formData.cast, { name: "", role: "", image: "" }],
-    });
+    setFormData((prev) => ({
+      ...prev,
+      cast: [...prev.cast, { name: "", role: "", image: "" }],
+    }));
   };
 
   // Remove cast member
   const removeCastMember = (index) => {
-    const updatedCast = formData.cast.filter((_, i) => i !== index);
-    setFormData({ ...formData, cast: updatedCast });
+    setFormData((prev) => ({
+      ...prev,
+      cast: prev.cast.filter((_, i) => i !== index),
+    }));
   };
 
   // Submit edit
@@ -82,7 +92,7 @@ export default function Edit() {
 
     try {
       await axios.put(`${import.meta.env.VITE_API_URL}show/${id}`, payload);
-      navigate("/browser"); // go back after update
+      navigate("/browser"); 
     } catch (error) {
       console.error("Error updating movie:", error);
     }
@@ -202,10 +212,7 @@ export default function Edit() {
           <div className="space-y-3">
             <h2 className="text-lg font-semibold mt-6">Cast</h2>
             {formData.cast.map((member, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-3 gap-2 items-center"
-              >
+              <div key={index} className="grid grid-cols-3 gap-2 items-center">
                 <input
                   type="text"
                   name="name"
