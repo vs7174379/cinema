@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 
 import MovieList from './MovieList';
 import axios from "axios"
+import Loader from './Loader';
 
 const MovieContainer = () => {
     const [movies, setMovies] = useState([]);
