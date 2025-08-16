@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { redirect } from "react-router-dom";
 
 export default function Add() {
   const [formData, setFormData] = useState({
@@ -38,6 +39,7 @@ export default function Add() {
   };
 
   await axios.post(`${import.meta.env.VITE_API_URL}show/addMovie`, payload);
+  redirect("/browser");
 };
 
 

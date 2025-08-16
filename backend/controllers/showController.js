@@ -170,3 +170,51 @@ export const addMovie = async (req, res) => {
 }
 
 
+export const edit = async (req, res) => {
+  try {
+    const {
+      title,
+      type,
+      description,
+      genre,
+      releaseDate,
+      duration,
+      language,
+      poster,
+      backdrop,
+      trailerUrl,
+      cast,
+      rating
+
+    } = req.body;
+
+    // Create new movie
+    const updateMovie = new Movie({
+      title,
+      type,
+      description,
+      genre,
+      releaseDate,
+      duration,
+      language,
+      poster,
+      backdrop,
+      trailerUrl,
+      cast,
+      rating
+     
+    });
+
+    // Save movie
+    const savedMovie = await updateMovie.updateOne(title);
+
+    res.status(201).json({
+      success: true,
+      message: "Movie updated successfully",
+      movie: savedMovie,
+    });
+  } catch (error) {
+    console.error("Error adding movie:", error.message);
+    res.status(500).json({ success: false, error: "Server error" });
+  }
+}
