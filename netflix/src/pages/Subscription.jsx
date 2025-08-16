@@ -26,7 +26,7 @@ export default function Subscription() {
           {plans.map((p) => (
             <label
               key={p.name}
-              className={`p-6 rounded-xl border bg-black/20 backdrop-blur-md glass cursor-pointer transition ${plan === p.name ? "border-red-500 bg-red-500/20" : "border-gray-500 hover:border-red-400"}`}
+              className={`p-6 rounded-xl border bg-black/20 backdrop-blur-md glass cursor-pointer transition ${plan === p.name ? "border-yellow-500 bg-yellow-500/20" : "border-gray-500 hover:border-yellow-400"}`}
             >
               <input
                 type="radio"
