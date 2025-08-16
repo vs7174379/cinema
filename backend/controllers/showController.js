@@ -156,7 +156,7 @@ export const addMovie = async (req, res) => {
     });
 
     // Save movie
-    const savedMovie = await newMovie.save();
+    const savedMovie = await newMovie.findOneAndUpdate({title: title}, newMovie, { upsert: true, new: true });
 
     res.status(201).json({
       success: true,
@@ -170,8 +170,11 @@ export const addMovie = async (req, res) => {
 }
 
 
+
+
 export const edit = async (req, res) => {
   try {
+    const { id } = req.params; // movie ID from route params
     const {
       title,
       type,
@@ -184,37 +187,45 @@ export const edit = async (req, res) => {
       backdrop,
       trailerUrl,
       cast,
-      rating
-
+      rating,
+      isFeatured,
     } = req.body;
 
-    // Create new movie
-    const updateMovie = new Movie({
-      title,
-      type,
-      description,
-      genre,
-      releaseDate,
-      duration,
-      language,
-      poster,
-      backdrop,
-      trailerUrl,
-      cast,
-      rating
-     
-    });
+    // Update movie
+    const updatedMovie = await Movie.findByIdAndUpdate(
+      id,
+      {
+        title,
+        type,
+        description,
+        genre,
+        releaseDate,
+        duration,
+        language,
+        poster,
+        backdrop,
+        trailerUrl,
+        cast,
+        rating,
+        isFeatured,
+      },
+      { new: true, runValidators: true } // return updated doc, validate schema
+    );
 
-    // Save movie
-    const savedMovie = await updateMovie.updateOne(title);
+    if (!updatedMovie) {
+      return res.status(404).json({
+        success: false,
+        message: "Movie not found",
+      });
+    }
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: "Movie updated successfully",
-      movie: savedMovie,
+      movie: updatedMovie,
     });
   } catch (error) {
-    console.error("Error adding movie:", error.message);
+    console.error("Error updating movie:", error.message);
     res.status(500).json({ success: false, error: "Server error" });
   }
-}
+};
