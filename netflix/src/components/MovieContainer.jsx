@@ -73,7 +73,7 @@ const MovieContainer = () => {
     }, []);
 
     if (loading) {
-        return <div className="flex items-center justify-center px-6 py-52 text-white"><Loader /></div>;
+        return <div className="flex z-30 items-center justify-center px-6 py-52 text-white"><Loader /></div>;
     }
 
     return (
