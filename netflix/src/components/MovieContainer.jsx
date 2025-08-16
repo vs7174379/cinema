@@ -45,6 +45,7 @@ const MovieContainer = () => {
                 const data = response.data.movies
                 if (response.data.success) {
                     setMovie(data);
+                    setLoading(false);
                 } else {
                     console.error('Failed to fetch movies:', data.message);
                 }
