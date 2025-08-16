@@ -95,7 +95,7 @@ const Browser = ({ movieId }) => {
 
   if (error) return <p className="text-red-500">{error}</p>;
   if (!trailerUrl) return <div className="flex items-center justify-center px-6 py-52 text-white">
-    .....
+    <Loader />
   </div>;
 
   return (
