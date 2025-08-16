@@ -16,17 +16,17 @@ export default function Subscription() {
   ];
 
   return (
-    <div className="h-full  text-white flex justify-center items-center ">
+    <div className="  text-white flex justify-center items-center ">
       <form
         onSubmit={handleSubmit}
-        className="glass bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-lg w-full max-w-3xl"
+        className="glass bg-white/10 backdrop-blur-md  rounded-2xl shadow-lg w-full max-w-3xl"
       >
         <h1 className="text-3xl font-bold mb-6 text-center">Choose Your Cinema Plan</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {plans.map((p) => (
             <label
               key={p.name}
-              className={`p-6 rounded-xl border cursor-pointer transition ${plan === p.name ? "border-red-500 bg-red-500/20" : "border-gray-500 hover:border-red-400"}`}
+              className={`p-6 rounded-xl border bg-black/20 backdrop-blur-md glass cursor-pointer transition ${plan === p.name ? "border-red-500 bg-red-500/20" : "border-gray-500 hover:border-red-400"}`}
             >
               <input
                 type="radio"
