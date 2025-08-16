@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function Edit() {
-  const { id } = useParams();
+  const { id } = useParams(); 
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -22,7 +22,9 @@ export default function Edit() {
     isFeatured: false,
   });
 
-  // Fetch movie details and fill form
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Fetch movie details
   useEffect(() => {
     const fetchMovie = async () => {
       try {
@@ -35,40 +37,39 @@ export default function Edit() {
           title: movie.title || "",
           type: movie.type || "",
           description: movie.description || "",
-          genre: movie.genre?.join(", ") || "", // convert array to comma-separated
-          releaseDate: movie.releaseDate
-            ? new Date(movie.releaseDate).toISOString().split("T")[0]
-            : "",
+          genre: movie.genre?.join(", ") || "",
+          releaseDate: movie.releaseDate ? movie.releaseDate.split("T")[0] : "",
           duration: movie.duration || 0,
           language: movie.language || "English",
           poster: movie.poster || "",
           backdrop: movie.backdrop || "",
           trailerUrl: movie.trailerUrl || "",
-          cast:
-            movie.cast && movie.cast.length > 0
-              ? movie.cast
-              : [{ name: "", role: "", image: "" }],
+          cast: movie.cast?.length
+            ? movie.cast
+            : [{ name: "", role: "", image: "" }],
           rating: movie.rating || 0,
           isFeatured: movie.isFeatured || false,
         });
+
+        setLoading(false);
       } catch (err) {
         console.error("Error fetching movie:", err);
+        setLoading(false);
       }
     };
 
     fetchMovie();
   }, [id]);
 
-  // Handle input change
+  // ✅ Input Change
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [e.target.name]: e.target.value,
     }));
   };
 
-  // Handle cast change
+  // ✅ Cast Input Change
   const handleCastChange = (index, e) => {
     const { name, value } = e.target;
     const updatedCast = [...formData.cast];
@@ -76,7 +77,7 @@ export default function Edit() {
     setFormData((prev) => ({ ...prev, cast: updatedCast }));
   };
 
-  // Add cast member
+  // ✅ Add/Remove Cast
   const addCastMember = () => {
     setFormData((prev) => ({
       ...prev,
@@ -84,7 +85,6 @@ export default function Edit() {
     }));
   };
 
-  // Remove cast member
   const removeCastMember = (index) => {
     setFormData((prev) => ({
       ...prev,
@@ -92,25 +92,27 @@ export default function Edit() {
     }));
   };
 
-  // Submit edit
+  // ✅ Submit Update
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const payload = {
       ...formData,
-      genre: formData.genre.split(",").map((g) => g.trim()), // convert back to array
+      genre: formData.genre.split(",").map((g) => g.trim()),
     };
 
     try {
       await axios.put(`${import.meta.env.VITE_API_URL}show/${id}`, payload);
-      navigate("/browser");
+      navigate("/browser"); 
     } catch (error) {
       console.error("Error updating movie:", error);
     }
   };
 
+  if (loading) return <p className="text-white">Loading movie...</p>;
+
   return (
-    <div className="h-full bg-gray-900/20 backdrop-blur-md text-white p-6 flex justify-center items-center">
+    <div className="h-full bg-gray-900/20 backdrop-blur-md glass text-white p-6 flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
         className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-lg w-full max-w-2xl"
@@ -118,7 +120,7 @@ export default function Edit() {
         <h1 className="text-2xl font-bold mb-6">Edit Movie</h1>
 
         <div className="space-y-4">
-          {/* Title */}
+          {/* ✅ All fields will now show previous values because of value={formData.field} */}
           <input
             type="text"
             name="title"
@@ -129,7 +131,6 @@ export default function Edit() {
             required
           />
 
-          {/* Type */}
           <input
             type="text"
             name="type"
@@ -139,7 +140,6 @@ export default function Edit() {
             className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
           />
 
-          {/* Description */}
           <textarea
             name="description"
             placeholder="Description"
@@ -150,7 +150,6 @@ export default function Edit() {
             required
           />
 
-          {/* Genre */}
           <input
             type="text"
             name="genre"
@@ -160,7 +159,6 @@ export default function Edit() {
             className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
           />
 
-          {/* Release Date */}
           <input
             type="date"
             name="releaseDate"
@@ -169,7 +167,6 @@ export default function Edit() {
             className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
           />
 
-          {/* Duration */}
           <input
             type="number"
             name="duration"
@@ -179,7 +176,6 @@ export default function Edit() {
             className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
           />
 
-          {/* Language */}
           <input
             type="text"
             name="language"
@@ -189,7 +185,6 @@ export default function Edit() {
             className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
           />
 
-          {/* Poster */}
           <input
             type="url"
             name="poster"
@@ -199,7 +194,6 @@ export default function Edit() {
             className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
           />
 
-          {/* Backdrop */}
           <input
             type="url"
             name="backdrop"
@@ -209,7 +203,6 @@ export default function Edit() {
             className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
           />
 
-          {/* Trailer URL */}
           <input
             type="url"
             name="trailerUrl"
@@ -219,30 +212,7 @@ export default function Edit() {
             className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
           />
 
-          {/* Rating */}
-          <input
-            type="number"
-            step="0.1"
-            name="rating"
-            placeholder="Rating"
-            value={formData.rating}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 focus:outline-none"
-          />
-
-          {/* Is Featured */}
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="isFeatured"
-              checked={formData.isFeatured}
-              onChange={handleChange}
-              className="w-4 h-4"
-            />
-            Featured Movie
-          </label>
-
-          {/* Cast Section */}
+          {/* ✅ Cast Section */}
           <div className="space-y-3">
             <h2 className="text-lg font-semibold mt-6">Cast</h2>
             {formData.cast.map((member, index) => (
