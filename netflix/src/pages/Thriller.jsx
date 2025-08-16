@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { useEffect, useState } from 'react';
 import MovieList from '../components/MovieList';
+import Loader from '../components/Loader';
 
 
 
