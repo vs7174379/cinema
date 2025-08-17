@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import Loader from '../components/Loader';
-
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import Loader from "../components/Loader";
 
 const Movie = () => {
   const { id } = useParams();
@@ -11,41 +10,39 @@ const Movie = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-
   const [inWatchlist, setInWatchlist] = useState(false);
   const [userId, setUserId] = useState(null);
-  
-    useEffect(() => {
-      const fetchProfile = async () => {
-        try {
-          const res = await axios.get(`${import.meta.env.VITE_API_URL}user/profile`, {
-            credentials: 'include',
-          });
-  
-          console.log('Fetch status:', res.status);
-          const data = await res.json();
-          console.log('Profile data:', data);
-  
-          if (res.ok && data.user) {
-            setUserId(data.user._id);
-          } else {
-            setUserId(null);
-          }
-        } catch (err) {
-          console.error('Error fetching profile:', err);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      fetchProfile();
-    }, []);
 
-  // ✅ Check if movie is already in watchlist
+  // ✅ Fetch logged-in user profile
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}user/profile`,
+          { withCredentials: true }
+        );
+        console.log("Profile data:", res.data);
+
+        if (res.data.user) {
+          setUserId(res.data.user._id);
+        } else {
+          setUserId(null);
+        }
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  // ✅ Fetch watchlist status
   useEffect(() => {
     const fetchWatchlist = async () => {
       try {
-        const res = await axios.get(`https://cinema-flame-seven.vercel.app/api/watchlist/${userId}`);
+        const res = await axios.get(
+          `https://cinema-flame-seven.vercel.app/api/watchlist/${userId}`
+        );
         const isAdded = res.data.watchlist.some(
           (item) => item.movieId._id === id
         );
@@ -62,10 +59,16 @@ const Movie = () => {
   const toggleWatchlist = async () => {
     try {
       if (inWatchlist) {
-        await axios.post("https://cinema-flame-seven.vercel.app/api/watchlist/remove", { userId, id });
+        await axios.post(
+          "https://cinema-flame-seven.vercel.app/api/watchlist/remove",
+          { userId, movieId: id }
+        );
         setInWatchlist(false);
       } else {
-        await axios.post("https://cinema-flame-seven.vercel.app/api/watchlist/add", { userId, id });
+        await axios.post(
+          "https://cinema-flame-seven.vercel.app/api/watchlist/add",
+          { userId, movieId: id }
+        );
         setInWatchlist(true);
       }
     } catch (err) {
@@ -73,10 +76,13 @@ const Movie = () => {
     }
   };
 
+  // ✅ Fetch movie details
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const response = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/${id}`);
+        const response = await axios.get(
+          `https://cinema-flame-seven.vercel.app/api/show/movi/${id}`
+        );
         setMovie(response.data.movie);
         setLoading(false);
       } catch (err) {
@@ -86,8 +92,6 @@ const Movie = () => {
     };
     fetchMovie();
   }, [id]);
-
-
 
   if (loading) {
     return (
@@ -105,8 +109,6 @@ const Movie = () => {
     );
   }
 
-
-
   return (
     <div>
       <main className="flex flex-col overflow-y-auto h-full" id="style-7">
@@ -122,43 +124,51 @@ const Movie = () => {
           </div>
 
           {/* Movie Info */}
-          <div className="flex flex-col items-center relative z-10 px-6 sm:px-10 -mt-48 sm:-mt-72 mx-auto lg:w-[60rem]    inset-0 bg-gradient-to-t from-black via-black to-black/20">
-            <h1 className="text-4xl sm:text-5xl sm:font-bold mb-4">{movie.title}</h1>
+          <div className="flex flex-col items-center relative z-10 px-6 sm:px-10 -mt-48 sm:-mt-72 mx-auto lg:w-[60rem] inset-0 bg-gradient-to-t from-black via-black to-black/20">
+            <h1 className="text-4xl sm:text-5xl sm:font-bold mb-4">
+              {movie.title}
+            </h1>
             <p className="text-gray-200 sm:text-xl md:w-1/2 sm:font-bold leading-relaxed mb-4">
               {movie.description}
             </p>
             <div className="flex flex-wrap items-center gap-2 text-sm text-gray-400 mb-2">
               <span>IMDb {movie.rating}</span> •
-              <span>{Math.floor(movie.duration / 60)}h {movie.duration % 60}min</span> •
+              <span>
+                {Math.floor(movie.duration / 60)}h {movie.duration % 60}min
+              </span>{" "}
+              •
               <span>{new Date(movie.releaseDate).getFullYear()}</span>
-              {/* Add other relevant details as needed */}
             </div>
             <div className="text-sm text-blue-400 font-semibold mb-6 flex flex-wrap gap-3">
               {movie.genre}
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 mb-4">
 
-              <button onClick={() => navigate(`/movies/${id}/watch`)} className="bg-white text-black font-semibold px-6 py-3 rounded flex items-center gap-2 text-lg">
+            <div className="flex flex-col sm:flex-row gap-4 mb-4">
+              <button
+                onClick={() => navigate(`/movies/${id}/watch`)}
+                className="bg-white text-black font-semibold px-6 py-3 rounded flex items-center gap-2 text-lg"
+              >
                 <i className="fas fa-play" /> Watch now
               </button>
-
-
             </div>
 
+            {/* Action Buttons */}
             <div className="flex gap-4 mb-4 text-xl">
               <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
                 <i className="fas fa-film" />
               </button>
+
               <button
                 onClick={toggleWatchlist}
                 className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition"
               >
                 {inWatchlist ? (
-                  <i className="fas fa-check" /> // ✅ If already added, show check
+                  <i className="fas fa-check" />
                 ) : (
-                  <i className="fas fa-plus" /> // ➕ If not, show plus
+                  <i className="fas fa-plus" />
                 )}
               </button>
+
               <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
                 <i className="fas fa-thumbs-up" />
               </button>
@@ -166,35 +176,13 @@ const Movie = () => {
                 <i className="fas fa-share" />
               </button>
             </div>
-            <button onClick={() => navigate(`/${id}`)} className="flex items-center gap-1 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm">
+
+            <button
+              onClick={() => navigate(`/${id}`)}
+              className="flex items-center gap-1 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm"
+            >
               Edit
             </button>
-
-          </div>
-        </section>
-
-        {/* Tabs */}
-        <div className="flex gap-6 px-6 sm:px-10 pt-6 text-lg border-b border-gray-600">
-          <button className="border-b-2 border-white pb-2 font-semibold">Related</button>
-          <button className="text-gray-400 hover:text-white pb-2">Details</button>
-        </div>
-
-        {/* Related Movies */}
-        <section className="px-6 sm:px-10 py-6">
-          <h2 className="text-xl font-semibold mb-4">Customers also watched</h2>
-          <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
-            {[...Array(10)].map((_, idx) => (
-              <div key={idx} className="w-36 sm:w-48 flex-shrink-0 relative">
-                <img
-                  src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcS_WhubxLwynDD0XPpLbF9Ol-QYjPrfiia4e2Gd2QHmLztf--FZpK9WAemCIcUXgL9Brv1W"
-                  alt="Related Movie"
-                  className="rounded w-full"
-                />
-                <span className="absolute bottom-2 right-2 bg-white/80 text-black px-2 text-xs rounded">
-                  MX PLAYER
-                </span>
-              </div>
-            ))}
           </div>
         </section>
       </main>
