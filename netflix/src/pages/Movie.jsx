@@ -18,7 +18,7 @@ const Movie = () => {
     useEffect(() => {
       const fetchProfile = async () => {
         try {
-          const res = await fetch(`${import.meta.env.VITE_API_URL}user/profile`, {
+          const res = await axios.get(`${import.meta.env.VITE_API_URL}user/profile`, {
             credentials: 'include',
           });
   
