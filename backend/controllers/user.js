@@ -44,20 +44,22 @@ export const login = async (req, res) => {
   }
 };
 
+// Logout Controller
 export const logOut = async (req, res) => {
   return res
     .status(200)
     .clearCookie("token", {
       httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
-      path: "/", // must match
+      secure: true,       // must match login
+      sameSite: "None",   // must match login
+      path: "/",          // always include for safety
     })
     .json({
       message: "Logout successful",
-      success: true,
+      success: true
     });
 };
+
 
 
 // Register Controller
