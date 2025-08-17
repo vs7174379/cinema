@@ -87,7 +87,7 @@ export default function EditMovie() {
   if (loading) return <p className="text-white">Loading movie details...</p>;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-6">
+    <div className="min-h-screen  text-white flex items-center justify-center p-6">
       <form
         onSubmit={handleSubmit}
         className="bg-gray-800 p-6 rounded-xl w-full max-w-2xl space-y-4"
