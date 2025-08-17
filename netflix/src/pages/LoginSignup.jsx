@@ -39,7 +39,7 @@ const LoginSignup = () => {
         setError(data.message || 'Something went wrong');
       } else {
         // Store token in local storage upon successful login/signup
-        localStorage.setItem('token', data.token);
+        
         window.location.href = '/browser';
       }
     } catch (err) {
