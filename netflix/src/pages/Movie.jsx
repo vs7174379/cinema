@@ -11,68 +11,6 @@ const Movie = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-
-  const [inWatchlist, setInWatchlist] = useState(false);
-  const [userId, setUserId] = useState(null);
-  
-    useEffect(() => {
-      const fetchProfile = async () => {
-        try {
-          const res = await fetch(`${import.meta.env.VITE_API_URL}user/profile`, {
-            credentials: 'include',
-          });
-  
-          console.log('Fetch status:', res.status);
-          const data = await res.json();
-          console.log('Profile data:', data);
-  
-          if (res.ok && data.user) {
-            setUserId(data.user._id);
-          } else {
-            setUserId(null);
-          }
-        } catch (err) {
-          console.error('Error fetching profile:', err);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      fetchProfile();
-    }, []);
-
-  // ✅ Check if movie is already in watchlist
-  useEffect(() => {
-    const fetchWatchlist = async () => {
-      try {
-        const res = await axios.get(`https://cinema-flame-seven.vercel.app/api/watchlist/${userId}`);
-        const isAdded = res.data.watchlist.some(
-          (item) => item.movieId._id === id
-        );
-        setInWatchlist(isAdded);
-      } catch (err) {
-        console.error("Error fetching watchlist", err);
-      }
-    };
-
-    if (userId) fetchWatchlist();
-  }, [userId, id]);
-
-  // ✅ Toggle watchlist
-  const toggleWatchlist = async () => {
-    try {
-      if (inWatchlist) {
-        await axios.post("https://cinema-flame-seven.vercel.app/api/watchlist/remove", { userId, id });
-        setInWatchlist(false);
-      } else {
-        await axios.post("https://cinema-flame-seven.vercel.app/api/watchlist/add", { userId, id });
-        setInWatchlist(true);
-      }
-    } catch (err) {
-      console.error("Error updating watchlist", err);
-    }
-  };
-
   useEffect(() => {
     const fetchMovie = async () => {
       try {
@@ -149,15 +87,8 @@ const Movie = () => {
               <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
                 <i className="fas fa-film" />
               </button>
-              <button
-                onClick={toggleWatchlist}
-                className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition"
-              >
-                {inWatchlist ? (
-                  <i className="fas fa-check" /> // ✅ If already added, show check
-                ) : (
-                  <i className="fas fa-plus" /> // ➕ If not, show plus
-                )}
+              <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
+                <i className="fas fa-plus" />
               </button>
               <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
                 <i className="fas fa-thumbs-up" />
