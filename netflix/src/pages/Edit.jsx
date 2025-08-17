@@ -90,7 +90,7 @@ export default function EditMovie() {
     <div className="min-h-screen  text-white flex items-center justify-center p-6">
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-800 p-6 rounded-xl w-full max-w-2xl space-y-4"
+        className="bg-gray-800/60 backdrop-blur-md   p-6 rounded-xl w-full max-w-2xl space-y-4"
       >
         <h1 className="text-2xl font-bold">Edit Movie</h1>
 

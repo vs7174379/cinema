@@ -71,7 +71,7 @@ export default function Add() {
   };
 
   return (
-    <div className="h-full bg-gray-900/20 backdrop-blur-md glass text-white p-6 flex justify-center items-center">
+    <div className="py-10 bg-gray-900/20 backdrop-blur-md glass text-white p-6 flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
         className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-lg w-full max-w-2xl"
