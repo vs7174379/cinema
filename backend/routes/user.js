@@ -5,9 +5,6 @@ import {
   logOut,
   updateUser,
   getProfile,
-  addToWatchlist,
-  getWatchlist,
-  removeFromWatchlist,
  
 } from '../controllers/user.js';
 import { authMiddleware } from '../middlewares/authMiddleware.js';
@@ -30,7 +27,4 @@ router.get('/profile', authMiddleware, getProfile);
 router.put('/:id', authMiddleware, updateUser);
 
 
-router.post("/add", addToWatchlist);          // Add movie
-router.get("/:userId", getWatchlist);         // Get user's watchlist
-router.post("/remove", removeFromWatchlist);
 export default router;
