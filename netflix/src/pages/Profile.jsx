@@ -162,6 +162,7 @@ const Profile = () => {
         method: 'POST',
         credentials: 'include',
       });
+       localStorage.removeItem('token');
       window.location.href = '/';
     } catch (err) {
       console.error('Logout failed:', err);
