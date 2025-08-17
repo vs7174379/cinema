@@ -77,7 +77,7 @@ export default function EditMovie() {
     };
 
     try {
-      await axios.put(`${import.meta.env.VITE_API_URL}/show/${id}`, payload);
+      await axios.put(`${import.meta.env.VITE_API_URL}show/${id}`, payload);
       navigate("/browser"); // redirect after update
     } catch (error) {
       console.error("Error updating movie:", error);
