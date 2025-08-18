@@ -6,13 +6,15 @@ import Player from "@vimeo/player";
 const Watch = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
-  const [userId, setUserId] = useState("123"); // replace with real userId
+  const [userId, setUserId] = useState("123"); // replace with real auth userId
 
-  // Utility: convert watch links → embed
+  // ✅ Utility: normalize video URLs
   const getEmbedUrl = (url) => {
+    if (!url) return "";
+
     if (url.includes("youtube.com/watch")) {
       const videoId = new URL(url).searchParams.get("v");
-      return `https://www.youtube.com/embed/${videoId}?enablejsapi=1`; // note ?enablejsapi=1
+      return `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
     } else if (url.includes("youtu.be")) {
       const videoId = url.split("/").pop();
       return `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
@@ -20,58 +22,88 @@ const Watch = () => {
     return url;
   };
 
-  // Load movie
+  // ✅ Fetch movie
   useEffect(() => {
     const fetchMovie = async () => {
-      const res = await axios.get(`https://cinema-flame-seven.vercel.app/api/show/movi/${id}`);
-      setMovie(res.data.movie || res.data);
+      try {
+        const res = await axios.get(
+          `https://cinema-flame-seven.vercel.app/api/show/movi/${id}`
+        );
+        setMovie(res.data.movie || res.data);
+      } catch (err) {
+        console.error("Error fetching movie:", err);
+      }
     };
     fetchMovie();
   }, [id]);
 
-  // Vimeo tracking
+  // ✅ Vimeo tracking
   useEffect(() => {
-    if (!movie || !movie.trailerUrl) return;
+    if (!movie || !movie.trailerUrl?.includes("vimeo")) return;
 
-    if (movie.trailerUrl.includes("vimeo")) {
-      const iframe = document.getElementById("vimeo-player");
-      if (!iframe) return;
-      const player = new Player(iframe);
+    const iframe = document.getElementById("vimeo-player");
+    if (!iframe) return;
 
-      player.on("timeupdate", async (data) => {
-        await axios.post(`${import.meta.env.VITE_API_URL}user/continue-watching`, {
-          movieId: movie._id,
-          userId,
-          progress: data.seconds,
-        });
-      });
+    const player = new Player(iframe);
 
-      return () => player.unload();
-    }
+    player.on("timeupdate", async (data) => {
+      console.log("Vimeo watched:", data.seconds);
+      try {
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}user/continue-watching`,
+          {
+            movieId: movie._id,
+            userId,
+            progress: data.seconds,
+          }
+        );
+      } catch (err) {
+        console.error("Error saving Vimeo progress:", err);
+      }
+    });
+
+    return () => player.unload();
   }, [movie, userId]);
 
-  // YouTube tracking
+  // ✅ YouTube tracking
   useEffect(() => {
-    if (!movie || !movie.trailerUrl.includes("youtube")) return;
+    if (!movie || !movie.trailerUrl?.includes("youtube")) return;
 
-    // Dynamically load YouTube API script
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.body.appendChild(tag);
+    // Load YouTube API if not loaded
+    if (!window.YT) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.body.appendChild(tag);
+    }
 
     window.onYouTubeIframeAPIReady = () => {
       const player = new window.YT.Player("youtube-player", {
         events: {
           onStateChange: (event) => {
             if (event.data === window.YT.PlayerState.PLAYING) {
-              setInterval(async () => {
+              // Save progress every 5s
+              const interval = setInterval(async () => {
                 const time = player.getCurrentTime();
-                await axios.post(`${import.meta.env.VITE_API_URL}user/continue-watching`, {
-                  movieId: movie._id,
-                  userId,
-                  progress: time,
-                });
-              }, 5000); // save every 5s
+                console.log("YouTube watched:", time);
+                try {
+                  await axios.post(
+                    `${import.meta.env.VITE_API_URL}user/continue-watching`,
+                    {
+                      movieId: movie._id,
+                      userId,
+                      progress: time,
+                    }
+                  );
+                } catch (err) {
+                  console.error("Error saving YouTube progress:", err);
+                }
+              }, 5000);
+
+              // Clear interval when paused/stopped
+              const stopTracking = () => clearInterval(interval);
+              player.addEventListener("onStateChange", (e) => {
+                if (e.data !== window.YT.PlayerState.PLAYING) stopTracking();
+              });
             }
           },
         },
@@ -83,17 +115,17 @@ const Watch = () => {
 
   return (
     <div className="w-full h-screen bg-black">
-      {movie.trailerUrl.includes("youtube") ? (
+      {movie.trailerUrl?.includes("youtube") ? (
         <iframe
           id="youtube-player"
           className="w-full h-full"
           src={getEmbedUrl(movie.trailerUrl)}
           title={movie.title}
           frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         ></iframe>
-      ) : movie.trailerUrl.includes("vimeo") ? (
+      ) : movie.trailerUrl?.includes("vimeo") ? (
         <iframe
           id="vimeo-player"
           className="w-full h-full"
