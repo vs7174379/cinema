@@ -6,6 +6,8 @@ import {
   updateUser,
   getProfile,
   addToWatchList,
+  likeMovie,
+  unlikeMovie,
  
 } from '../controllers/user.js';
 import { authMiddleware } from '../middlewares/authMiddleware.js';
@@ -28,6 +30,8 @@ router.get('/profile', authMiddleware, getProfile);
 router.put('/:id', authMiddleware, updateUser);
 
 router.post('/add-to-watchlist',addToWatchList);
+router.post('/add-to-liked',likeMovie);
+router.post('/Unlike', unlikeMovie);
 
  
 export default router;

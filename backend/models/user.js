@@ -27,6 +27,13 @@ const userSchema = new mongoose.Schema(
       plan: { type: String, default: "free" }, // free, premium, etc.
       validTill: { type: Date },
     },
+      likes: [
+    {
+      movieId: { type: mongoose.Schema.Types.ObjectId, ref: "Movie" },
+      likedAt: { type: Date, default: Date.now },
+    }
+  ]
+,
     watchlist: [
       {
         movieId: { type: mongoose.Schema.Types.ObjectId, ref: "Movie" },

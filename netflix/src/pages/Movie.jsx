@@ -11,28 +11,33 @@ const Movie = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [userId, setUserId] = useState(null);
-   useEffect(() => {
-          const fetchProfile = async () => {
-              try {
-                  const res = await fetch(`https://cinema-flame-seven.vercel.app/api/user/profile`, {
-                      method: "GET",
-                      credentials: "include", // sends cookies
-                  });
-  
-                  if (!res.ok) {
-                      throw new Error("Failed to fetch profile");
-                  }
-  
-                  const data = await res.json();
-                  setUserId(data.user._id);
-              } catch (err) {
-                  console.error(err.message);
-                  setUserId(null);
-              } 
-          };
-  
-          fetchProfile();
-      }, []);
+  const [liked, setLiked] = useState(false);
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch(`https://cinema-flame-seven.vercel.app/api/user/profile`, {
+          method: "GET",
+          credentials: "include", // sends cookies
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch profile");
+        }
+
+        const data = await res.json();
+        setUserId(data.user._id);
+        const alreadyLiked = user.likes.some(
+          (item) => item.movieId === id
+        )
+        setLiked(alreadyLiked);
+      } catch (err) {
+        console.error(err.message);
+        setUserId(null);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
 
   useEffect(() => {
@@ -49,18 +54,44 @@ const Movie = () => {
     fetchMovie();
   }, [id]);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}user/add-to-watchlist`, {
-        movieId:movie._id, 
+        movieId: movie._id,
         userId: userId
-        
-        
+
+
       });
       alert(res.data.message);
     } catch (err) {
       alert(err.response?.data?.message || "Error adding to watchlist");
+    }
+  };
+  const handleLikeToggle = async () => {
+    try {
+      if (!userId) return alert("Please log in first");
+
+      if (liked) {
+        // Unlike
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}user/Unlike`, {
+          movieId: movie._id,
+          userId: userId,
+        });
+        alert(res.data.message);
+        setLiked(false);
+      } else {
+        // Like
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}user/add-to-liked`, {
+          movieId: movie._id,
+          userId: userId,
+        });
+        alert(res.data.message);
+        setLiked(true);
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || "Error toggling like");
     }
   };
 
@@ -136,7 +167,12 @@ const Movie = () => {
                   <i className="fas fa-plus" />
                 </button>
               </form>
-              <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
+              <button
+                onClick={handleLikeToggle}
+                className={`p-3 rounded-full ${liked ? "bg-blue-500 text-white" : "bg-white/10 hover:bg-white/20 text-white"
+                  }`}
+                disabled={!userId}
+              >
                 <i className="fas fa-thumbs-up" />
               </button>
               <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">

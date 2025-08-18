@@ -209,4 +209,124 @@ export const addToWatchList = async (req, res) => {
     return res.status(500).json({ message: "Failed to add movie to watchlist", success: false });
   }
 };
+export const removeFromWatchList = async (req, res) => {
+  try {
+    const { movieId, userId } = req.body;
 
+    if (!movieId || !userId) {
+      return res.status(400).json({ message: "Movie ID and User ID are required", success: false });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found", success: false });
+    }
+
+    user.watchlist = user.watchlist.filter(
+      (item) => item.movieId.toString() !== movieId
+    );
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Movie removed from watchlist successfully",
+      success: true,
+      watchlist: user.watchlist,
+    });
+
+  } catch (error) {
+    console.error("Error removing from watchlist:", error);
+    return res.status(500).json({ message: "Failed to remove movie from watchlist", success: false });
+  }
+};
+
+export const getWatchList = async (req, res) => {
+  try {
+    const userId = req.user._id; // Assuming authMiddleware sets req.user
+
+    const user = await User.findById(userId).populate("watchlist.movieId");
+    if (!user) {
+      return res.status(404).json({ message: "User not found", success: false });
+    }
+
+    return res.status(200).json({
+      message: "Watchlist retrieved successfully",
+      watchlist: user.watchlist,
+      success: true
+    });
+
+  } catch (error) {
+    console.error("Error getting watchlist:", error);
+    return res.status(500).json({ message: "Failed to get watchlist", success: false });
+  }
+};
+
+
+
+export const likeMovie = async (req, res) => {
+  try {
+    const { movieId, userId } = req.body;
+
+    if (!movieId || !userId) {
+      return res.status(400).json({ message: "Movie ID and User ID are required", success: false });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found", success: false });
+    }
+
+    // Check if already liked
+    const alreadyLiked = user.likes.some(
+      (item) => item.movieId.toString() === movieId
+    );
+
+    if (alreadyLiked) {
+      return res.status(409).json({ message: "Movie already liked", success: false });
+    }
+
+    // Add like
+    user.likes.push({ movieId });
+    await user.save();
+
+    return res.status(200).json({
+      message: "Movie liked successfully",
+      success: true,
+      likes: user.likes,
+    });
+
+  } catch (error) {
+    console.error("Error liking movie:", error);
+    return res.status(500).json({ message: "Failed to like movie", success: false });
+  }
+};
+export const unlikeMovie = async (req, res) => {
+  try {
+    const { movieId, userId } = req.body;
+
+    if (!movieId || !userId) {
+      return res.status(400).json({ message: "Movie ID and User ID are required", success: false });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found", success: false });
+    }
+
+    user.likes = user.likes.filter(
+      (item) => item.movieId.toString() !== movieId
+    );
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Movie unliked successfully",
+      success: true,
+      likes: user.likes,
+    });
+
+  } catch (error) {
+    console.error("Error unliking movie:", error);
+    return res.status(500).json({ message: "Failed to unlike movie", success: false });
+  }
+};
