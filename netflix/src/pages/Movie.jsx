@@ -44,8 +44,10 @@ const Movie = () => {
     e.preventDefault();
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}user/add-to-watchlist`, {
-        id,
-        userId,
+        movieId:"6894dca78a55c95d518c8710" ,
+        userId: "6893939a902dbb9020ad621f"
+        
+        
       });
       alert(res.data.message);
     } catch (err) {

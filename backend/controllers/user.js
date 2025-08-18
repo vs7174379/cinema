@@ -174,9 +174,9 @@ export const getProfile = async (req, res) => {
 
 export const addToWatchList = async (req, res) => {
   try {
-    const { movieId, userId } =req.body;
+    const { movieId, userId } = req.body;
 
-    if (!userId) {
+    if (!movieId || !userId) {
       return res.status(400).json({ message: "Movie ID and User ID are required", success: false });
     }
 
