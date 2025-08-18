@@ -50,7 +50,7 @@ const Watch = () => {
         console.log("Watched:", data.seconds);
 
         try {
-          await axios.post(`${import.meta.env.VITE_API_URL}/user/continue-watching`, {
+          await axios.post(`${import.meta.env.VITE_API_URL}user/continue-watching`, {
             movieId: movie._id,
             userId: userId,
             progress: data.seconds,
