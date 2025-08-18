@@ -11,22 +11,28 @@ const Movie = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [userId, setUserId] = useState(null);
-  useEffect(() => {
-    const fetchuser = async () => {
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}user/profile`,{
-                    method: "GET",
-                    credentials: "include", // sends cookies
-                });
-        // Assuming the user data is returned in response.data.user
-        setUserId(response.data.user._id);
-      } catch (err) {
-        console.error("Error fetching user profile:", err);
-      }
-    }
-    fetchuser();
-  }, [userId])
-
+   useEffect(() => {
+          const fetchProfile = async () => {
+              try {
+                  const res = await fetch(`https://cinema-flame-seven.vercel.app/api/user/profile`, {
+                      method: "GET",
+                      credentials: "include", // sends cookies
+                  });
+  
+                  if (!res.ok) {
+                      throw new Error("Failed to fetch profile");
+                  }
+  
+                  const data = await res.json();
+                  setUserId(data.user._id);
+              } catch (err) {
+                  console.error(err.message);
+                  setUserId(null);
+              } 
+          };
+  
+          fetchProfile();
+      }, []);
 
 
   useEffect(() => {
