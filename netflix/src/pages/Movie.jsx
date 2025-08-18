@@ -16,7 +16,7 @@ const Movie = () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}user/profile`);
         // Assuming the user data is returned in response.data.user
-        setUserId(response.data.user);
+        setUserId(response.data.user._id);
       } catch (err) {
         console.error("Error fetching user profile:", err);
       }
