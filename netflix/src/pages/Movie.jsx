@@ -10,6 +10,21 @@ const Movie = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [userId, setUserId] = useState(null);
+  useEffect(() => {
+    const fetchuser = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}user/profile`);
+        // Assuming the user data is returned in response.data.user
+        setUserId(response.data.user);
+      } catch (err) {
+        console.error("Error fetching user profile:", err);
+      }
+    }
+    fetchuser();
+  }, [userId])
+
+
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -25,7 +40,18 @@ const Movie = () => {
     fetchMovie();
   }, [id]);
 
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}user/add-to-watchlist`, {
+        movieId: id,
+        userId: userId,
+      });
+      alert(res.data.message);
+    } catch (err) {
+      alert(err.response?.data?.message || "Error adding to watchlist");
+    }
+  };
 
   if (loading) {
     return (
@@ -87,9 +113,18 @@ const Movie = () => {
               <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
                 <i className="fas fa-film" />
               </button>
-              <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
-                <i className="fas fa-plus" />
-              </button>
+              <form onSubmit={handleSubmit}>
+                {/* Hidden inputs */}
+                <input type="hidden" name="movieId" value={id} />
+                <input type="hidden" name="userId" value={userId} />
+
+                <button
+                  type="submit"
+                  className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full"
+                >
+                  <i className="fas fa-plus" />
+                </button>
+              </form>
               <button className="bg-white/10 hover:bg-white/20 text-white p-3 rounded-full">
                 <i className="fas fa-thumbs-up" />
               </button>
