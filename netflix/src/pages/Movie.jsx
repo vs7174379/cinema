@@ -14,7 +14,10 @@ const Movie = () => {
   useEffect(() => {
     const fetchuser = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}user/profile`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}user/profile`,{
+                    method: "GET",
+                    credentials: "include", // sends cookies
+                });
         // Assuming the user data is returned in response.data.user
         setUserId(response.data.user._id);
       } catch (err) {
@@ -44,8 +47,8 @@ const Movie = () => {
     e.preventDefault();
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}user/add-to-watchlist`, {
-        movieId:"6894dca78a55c95d518c8710" ,
-        userId: "6893939a902dbb9020ad621f"
+        movieId:movie._id, 
+        userId: userId
         
         
       });
