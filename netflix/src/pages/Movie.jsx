@@ -26,8 +26,8 @@ const Movie = () => {
 
         const data = await res.json();
         setUserId(data.user._id);
-        const alreadyLiked = user.likes.some(
-          (item) => item.movieId === id
+        const alreadyLiked = data.user.likes.some(
+          (item) => item.movieId === movie._id
         )
         setLiked(alreadyLiked);
       } catch (err) {
