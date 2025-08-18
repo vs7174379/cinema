@@ -174,30 +174,39 @@ export const getProfile = async (req, res) => {
 
 export const addToWatchList = async (req, res) => {
   try {
-    const { movieId,userId } = req.body;
+    const { movieId, userId } = req.body;
 
-    if (!movieId) {
-      return res.status(400).json({ message: "Movie ID is required", success: false });
+    if (!movieId || !userId) {
+      return res.status(400).json({ message: "Movie ID and User ID are required", success: false });
     }
 
-    // Check if the movie is already in the user's watchlist
     const user = await User.findById(userId);
-    if (user.watchlist.includes(movieId)) {
+    if (!user) {
+      return res.status(404).json({ message: "User not found", success: false });
+    }
+
+    // Check if movie already exists in watchlist
+    const alreadyInList = user.watchlist.some(
+      (item) => item.movieId.toString() === movieId
+    );
+
+    if (alreadyInList) {
       return res.status(409).json({ message: "Movie already in watchlist", success: false });
     }
 
-    // Add movie to watchlist
-    user.watchlist.push(movieId);
+    // Add movie with timestamp
+    user.watchlist.push({ movieId });
     await user.save();
 
     return res.status(200).json({
       message: "Movie added to watchlist successfully",
       success: true,
-      watchList: user.watchlist
+      watchlist: user.watchlist,
     });
 
   } catch (error) {
     console.error("Error adding to watchlist:", error);
     return res.status(500).json({ message: "Failed to add movie to watchlist", success: false });
   }
-}
+};
+
