@@ -8,6 +8,7 @@ import {
   addToWatchList,
   likeMovie,
   unlikeMovie,
+  addToContinueWatching,
  
 } from '../controllers/user.js';
 import { authMiddleware } from '../middlewares/authMiddleware.js';
@@ -32,6 +33,7 @@ router.put('/:id', authMiddleware, updateUser);
 router.post('/add-to-watchlist',addToWatchList);
 router.post('/add-to-liked',likeMovie);
 router.post('/Unlike', unlikeMovie);
+router.post("/continue-watching", addToContinueWatching);
 
  
 export default router;

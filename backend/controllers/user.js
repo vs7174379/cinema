@@ -330,3 +330,46 @@ export const unlikeMovie = async (req, res) => {
     return res.status(500).json({ message: "Failed to unlike movie", success: false });
   }
 };
+
+export const addToContinueWatching = async (req, res) => {
+  try {
+    const { movieId, userId, progress } = req.body;
+
+    if (!movieId || !userId) {
+      return res.status(400).json({ message: "Movie ID and User ID are required", success: false });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found", success: false });
+    }
+
+    // Check if movie already exists in continueWatching
+    const existing = user.continueWatching.find(
+      (item) => item.movieId.toString() === movieId
+    );
+
+    if (existing) {
+      // Update progress & timestamp
+      existing.progress = progress;
+      existing.updatedAt = Date.now();
+    } else {
+      // Add new entry
+      user.continueWatching.push({ movieId, progress });
+    }
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Continue Watching updated successfully",
+      success: true,
+      continueWatching: user.continueWatching,
+    });
+
+  } catch (error) {
+    console.error("Error adding to continue watching:", error);
+    return res.status(500).json({ message: "Failed to update continue watching", success: false });
+  }
+};
+
+  
