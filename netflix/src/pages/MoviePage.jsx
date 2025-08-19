@@ -37,9 +37,9 @@ export default function MoviePage() {
   return (
     <div className="p-6">
       <SearchBar onSearch={handleSearch} />
-      <div className="overflow-y-auto h-1/3 gap-4 mt-6">
+      <div className="overflow-y-auto h-50 w-50 gap-4 mt-6">
         {filtered.map((m, idx) => (
-          <div key={idx} className="p-4 bg-gray-800 rounded-lg text-white">
+          <div key={idx} className="p-4 bg-gray-800  rounded-lg text-white">
             {m.title}
           </div>
         ))}
