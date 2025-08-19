@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+
 
 export default function Subscription() {
   const [plan, setPlan] = useState("Basic");
@@ -43,14 +45,14 @@ export default function Subscription() {
         amount: selectedPlan.price * 100,
         currency: "INR",
         plan: selectedPlan.name,
-        userId: "userId", 
+        userId: userId, 
       }),
     });
 
     const data = await res.json();
 
     const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      key: 'rzp_test_CY6Vuttr0BdTnS',
       amount: selectedPlan.price * 100,
       currency: "INR",
       name: "Cinema Subscription",
@@ -65,7 +67,7 @@ export default function Subscription() {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
             plan: selectedPlan.name,
-            userId: "userId", 
+            userId: userId, 
           }),
         });
 
