@@ -9,6 +9,8 @@ import {
   likeMovie,
   unlikeMovie,
   addToContinueWatching,
+  order,
+  verify,
  
 } from '../controllers/user.js';
 import { authMiddleware } from '../middlewares/authMiddleware.js';
@@ -34,6 +36,8 @@ router.post('/add-to-watchlist',addToWatchList);
 router.post('/add-to-liked',likeMovie);
 router.post('/Unlike', unlikeMovie);
 router.post("/continue-watching", addToContinueWatching);
+router.post('/payment/create-order', order);
+router.post('/payment/verify', verify);
 
  
 export default router;

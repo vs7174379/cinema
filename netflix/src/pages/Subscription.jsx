@@ -38,7 +38,7 @@ export default function Subscription() {
   const handlePayment = async () => {
     const selectedPlan = plans.find((p) => p.name === plan);
 
-    const res = await fetch(`${import.meta.env.VITE_API_URL}payment/create-order`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}user/payment/create-order`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -59,7 +59,7 @@ export default function Subscription() {
       description: `${selectedPlan.name} Plan`,
       order_id: data.orderId,
       handler: async function (response) {
-        const verifyRes = await fetch(`${import.meta.env.VITE_API_URL}payment/verify`, {
+        const verifyRes = await fetch(`${import.meta.env.VITE_API_URL}user/payment/verify`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

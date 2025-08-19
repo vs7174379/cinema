@@ -24,8 +24,10 @@ const userSchema = new mongoose.Schema(
       default: "", // URL to profile image
     },
     subscription: {
-      plan: { type: String, default: "free" }, // free, premium, etc.
-      validTill: { type: Date },
+      plan: { type: String, default: "Free" },
+      active: { type: Boolean, default: false },
+      startDate: { type: Date },
+      expiryDate: { type: Date },
     },
     likes: [
       {
