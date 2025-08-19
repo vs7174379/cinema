@@ -333,7 +333,7 @@ export const unlikeMovie = async (req, res) => {
 
 export const addToContinueWatching = async (req, res) => {
   try {
-    const { movieId, userId, progress } = req.body;
+    const { movieId, userId,title,poster, progress } = req.body;
 
     if (!movieId || !userId) {
       return res.status(400).json({ message: "Movie ID and User ID are required", success: false });
@@ -355,7 +355,7 @@ export const addToContinueWatching = async (req, res) => {
       existing.updatedAt = Date.now();
     } else {
       // Add new entry
-      user.continueWatching.push({ movieId, progress });
+      user.continueWatching.push({ movieId, progress, title, poster });
     }
 
     await user.save();

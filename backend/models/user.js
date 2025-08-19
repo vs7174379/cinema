@@ -44,6 +44,8 @@ const userSchema = new mongoose.Schema(
       {
         movieId: { type: mongoose.Schema.Types.ObjectId, ref: "Movie" },
         progress: { type: Number, default: 0 }, // percentage watched
+        title: { type: String, default: "" },
+        poster: { type: String, default: "" },
         updatedAt: { type: Date, default: Date.now },
       }
     ],

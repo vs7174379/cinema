@@ -7,29 +7,29 @@ const Watch = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const [userId, setUserId] = useState(null); // replace with real auth userId
-      useEffect(() => {
-      const fetchProfile = async () => {
-        try {
-          const res = await fetch(`https://cinema-flame-seven.vercel.app/api/user/profile`, {
-            method: "GET",
-            credentials: "include", // sends cookies
-          });
-  
-          if (!res.ok) {
-            throw new Error("Failed to fetch profile");
-          }
-  
-          const data = await res.json();
-          setUserId(data.user._id);
-        
-        } catch (err) {
-          console.error(err.message);
-          setUserId(null);
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch(`https://cinema-flame-seven.vercel.app/api/user/profile`, {
+          method: "GET",
+          credentials: "include", // sends cookies
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch profile");
         }
-      };
-  
-      fetchProfile();
-    }, []);
+
+        const data = await res.json();
+        setUserId(data.user._id);
+
+      } catch (err) {
+        console.error(err.message);
+        setUserId(null);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
 
   // ✅ Utility: normalize video URLs
@@ -80,6 +80,8 @@ const Watch = () => {
           {
             movieId: movie._id,
             userId,
+            title: movie.title,
+            poster: movie.poster,
             progress: progressPercent.toFixed(2),
           }
         );
@@ -121,6 +123,8 @@ const Watch = () => {
                       {
                         movieId: movie._id,
                         userId,
+                        title: movie.title,
+                        poster: movie.poster,
                         progress: progressPercent.toFixed(2),
                       }
                     );
