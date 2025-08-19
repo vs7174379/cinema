@@ -149,7 +149,7 @@ const Watch = () => {
   if (!movie) return <div>Loading...</div>;
 
   return (
-    <div className="w-full py-0 bg-black">
+    <div className="w-full my-0 h-full bg-black">
       {movie.trailerUrl?.includes("youtube") ? (
         // ✅ YouTube
         <iframe
