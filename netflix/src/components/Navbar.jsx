@@ -137,7 +137,8 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Search Bar */}
+
+            
             <SearchBar  onSearch={handleSearch} />
             <div className="relative overflow-y-auto h-72 w-72  m-2">
                 {filtered.map((v, idx) => (
