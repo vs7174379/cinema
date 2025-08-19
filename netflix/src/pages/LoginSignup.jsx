@@ -51,7 +51,7 @@ const LoginSignup = () => {
 
   return (
     <div
-      className="h-lvh -my-[6rem]  bg-cover bg-center flex items-center justify-center"
+      className="h-lvh -my-[7rem]  bg-cover bg-center flex items-center justify-center"
       style={{
         backgroundImage:
           "url('https://innotechtoday.com/wp-content/uploads/2022/10/netrflix-pic-1.png')",
