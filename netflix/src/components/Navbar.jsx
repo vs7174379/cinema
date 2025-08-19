@@ -21,11 +21,28 @@ const Navbar = () => {
             } catch (err) {
                 console.error(err.message);
                 setUser(null);
-            } 
+            }
         };
 
         fetchProfile();
     }, []);
+    const handleLogout = async () => {
+        try {
+            await fetch(`${import.meta.env.VITE_API_URL}user/logout`, {
+                method: 'POST',
+                credentials: 'include',
+            });
+
+            window.location.href = '/';
+        } catch (err) {
+            console.error('Logout failed:', err);
+        }
+    };
+
+    const handleSaveProfile = (updatedUser) => {
+        setUser(updatedUser);
+    };
+
 
 
     useEffect(() => {
@@ -106,7 +123,12 @@ const Navbar = () => {
                 <a href="/animation" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Animation</a>
                 <a href="/thriller" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Thriller</a>
                 <a href="/drama" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Drama</a>
-                <a href="/mylist" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">More</a>
+                 <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-1 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm"
+                >
+                  <LogOut size={16} /> Logout
+                </button>
                 <a href="/Sbskripsn" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Subscribe</a>
 
 
