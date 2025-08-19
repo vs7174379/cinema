@@ -219,7 +219,7 @@ const Profile = () => {
             {continueWatching.map((item, i) => (
               <div onClick={() => navigate(`/movies/${item.movieId}`)}
 
-                className="min-w-[14rem] h-36 rounded-2xl shadow-lg bg-cover bg-top flex-shrink-0 relative"
+                className="min-w-[14rem] h-44 rounded-2xl shadow-lg bg-cover bg-top flex-shrink-0 relative"
                 style={{ backgroundImage: `url('${item.poster} ')` }}
               >
                 <div className="absolute bottom-0 bg-black/40 backdrop-blur-sm w-full p-2 rounded-b-2xl">
