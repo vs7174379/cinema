@@ -6,9 +6,8 @@ import Player from "@vimeo/player";
 const Watch = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
-  const [userId, setUserId] = useState(null); 
-
-    useEffect(() => {
+  const [userId, setUserId] = useState(null); // replace with real auth userId
+      useEffect(() => {
       const fetchProfile = async () => {
         try {
           const res = await fetch(`https://cinema-flame-seven.vercel.app/api/user/profile`, {
@@ -31,6 +30,7 @@ const Watch = () => {
   
       fetchProfile();
     }, []);
+
 
   // ✅ Utility: normalize video URLs
   const getEmbedUrl = (url) => {
@@ -61,7 +61,7 @@ const Watch = () => {
     fetchMovie();
   }, [id]);
 
-  // ✅ Vimeo tracking
+  // ✅ Vimeo tracking (percentage)
   useEffect(() => {
     if (!movie || !movie.trailerUrl?.includes("vimeo")) return;
 
@@ -71,14 +71,16 @@ const Watch = () => {
     const player = new Player(iframe);
 
     player.on("timeupdate", async (data) => {
-      console.log("Vimeo watched:", data.seconds);
+      const progressPercent = (data.seconds / data.duration) * 100;
+      console.log("Vimeo watched %:", progressPercent.toFixed(2));
+
       try {
         await axios.post(
           `${import.meta.env.VITE_API_URL}user/continue-watching`,
           {
             movieId: movie._id,
             userId,
-            progress: data.seconds,
+            progress: progressPercent.toFixed(2),
           }
         );
       } catch (err) {
@@ -89,7 +91,7 @@ const Watch = () => {
     return () => player.unload();
   }, [movie, userId]);
 
-  // ✅ YouTube tracking
+  // ✅ YouTube tracking (percentage)
   useEffect(() => {
     if (!movie || !movie.trailerUrl?.includes("youtube")) return;
 
@@ -108,18 +110,23 @@ const Watch = () => {
               // Save progress every 5s
               const interval = setInterval(async () => {
                 const time = player.getCurrentTime();
-                console.log("YouTube watched:", time);
-                try {
-                  await axios.post(
-                    `${import.meta.env.VITE_API_URL}user/continue-watching`,
-                    {
-                      movieId: movie._id,
-                      userId,
-                      progress: time,
-                    }
-                  );
-                } catch (err) {
-                  console.error("Error saving YouTube progress:", err);
+                const duration = player.getDuration();
+                if (duration > 0) {
+                  const progressPercent = (time / duration) * 100;
+                  console.log("YouTube watched %:", progressPercent.toFixed(2));
+
+                  try {
+                    await axios.post(
+                      `${import.meta.env.VITE_API_URL}user/continue-watching`,
+                      {
+                        movieId: movie._id,
+                        userId,
+                        progress: progressPercent.toFixed(2),
+                      }
+                    );
+                  } catch (err) {
+                    console.error("Error saving YouTube progress:", err);
+                  }
                 }
               }, 5000);
 
@@ -140,6 +147,7 @@ const Watch = () => {
   return (
     <div className="w-full h-screen bg-black">
       {movie.trailerUrl?.includes("youtube") ? (
+        // ✅ YouTube
         <iframe
           id="youtube-player"
           className="w-full h-full"
@@ -150,6 +158,7 @@ const Watch = () => {
           allowFullScreen
         ></iframe>
       ) : movie.trailerUrl?.includes("vimeo") ? (
+        // ✅ Vimeo
         <iframe
           id="vimeo-player"
           className="w-full h-full"
@@ -159,7 +168,29 @@ const Watch = () => {
           allowFullScreen
         ></iframe>
       ) : (
-        <video className="w-full h-full object-cover" controls autoPlay>
+        // ✅ Local MP4 with progress % tracking
+        <video
+          className="w-full h-full object-cover"
+          controls
+          autoPlay
+          id="html5-player"
+          onTimeUpdate={(e) => {
+            const video = e.target;
+            const progressPercent =
+              (video.currentTime / video.duration) * 100;
+            console.log("MP4 watched %:", progressPercent.toFixed(2));
+
+            axios
+              .post(`${import.meta.env.VITE_API_URL}user/continue-watching`, {
+                movieId: movie._id,
+                userId,
+                progress: progressPercent.toFixed(2),
+              })
+              .catch((err) =>
+                console.error("Error saving MP4 progress:", err)
+              );
+          }}
+        >
           <source src={movie.trailerUrl} type="video/mp4" />
         </video>
       )}
