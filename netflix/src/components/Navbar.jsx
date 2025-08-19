@@ -138,10 +138,10 @@ const Navbar = () => {
             </div>
 
             {/* Search Bar */}
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar  onSearch={handleSearch} />
             <div className="relative overflow-y-auto h-72 w-72  m-2">
-                {filtered.map((m, idx) => (
-                    <Cards video={m}/>
+                {filtered.map((v, idx) => (
+                    <Cards video={v}/>
                 ))}
             </div>
 
