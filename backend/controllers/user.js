@@ -1,8 +1,7 @@
 import { User } from "../models/user.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import crypto from "crypto";
-  import Razorpay from "razorpay";
+
 
 // Login Controller
 export const login = async (req, res) => {
@@ -374,59 +373,4 @@ export const addToContinueWatching = async (req, res) => {
   }
 };
 
-
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
-
-export const order= async (req, res) => {
-  try {
-    const { amount, currency, plan, userId } = req.body;
-
-    const order = await razorpay.orders.create({
-      amount,
-      currency,
-      plan,
-      userId,
-      receipt: `${userId}-${Date.now()}`,
-    });
-
-    res.json({ orderId: order.id });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-}
-
-
-
-
-export const verify=async (req, res) => {
-  try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, plan, userId } = req.body;
-
-    const sign = razorpay_order_id + "|" + razorpay_payment_id;
-    const expectedSign = crypto
-      .createHmac("sha256", 'tLMzot2l96TYBE9cMkPullIx')
-      .update(sign.toString())
-      .digest("hex");
-
-    if (razorpay_signature === expectedSign) {
-      // ✅ Update subscription in DB
-      const startDate = new Date();
-      const expiryDate = new Date();
-      expiryDate.setMonth(expiryDate.getMonth() + 1); // 1 month plan
-
-      await User.findByIdAndUpdate(userId, {
-        subscription: { plan, active: true, startDate, expiryDate },
-      });
-
-      return res.json({ success: true, message: "Subscription activated" });
-    }
-
-    res.json({ success: false, message: "Payment verification failed" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-}
 
