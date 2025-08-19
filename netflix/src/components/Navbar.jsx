@@ -1,10 +1,43 @@
 import { LogOut } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
+import SearchBar from './SearchBar';
+import axios from 'axios';
+import Cards from './Cards';
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState(null);
     const menuRef = useRef(null);
+    const [movies, setMovies] = useState([]);
+
+
+    useEffect(() => {
+        const fetchMovies = async () => {
+            try {
+                const response = await axios.get('https://cinema-flame-seven.vercel.app/api/show/movie');
+                const data = response.data.movies
+                if (response.data.success) {
+                    setMovies(data);
+
+                } else {
+                    console.error('Failed to fetch movies:', data.message);
+                }
+            } catch (error) {
+                console.error('Error fetching movies:', error);
+            }
+        }
+        fetchMovies();
+    }, []);
+    const [filtered, setFiltered] = useState(movies);
+
+
+    const handleSearch = (query) => {
+        const results = movies.filter((m) =>
+            m.title.toLowerCase().includes(query.toLowerCase())
+        );
+        setFiltered(results);
+    };
+
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -40,9 +73,6 @@ const Navbar = () => {
         }
     };
 
-    const handleSaveProfile = (updatedUser) => {
-        setUser(updatedUser);
-    };
 
 
 
@@ -108,12 +138,11 @@ const Navbar = () => {
             </div>
 
             {/* Search Bar */}
-            <div className="flex items-center w-full md:w-[30%] bg-neutral-500 rounded-full px-4 py-2">
-                <input
-                    type="text"
-                    placeholder="Search"
-                    className="bg-transparent outline-none text-sm text-white flex-grow placeholder:text-white"
-                />
+            <SearchBar onSearch={handleSearch} />
+            <div className="relative overflow-y-auto h-72 w-72  m-2">
+                {filtered.map((m, idx) => (
+                    <Cards video={m}/>
+                ))}
             </div>
 
             {/* Navigation Buttons - Desktop */}
@@ -124,11 +153,11 @@ const Navbar = () => {
                 <a href="/animation" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Animation</a>
                 <a href="/thriller" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Thriller</a>
                 <a href="/drama" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Drama</a>
-                 <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-1 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm"
+                <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-1 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm"
                 >
-                  <LogOut size={16} /> Logout
+                    <LogOut size={16} /> Logout
                 </button>
                 <a href="/Sbskripsn" className="relative px-6 py-3 rounded-[15px] bg-[#f3ff07] text-[#212121] font-extrabold text-lg shadow-[4px_8px_19px_-3px_rgba(0,0,0,0.27)] transition-all duration-300 overflow-hidden 
   before:content-[''] before:absolute before:top-0 before:left-0 before:h-full before:w-0 before:rounded-[15px] before:bg-[#0df4ec] before:-z-10 before:shadow-[4px_8px_19px_-3px_rgba(0,0,0,0.27)] before:transition-all before:duration-300 hover:text-[#e8e8e8] hover:before:w-full">Subscribe</a>
