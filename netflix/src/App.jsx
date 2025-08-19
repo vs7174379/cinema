@@ -20,6 +20,7 @@ import Watch from './Watch'
 import Add from './pages/Add'
 import Edit from './pages/Edit'
 import Subscription from './pages/Subscription'
+import MoviePage from './pages/MoviePage'
 
 const App = () => {
   const [id, setid] = useState('');
@@ -46,6 +47,7 @@ const App = () => {
         <Route path='/:id' element={<Edit/>} />
         <Route path='/Sbskripsn' element={<Subscription/>} />
         <Route path='/mylist' element={<MyList head={"My-list"} />} />
+        <Route path='/m' element={<MoviePage />} />
 
       </Routes>
 
