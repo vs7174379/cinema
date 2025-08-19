@@ -51,10 +51,10 @@ const LoginSignup = () => {
 
   return (
     <div
-      className="h-full min-h-screen bg-cover bg-center flex items-center justify-center"
+      className="h-full -my-6  bg-cover bg-center flex items-center justify-center"
       style={{
         backgroundImage:
-          "url('https://assets.aboutamazon.com/dims4/default/d634820/2147483647/strip/true/crop/1279x720+0+0/resize/1320x743!/quality/90/?url=https%3A%2F%2Famazon-blogs-brightspot.s3.amazonaws.com%2F58%2F75%2Fa9ac0af245d0a4267feb6f361781%2Fpv-v-day-movies.jpg')",
+          "url('https://innotechtoday.com/wp-content/uploads/2022/10/netrflix-pic-1.png')",
       }}
     >
       <div className="relative w-full max-w-md p-8 bg-black/40 rounded-xl shadow-xl backdrop-blur-md border border-black/40 text-white">
