@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../components/Loader';
+import MovieList from '../components/MovieList';
 
 
 const Movie = () => {
