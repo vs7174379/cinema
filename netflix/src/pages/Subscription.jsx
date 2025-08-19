@@ -42,7 +42,7 @@ export default function Subscription() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        amount: selectedPlan.price * 100,
+        amount: selectedPlan.price ,
         currency: "INR",
         plan: selectedPlan.name,
         userId: userId, 
@@ -53,7 +53,7 @@ export default function Subscription() {
 
     const options = {
       key: 'rzp_test_CY6Vuttr0BdTnS',
-      amount: selectedPlan.price * 10,
+      amount: selectedPlan.price ,
       currency: "INR",
       name: "Cinema Subscription",
       description: `${selectedPlan.name} Plan`,
