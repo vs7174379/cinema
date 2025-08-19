@@ -111,7 +111,7 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
-  const continueWatching=user?.continueWatching || [];
+  const continueWatching = user?.continueWatching || [];
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -146,7 +146,7 @@ const Profile = () => {
         method: 'POST',
         credentials: 'include',
       });
-       
+
       window.location.href = '/';
     } catch (err) {
       console.error('Logout failed:', err);
@@ -222,8 +222,9 @@ const Profile = () => {
                 <img
                   src={item.poster}
                   alt={item.title}
-                  className="w-full h-40 object-cover"
+                  className="w-full h-40 object-cover object-top"
                 />
+
                 <div className="p-4">
                   <h4 className="text-md font-semibold mb-2">{item.title}</h4>
                   <div className="w-full h-2 bg-gray-700 rounded-full">
