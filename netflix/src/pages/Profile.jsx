@@ -219,7 +219,21 @@ const Profile = () => {
                 key={i}
                 className="bg-black/30 backdrop-blur-sm rounded-xl overflow-hidden shadow-md border border-white/10"
               >
-               <a href={`/movies/${item.movieId}`}>{item.movieId}</a> 
+                <img
+                  src={item.poster}
+                  alt={item.title}
+                  className="w-full h-40 object-cover"
+                />
+                <div className="p-4">
+                  <h4 className="text-md font-semibold mb-2">{item.title}</h4>
+                  <div className="w-full h-2 bg-gray-700 rounded-full">
+                    <div
+                      className="h-2 bg-blue-500 rounded-full"
+                      style={{ width: `${item.progress}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-xs text-gray-400 mt-1">{item.progress}% watched</p>
+                </div>
               </div>
             ))}
           </div>
