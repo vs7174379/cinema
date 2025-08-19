@@ -15,7 +15,7 @@ const Movie = () => {
   const [liked, setLiked] = useState(false);
   const [movis, setMovis] = useState([]);
   const ml= movis.filter(m =>
-    m.genre===movie?.genre
+    m.genre===movie?.genre[0]
   );
  
    useEffect(() => {
