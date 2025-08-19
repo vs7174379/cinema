@@ -219,7 +219,7 @@ const Profile = () => {
                 key={i}
                 className="bg-black/30 backdrop-blur-sm rounded-xl overflow-hidden shadow-md border border-white/10"
               >
-                {item.movieId},
+               <a href={`/movies/${item.movieId}`}>{item.movieId}</a> 
               </div>
             ))}
           </div>
