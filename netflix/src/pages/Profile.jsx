@@ -1,25 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { Edit, LogOut } from 'lucide-react';
 import Loader from '../components/Loader';
 
-// Dummy Continue Watching List
-const continueWatching = [
-  {
-    title: 'Stranger Things',
-    image: 'https://image.tmdb.org/t/p/w500/x2LSRK2Cm7MZhjluni1msVJ3wDF.jpg',
-    progress: 40,
-  },
-  {
-    title: 'Sacred Games',
-    image: 'https://image.tmdb.org/t/p/w500/7HtvmsLtyC1iH6jlm9qvZ6e3uXl.jpg',
-    progress: 70,
-  },
-  {
-    title: 'Extraction',
-    image: 'https://image.tmdb.org/t/p/w500/nygOUcBKPHFTbxsYRFZVePqgPK6.jpg',
-    progress: 20,
-  },
-];
+
 
 // Edit Profile Modal
 const EditProfileModal = ({ user, onClose, onSave }) => {
@@ -128,6 +111,7 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
+  const continueWatching=user?.continueWatching || [];
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -235,21 +219,7 @@ const Profile = () => {
                 key={i}
                 className="bg-black/30 backdrop-blur-sm rounded-xl overflow-hidden shadow-md border border-white/10"
               >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-40 object-cover"
-                />
-                <div className="p-4">
-                  <h4 className="text-md font-semibold mb-2">{item.title}</h4>
-                  <div className="w-full h-2 bg-gray-700 rounded-full">
-                    <div
-                      className="h-2 bg-blue-500 rounded-full"
-                      style={{ width: `${item.progress}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-xs text-gray-400 mt-1">{item.progress}% watched</p>
-                </div>
+                {item.movieId},
               </div>
             ))}
           </div>
