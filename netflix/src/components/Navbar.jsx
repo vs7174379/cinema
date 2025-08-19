@@ -130,7 +130,8 @@ const Navbar = () => {
                 >
                   <LogOut size={16} /> Logout
                 </button>
-                <a href="/Sbskripsn" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Subscribe</a>
+                <a href="/Sbskripsn" className="relative px-6 py-3 rounded-[15px] bg-[#f3ff07] text-[#212121] font-extrabold text-lg shadow-[4px_8px_19px_-3px_rgba(0,0,0,0.27)] transition-all duration-300 overflow-hidden 
+  before:content-[''] before:absolute before:top-0 before:left-0 before:h-full before:w-0 before:rounded-[15px] before:bg-[#0df4ec] before:-z-10 before:shadow-[4px_8px_19px_-3px_rgba(0,0,0,0.27)] before:transition-all before:duration-300 hover:text-[#e8e8e8] hover:before:w-full">Subscribe</a>
 
 
             </div>
