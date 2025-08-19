@@ -1,6 +1,7 @@
 import React, { use, useEffect, useState } from 'react';
 import { Edit, LogOut } from 'lucide-react';
 import Loader from '../components/Loader';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -112,6 +113,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
   const continueWatching = user?.continueWatching || [];
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -215,16 +217,11 @@ const Profile = () => {
           <h3 className="text-xl font-semibold mb-4">Continue Watching</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {continueWatching.map((item, i) => (
-              <div
-                key={i}
-                className="bg-black/30 backdrop-blur-sm rounded-xl overflow-hidden shadow-md border border-white/10"
-              >
-                <img
-                  src={item.poster}
-                  alt={item.title}
-                  className="w-full h-40 object-cover object-top"
-                />
+              <div onClick={() => navigate(`/movies/${item._id}`)}
 
+                className="min-w-[14rem] h-36 rounded-2xl shadow-lg bg-cover bg-top flex-shrink-0 relative"
+                style={{ backgroundImage: `url('${item.poster} ')` }}
+              >
                 <div className="p-4">
                   <h4 className="text-md font-semibold mb-2">{item.title}</h4>
                   <div className="w-full h-2 bg-gray-700 rounded-full">
