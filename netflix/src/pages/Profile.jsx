@@ -217,12 +217,12 @@ const Profile = () => {
           <h3 className="text-xl font-semibold mb-4">Continue Watching</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {continueWatching.map((item, i) => (
-              <div onClick={() => navigate(`/movies/${item._id}`)}
+              <div onClick={() => navigate(`/movies/${item.movieId}`)}
 
                 className="min-w-[14rem] h-36 rounded-2xl shadow-lg bg-cover bg-top flex-shrink-0 relative"
                 style={{ backgroundImage: `url('${item.poster} ')` }}
               >
-                <div className="p-4">
+                <div className="absolute bottom-0 bg-black/40 backdrop-blur-sm w-full p-2 rounded-b-2xl">
                   <h4 className="text-md font-semibold mb-2">{item.title}</h4>
                   <div className="w-full h-2 bg-gray-700 rounded-full">
                     <div
