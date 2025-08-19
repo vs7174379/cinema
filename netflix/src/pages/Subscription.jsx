@@ -53,7 +53,7 @@ export default function Subscription() {
 
     const options = {
       key: 'rzp_test_CY6Vuttr0BdTnS',
-      amount: selectedPlan.price * 100,
+      amount: selectedPlan.price * 10,
       currency: "INR",
       name: "Cinema Subscription",
       description: `${selectedPlan.name} Plan`,
