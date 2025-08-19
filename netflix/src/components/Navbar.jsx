@@ -5,6 +5,15 @@ const Navbar = () => {
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState(null);
     const menuRef = useRef(null);
+
+
+
+    const menuItems = [
+        { name: "Home", href: "/" },
+        { name: "Movies", href: "/movies" },
+        { name: "Subscriptions", href: "/subscription" },
+        { name: "Profile", href: "/profile" },
+    ];
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -60,22 +69,20 @@ const Navbar = () => {
         <div className="sticky top-0 z-50 bg-black/60 backdrop-blur-md flex flex-col  md:flex-row md:items-center md:justify-evenly p-4 gap-2 ">
             <div className='flex items-center justify-center'>
                 {/* Navigation Dropdown - Mobile */}
-                <div className="md:hidden mr-5">
-
-                    <div className="relative">
-                        <select className="  appearance-none  text-gray-800 font-medium border bg-white border-gray-300  rounded-lg px-4 py-2 pr-6  shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
-                            {['browse', 'Movies', 'TV Series', 'Animation', 'Thriller', 'Drama', 'More'].map((item) => (
-                                <option key={item}>{item}</option>
-                            ))}
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-800">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
+                {open && (
+                    <div className="mt-4 flex flex-col space-y-3 md:hidden bg-gray-900 p-4 rounded-lg shadow-lg">
+                        {menuItems.map((item) => (
+                            <a
+                                key={item.name}
+                                href={item.href}
+                                className="hover:text-yellow-400 transition"
+                                onClick={() => setOpen(false)}
+                            >
+                                {item.name}
+                            </a>
+                        ))}
                     </div>
-                </div>
-
+                )}
                 {/* Profile Dropdown */}
                 <div className="    relative inline-block text-right" ref={menuRef}>
                     <button
@@ -124,11 +131,11 @@ const Navbar = () => {
                 <a href="/animation" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Animation</a>
                 <a href="/thriller" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Thriller</a>
                 <a href="/drama" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Drama</a>
-                 <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-1 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm"
+                <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-1 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm"
                 >
-                  <LogOut size={16} /> Logout
+                    <LogOut size={16} /> Logout
                 </button>
                 <a href="/Sbskripsn" className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer">Subscribe</a>
 
