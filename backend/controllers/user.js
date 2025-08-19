@@ -374,3 +374,77 @@ export const addToContinueWatching = async (req, res) => {
 };
 
 
+import Razorpay from "razorpay";
+import crypto from "crypto";
+
+
+// Razorpay instance
+const razorpay = new Razorpay({
+  key_id: 'rzp_test_CY6Vuttr0BdTnS',
+  key_secret: 'tLMzot2l96TYBE9cMkPullIx',
+});
+
+// 👉 Create Razorpay Order
+export const createOrder = async (req, res) => {
+  try {
+    const { amount, currency = "INR", plan, userId } = req.body;
+
+    if (!amount || !plan || !userId) {
+      return res.status(400).json({ success: false, message: "Missing required fields" });
+    }
+
+    const order = await razorpay.orders.create({
+      amount: amount * 100, // convert to paise
+      currency,
+      receipt: `${userId}-${Date.now()}`,
+    });
+
+    res.json({ success: true, orderId: order.id });
+  } catch (err) {
+    console.error("Create Order Error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+// 👉 Verify Payment + Update Subscription
+export const verifyPayment = async (req, res) => {
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, plan, userId } = req.body;
+
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !plan || !userId) {
+      return res.status(400).json({ success: false, message: "Missing required fields" });
+    }
+
+    // Verify signature
+    const sign = razorpay_order_id + "|" + razorpay_payment_id;
+    const expectedSign = crypto
+      .createHmac("sha256", 'tLMzot2l96TYBE9cMkPullIx')
+      .update(sign.toString())
+      .digest("hex");
+
+    if (razorpay_signature !== expectedSign) {
+      return res.status(400).json({ success: false, message: "Invalid signature" });
+    }
+
+    // ✅ Payment verified → Update subscription
+    const startDate = new Date();
+    const expiryDate = new Date();
+    expiryDate.setMonth(expiryDate.getMonth() + 1); // 1 month plan
+
+    await User.findByIdAndUpdate(userId, {
+      subscription: {
+        plan,
+        active: true,
+        startDate,
+        expiryDate,
+      },
+    });
+
+    res.json({ success: true, message: "Subscription activated" });
+  } catch (err) {
+    console.error("Verify Payment Error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+

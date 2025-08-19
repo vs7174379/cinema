@@ -9,6 +9,8 @@ import {
   likeMovie,
   unlikeMovie,
   addToContinueWatching,
+  createOrder,
+  verifyPayment,
 
  
 } from '../controllers/user.js';
@@ -35,6 +37,10 @@ router.post('/add-to-watchlist',addToWatchList);
 router.post('/add-to-liked',likeMovie);
 router.post('/Unlike', unlikeMovie);
 router.post("/continue-watching", addToContinueWatching);
+router.post('/payment/create-order',createOrder);
+
+router.post('/payment/verify',verifyPayment);
+
 
 
  
