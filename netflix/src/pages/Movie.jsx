@@ -12,6 +12,28 @@ const Movie = () => {
   const navigate = useNavigate();
   const [userId, setUserId] = useState(null);
   const [liked, setLiked] = useState(false);
+  const [movis, setMovis] = useState([]);
+  const ml= movis.filter(m =>
+    m.genre===movie?.genre
+  );
+ 
+   useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await axios.get('https://cinema-flame-seven.vercel.app/api/show/movie');
+        const data = response.data.movies
+        if (response.data.success) {
+          setMovis(data);
+          
+        } else {
+          console.error('Failed to fetch movies:', data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+      }
+    }
+    fetchMovies();
+  }, []);
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -194,21 +216,8 @@ const Movie = () => {
 
         {/* Related Movies */}
         <section className="px-6 sm:px-10 py-6">
-          <h2 className="text-xl font-semibold mb-4">Customers also watched</h2>
-          <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
-            {[...Array(10)].map((_, idx) => (
-              <div key={idx} className="w-36 sm:w-48 flex-shrink-0 relative">
-                <img
-                  src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcS_WhubxLwynDD0XPpLbF9Ol-QYjPrfiia4e2Gd2QHmLztf--FZpK9WAemCIcUXgL9Brv1W"
-                  alt="Related Movie"
-                  className="rounded w-full"
-                />
-                <span className="absolute bottom-2 right-2 bg-white/80 text-black px-2 text-xs rounded">
-                  MX PLAYER
-                </span>
-              </div>
-            ))}
-          </div>
+          
+          <MovieList title={"Related movies"} movies={ml} />
         </section>
       </main>
     </div>
