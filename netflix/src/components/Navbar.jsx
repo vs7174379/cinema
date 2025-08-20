@@ -11,44 +11,47 @@ const Navbar = () => {
     const [movies, setMovies] = useState([]);
     const [showOverlay, setShowOverlay] = useState(false);
     const [query, setQuery] = useState("");
+    const debounceRef = useRef(null);
 
 
 
 
-    const fetchMovies = async (value) => {
-        try {
-            const res = await axios.get('https://cinema-flame-seven.vercel.app/api/show/movie');
 
-            if (res.data.success) {
-                const filtered = res.data.movies.filter((movie) =>
-                    movie.title.toLowerCase().includes(value.toLowerCase())
+    useEffect(() => {
+        const fetchAll = async () => {
+            try {
+                const res = await axios.get(
+                    "https://cinema-flame-seven.vercel.app/api/show/movie"
                 );
+                if (res.data.success) {
+                    setAllMovies(res.data.movies);
+                }
+            } catch (err) {
+                console.error("Error fetching movies:", err);
+            }
+        };
+        fetchAll();
+    }, []);
 
+    // Handle search with debounce
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setQuery(value);
+
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+
+        debounceRef.current = setTimeout(() => {
+            if (value.trim().length > 1) {
+                const filtered = allMovies.filter((m) =>
+                    m.title.toLowerCase().includes(value.toLowerCase())
+                );
                 setMovies(filtered);
                 setShowOverlay(filtered.length > 0);
             } else {
                 setMovies([]);
                 setShowOverlay(false);
             }
-        } catch (err) {
-            console.error("Error fetching movies:", err);
-            setMovies([]);
-            setShowOverlay(false);
-        }
-    };
-
-
-
-
-    const handleChange = (e) => {
-        const value = e.target.value;
-        setQuery(value);
-        if (value.trim().length > 1) {
-            fetchMovies(value);
-        } else {
-            setMovies([]);
-            setShowOverlay(false);
-        }
+        }, 400); // debounce delay (ms)
     };
 
 
