@@ -1,42 +1,16 @@
 import { LogOut } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
-import SearchBar from './SearchBar';
+
 import axios from 'axios';
-import Cards from './Cards';
+
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState(null);
     const menuRef = useRef(null);
-    const [movies, setMovies] = useState([]);
+    
 
 
-    useEffect(() => {
-        const fetchMovies = async () => {
-            try {
-                const response = await axios.get('https://cinema-flame-seven.vercel.app/api/show/movie');
-                const data = response.data.movies
-                if (response.data.success) {
-                    setMovies(data);
-
-                } else {
-                    console.error('Failed to fetch movies:', data.message);
-                }
-            } catch (error) {
-                console.error('Error fetching movies:', error);
-            }
-        }
-        fetchMovies();
-    }, []);
-    const [filtered, setFiltered] = useState(movies);
-
-
-    const handleSearch = (query) => {
-        const results = movies.filter((m) =>
-            m.title.toLowerCase().includes(query.toLowerCase())
-        );
-        setFiltered(results);
-    };
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -139,12 +113,7 @@ const Navbar = () => {
 
 
             
-            <SearchBar  onSearch={handleSearch} />
-            <div className="relative overflow-y-auto h-72 w-72  m-2">
-                {filtered.map((v, idx) => (
-                    <Cards video={v}/>
-                ))}
-            </div>
+          
 
             {/* Navigation Buttons - Desktop */}
             <div className="hidden md:flex flex-wrap justify-center gap-2 text-sm text-yellow-400 font-semibold">
