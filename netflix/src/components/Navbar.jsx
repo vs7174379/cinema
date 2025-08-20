@@ -189,7 +189,7 @@ const Navbar = () => {
 
             {/* Search Overlay */}
             {showOverlay && (
-                <div className="fixed top-24  inset-0 bg-black/60 z-[999] flex justify-center items-center p-6">
+                <div className="fixed top-24  inset-0 bg-black/60 z-[999] flex justify-center items-center py-24">
                     <div
                         ref={overlayRef}
                         className="bg-white p-6 rounded-lg h-[80vh] w-full max-w-4xl overflow-y-auto shadow-lg"
