@@ -14,20 +14,29 @@ const Navbar = () => {
 
 
 
-    const fetchMovies = async () => {
-        try {
-            const response = await axios.get('https://cinema-flame-seven.vercel.app/api/show/movie');
-            const data = response.data.movies
-            if (response.data.success) {
-                setMovies(data);
 
+    const fetchMovies = async (value) => {
+        try {
+            const res = await axios.get('https://cinema-flame-seven.vercel.app/api/show/movie');
+
+            if (res.data.success) {
+                const filtered = res.data.movies.filter((movie) =>
+                    movie.title.toLowerCase().includes(value.toLowerCase())
+                );
+
+                setMovies(filtered);
+                setShowOverlay(filtered.length > 0);
             } else {
-                console.error('Failed to fetch movies:', data.message);
+                setMovies([]);
+                setShowOverlay(false);
             }
-        } catch (error) {
-            console.error('Error fetching movies:', error);
+        } catch (err) {
+            console.error("Error fetching movies:", err);
+            setMovies([]);
+            setShowOverlay(false);
         }
-    }
+    };
+
 
 
 
@@ -150,6 +159,19 @@ const Navbar = () => {
                 placeholder="Search..."
                 className="w-72 px-4 py-2 rounded-full bg-gray-900 text-white focus:ring-2 focus:ring-yellow-400 outline-none"
             />
+            {/* Overlay */}
+            {showOverlay && (
+                <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex justify-center items-start pt-20">
+                    <div className="bg-white p-6 rounded-lg max-h-[80vh] w-[90%] max-w-5xl overflow-y-auto">
+                        <h2 className="text-xl font-bold mb-4">Search Results</h2>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            {movies.map((movie, idx) => (
+                                <Cards key={idx} movie={movie} />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Navigation Buttons - Desktop */}
             <div className="hidden md:flex flex-wrap justify-center gap-2 text-sm text-yellow-400 font-semibold">
@@ -170,37 +192,7 @@ const Navbar = () => {
 
 
             </div>
-            {/* Overlay */}
-            {showOverlay && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex justify-center items-start pt-20">
-                    <div className="bg-white p-6 rounded-lg max-h-[80vh] w-[90%] max-w-5xl overflow-y-auto">
-                        <h2 className="text-xl font-bold mb-4">Search Results</h2>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                            {movies.map((movie, idx) => (
-                                <div
-                                    key={idx}
-                                    className="cursor-pointer rounded-lg overflow-hidden shadow hover:scale-105 transition"
-                                    onClick={() => setShowOverlay(false)}
-                                >
-                                    <img
-                                        src={
-                                            movie.Poster !== "N/A"
-                                                ? movie.Poster
-                                                : "https://via.placeholder.com/200x300"
-                                        }
-                                        alt={movie.Title}
-                                        className="w-full h-64 object-cover"
-                                    />
-                                    <div className="p-2 text-center">
-                                        <h3 className="font-semibold text-sm">{movie.Title}</h3>
-                                        <p className="text-xs text-gray-500">{movie.Year}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            )}
+
 
 
         </div>
@@ -208,4 +200,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
