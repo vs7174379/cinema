@@ -10,8 +10,10 @@ const Navbar = () => {
     const menuRef = useRef(null);
     const [movies, setMovies] = useState([]);
     const [filtered, setFiltered] = useState([]);
+    const [showOverlay, setShowOverlay] = useState(false);
+    const overlayRef = useRef(null);
 
-    // Fetch Movies
+    // Fetch movies
     useEffect(() => {
         const fetchMovies = async () => {
             try {
@@ -35,18 +37,19 @@ const Navbar = () => {
             m.title.toLowerCase().includes(query.toLowerCase())
         );
         setFiltered(results);
+        setShowOverlay(results.length > 0);
     };
 
-    // Fetch User Profile
+    // Fetch user profile
     useEffect(() => {
         const fetchProfile = async () => {
             try {
                 const res = await fetch(`https://cinema-flame-seven.vercel.app/api/user/profile`, {
-                    method: "GET",
-                    credentials: "include",
+                    method: 'GET',
+                    credentials: 'include',
                 });
 
-                if (!res.ok) throw new Error("Failed to fetch profile");
+                if (!res.ok) throw new Error('Failed to fetch profile');
 
                 const data = await res.json();
                 setUser(data.user);
@@ -71,7 +74,7 @@ const Navbar = () => {
         }
     };
 
-    // Close dropdown on outside click
+    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -82,11 +85,25 @@ const Navbar = () => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    // Close overlay on outside click
+    useEffect(() => {
+        const handleClickOutsideOverlay = (event) => {
+            if (overlayRef.current && !overlayRef.current.contains(event.target)) {
+                setShowOverlay(false);
+            }
+        };
+        if (showOverlay) {
+            document.addEventListener('mousedown', handleClickOutsideOverlay);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutsideOverlay);
+        }
+        return () => document.removeEventListener('mousedown', handleClickOutsideOverlay);
+    }, [showOverlay]);
+
     return (
         <div className="sticky top-0 z-50 bg-black/60 backdrop-blur-md flex flex-col md:flex-row md:items-center md:justify-evenly p-4 gap-2">
             {/* Mobile Dropdown and Profile */}
             <div className='flex items-center justify-center'>
-
                 {/* Mobile Navigation Dropdown */}
                 <div className="md:hidden mr-5">
                     <div className="relative">
@@ -140,20 +157,9 @@ const Navbar = () => {
             </div>
 
             {/* Search Bar */}
-            {/* Search Bar */}
             <SearchBar onSearch={handleSearch} />
 
-           {/* Search Results (only shown when searching) */}
-           {filtered.length > 0 && filtered.length !== movies.length && (
-               <div className="w-full md:w-[70%] max-h-96 overflow-y-auto mt-2 flex flex-col items-center gap-4">
-                     {filtered.map((v, idx) => (
-                      <Cards key={v._id || idx} video={v} />
-                                     ))}
-                                  </div>
-                                )}
-
-
-            {/* Desktop Navigation Buttons */}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex flex-wrap justify-center gap-2 text-sm text-yellow-400 font-semibold">
                 {['Browse', 'Movies', 'TV Series', 'Animation', 'Thriller', 'Drama'].map((item) => (
                     <a
@@ -180,10 +186,30 @@ const Navbar = () => {
                     Subscribe
                 </a>
             </div>
+
+            {/* Search Overlay */}
+            {showOverlay && (
+                <div className="fixed inset-0 bg-black/60 z-[999] flex justify-center items-center p-4">
+                    <div
+                        ref={overlayRef}
+                        className="bg-white p-4 rounded-lg max-h-[80vh] w-full max-w-4xl overflow-y-auto shadow-lg"
+                    >
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            {filtered.map((v, idx) => (
+                                <div
+                                    key={v._id || idx}
+                                    onClick={() => setShowOverlay(false)}
+                                    className="cursor-pointer"
+                                >
+                                    <Cards video={v} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
 
 export default Navbar;
-
-
