@@ -192,7 +192,7 @@ const Navbar = () => {
                 <div className="fixed  inset-0 bg-black/60 z-[999] flex justify-center items-center py-18">
                     <div
                         ref={overlayRef}
-                        className="bg-white p-4 rounded-lg max-h-[80vh] w-full max-w-4xl overflow-y-auto shadow-lg"
+                        className="bg-white py-18 rounded-lg max-h-[80vh] w-full max-w-4xl overflow-y-auto shadow-lg"
                     >
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                             {filtered.map((v, idx) => (
