@@ -2,7 +2,7 @@ import React from "react";
 
 
 
-export default function SquidGameCard() {
+export default function Button() {
     return (
         <>
             <input id="checkbox" type="checkbox" />
