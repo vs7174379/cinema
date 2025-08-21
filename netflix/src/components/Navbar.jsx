@@ -249,17 +249,20 @@ const Navbar = () => {
 
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm"
+            className="flex items-center gap-1 px-4  bg-red-600 hover:bg-red-700 rounded-md text-sm"
           >
-            <LogOut size={16} /> Logout
+            <LogOut size={10} /> Logout
           </button>
 
           <a
-            href="/Sbskripsn"
-            className="relative px-6 py-3 rounded-[15px] bg-[#f3ff07] text-[#212121] font-extrabold text-lg shadow-[4px_8px_19px_-3px_rgba(0,0,0,0.27)] transition-all duration-300 overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:h-full before:w-0 before:rounded-[15px] before:bg-[#0df4ec] before:-z-10 before:shadow-[4px_8px_19px_-3px_rgba(0,0,0,0.27)] before:transition-all before:duration-300 hover:text-[#e8e8e8] hover:before:w-full"
-          >
-            Subscribe
-          </a>
+  href="/Sbskripsn"
+  className="relative px-6 py-3 rounded-[15px] bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 text-black font-extrabold text-lg shadow-lg transition-all duration-300 overflow-hidden
+             before:content-[''] before:absolute before:top-0 before:left-0 before:h-full before:w-0 before:rounded-[15px] 
+             before:bg-white/20 before:-z-10 before:transition-all before:duration-300 hover:text-white hover:before:w-full"
+>
+  Subscribe
+</a>
+
         </div>
       </nav>
 
