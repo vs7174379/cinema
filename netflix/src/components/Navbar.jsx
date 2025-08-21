@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { LogOut } from "lucide-react";
+import Cards from './Cards';
 
 const Navbar = () => {
   const [allMovies, setAllMovies] = useState([]); // store all movies
@@ -209,7 +210,7 @@ const Navbar = () => {
         />
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex flex-wrap justify-center gap-2 text-sm text-yellow-400 font-semibold">
+        <div className="hidden md:flex flex-wrap items-center justify-center gap-2 text-sm text-yellow-400 font-semibold">
           <a
             href="/browser"
             className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer"
@@ -249,7 +250,8 @@ const Navbar = () => {
 
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1 px-4  bg-red-600 hover:bg-red-700 rounded-md text-sm"
+            className="relative px-5 py-2 rounded-xl bg-red-600 text-white font-bold text-lg shadow-[0_4px_15px_rgba(0,0,0,0.5)] transition-all duration-300
+             hover:bg-red-700 hover:scale-105 hover:shadow-[0_0_15px_rgba(255,0,0,0.6)]"
           >
             <LogOut size={10} /> Logout
           </button>
@@ -276,25 +278,7 @@ const Navbar = () => {
             <h2 className="text-xl font-bold mb-4">Search Results</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {movies.map((movie, idx) => (
-                <div
-                  key={idx}
-                  className="cursor-pointer rounded-lg overflow-hidden shadow hover:scale-105 transition"
-                  onClick={() => setShowOverlay(false)}
-                >
-                  <img
-                    src={
-                      movie.poster && movie.poster !== "N/A"
-                        ? movie.poster
-                        : "https://via.placeholder.com/200x300"
-                    }
-                    alt={movie.title}
-                    className="w-full h-64 object-cover"
-                  />
-                  <div className="p-2 text-center">
-                    <h3 className="font-semibold text-sm">{movie.title}</h3>
-                    <p className="text-xs text-gray-500">{movie.releaseDate}</p>
-                  </div>
-                </div>
+                <Cards video={movie}/>
               ))}
             </div>
             {movies.length === 0 && (
