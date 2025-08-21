@@ -189,12 +189,7 @@ const Navbar = () => {
                   <a href="/new" className="block px-4 py-2 hover:bg-gray-100">
                     Add Content
                   </a>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-center px-4 py-2 hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
+                  <onClick={handleLogout} SquidGameCard/>
                 </div>
               </div>
             )}
