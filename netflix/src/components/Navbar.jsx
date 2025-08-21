@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { LogOut } from "lucide-react";
 import Cards from './Cards';
+import Button from './Button';
+
 
 const Navbar = () => {
   const [allMovies, setAllMovies] = useState([]); // store all movies
@@ -243,13 +245,9 @@ const Navbar = () => {
             Drama
           </a>
 
-          <button
-            onClick={handleLogout}
-            className="relative px-5 py-2 rounded-xl bg-red-600 text-white font-bold text-lg shadow-[0_4px_15px_rgba(0,0,0,0.5)] transition-all duration-300
-             hover:bg-red-700 hover:scale-105 hover:shadow-[0_0_15px_rgba(255,0,0,0.6)]"
-          >
+         < onClick={handleLogout} Button/>
             <LogOut size={10} /> Logout
-          </button>
+          </Button>
 
           <a
   href="/Sbskripsn"
