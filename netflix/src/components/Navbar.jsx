@@ -49,7 +49,7 @@ const Navbar = () => {
     }
   };
 
-  // Close profile dropdown when clicking outside
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
