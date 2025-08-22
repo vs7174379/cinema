@@ -114,40 +114,7 @@ const Navbar = () => {
             <nav className="sticky top-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-between px-6 py-3 shadow-md">
                 <h1 className="text-2xl font-extrabold text-yellow-400">Cinema</h1>
 
-                <div className="flex items-center justify-center">
-                    {/* Mobile Dropdown */}
-                    <div className="md:hidden mr-5">
-                        <div className="relative">
-                            <select className="appearance-none text-gray-800 font-medium border bg-white border-gray-300 rounded-lg px-4 py-2 pr-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
-                                {[
-                                    "browse",
-                                    "Movies",
-                                    "TV Series",
-                                    "Animation",
-                                    "Thriller",
-                                    "Drama",
-                                    "More",
-                                ].map((item) => (
-                                    <option key={item}>{item}</option>
-                                ))}
-                            </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-800">
-                                <svg
-                                    className="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M19 9l-7 7-7-7"
-                                    />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
+           
 
                     {/* Profile Dropdown */}
                     <div className="relative inline-block text-right" ref={menuRef}>
@@ -191,6 +158,12 @@ const Navbar = () => {
                                     <a href="/new" className="block px-4 py-2 hover:bg-gray-100">
                                         Add Content
                                     </a>
+                                    <a href="/Sbskripsn" className="block px-4 py-2 hover:bg-gray-100">
+                                        Subscribe
+                                    </a>
+                                    <a  className="block px-4 py-2 hover:bg-gray-100">
+                                        LogOut
+                                    </a>
 
                                 </div>
                             </div>
@@ -204,7 +177,7 @@ const Navbar = () => {
                         <input value={query}
                             onChange={handleChange}
                             type="text"
-                            placeholder="Search movies..." class="input" />
+                            placeholder="  Search..." class="input" />
                         <div class="icon">
                             <svg
                                 version="1.1"
