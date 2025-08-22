@@ -46,7 +46,7 @@
         }
 
 #checkbox {
-  display: Block;
+  display: none;
 }
 
 .switch {
@@ -78,10 +78,11 @@
   background-color: rgb(146, 180, 184);
 }
 #checkbox:checked + .switch svg {
-  filter: drop-shadow(0px 0px 5px rgb(151, 243, 255));
+  fill: rgb(255, 255, 255);
 }
 #checkbox:checked + .switch svg path {
-  fill: rgb(255, 255, 255);
+ filter: drop-shadow(0px 0px 5px rgb(151, 243, 255));
+  
 } 
 
 /* From Uiverse.io by vinodjangid07 */ 
