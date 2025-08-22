@@ -233,7 +233,7 @@ const Navbar = () => {
                                     <a href="/Sbskripsn" className="block px-4 py-2 hover:bg-gray-100">
                                         Subscribe
                                     </a>
-                                    <a  className="block px-4 py-2 hover:bg-gray-100">
+                                    <a onClick={handleLogout} className="block px-4 py-2 hover:bg-gray-100">
                                         LogOut
                                     </a>
 
@@ -242,7 +242,7 @@ const Navbar = () => {
                         )}
                     </div>
                 
-                    < Button className="hidden md:flex"/>
+                   <span onClick={handleLogout} className="hidden sm:flex">< Button /></span> 
             </nav >
 
             {/* Search Overlay */}
