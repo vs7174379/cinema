@@ -199,7 +199,7 @@ const Navbar = () => {
                 </div>
 
 
-                <div class="page">
+                <div >
                     <div class="search">
                         <input value={query}
                             onChange={handleChange}
