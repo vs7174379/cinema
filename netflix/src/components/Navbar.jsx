@@ -120,7 +120,7 @@ const Navbar = () => {
                     <div className="relative inline-block text-right" ref={menuRef}>
                         <button
                             onClick={() => setOpen(!open)}
-                            className="flex items-center space-x-2 bg-gray-500 text-white px-4 py-2 rounded-full hover:bg-gray-700 transition"
+                            className="flex items-center space-x-2 bg-gray-500 text-white px-2 py-2 rounded-full hover:bg-gray-700 transition"
                         >
                             <img
                                 src={user?.avatar || "https://i.pravatar.cc/150?img=32"}
@@ -177,7 +177,7 @@ const Navbar = () => {
                         <input value={query}
                             onChange={handleChange}
                             type="text"
-                            placeholder="  Search..." class="input" />
+                            placeholder="  Search..  " class="input" />
                         <div class="icon">
                             <svg
                                 version="1.1"
