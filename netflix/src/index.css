@@ -152,23 +152,11 @@ filter: drop-shadow(0px 0px 5px rgb(151, 243, 255));
   background: linear-gradient(0deg, #141414ec, #00000cea, #00000cea, #141414ec);
 }
 
-.page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background-color: #111;
-  z-index: -5;
-  opacity: 1;
-  background-image: linear-gradient(#18305527 1px, transparent 1px),
-    linear-gradient(to right, #18305527 1px, #00000c 1px);
-  background-size: 10px 10px;
-}
+
 
 .input:focus {
   color: #999;
-  width: 300px;
+  width: 150px;
   outline-style: none;
 }
 
