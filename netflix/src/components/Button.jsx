@@ -1,34 +1,13 @@
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 
 
 export default function Button() {
-       const [user, setUser] = useState(null);
-
- 
-
-    // Fetch user profile
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const res = await fetch(
-                    `https://cinema-flame-seven.vercel.app/api/user/profile`,
-                    { method: "GET", credentials: "include" }
-                );
-                if (!res.ok) throw new Error("Failed to fetch profile");
-                const data = await res.json();
-                setUser(data.user);
-            } catch (err) {
-                console.error(err.message);
-                setUser(null);
-            }
-        };
-        fetchProfile();
-    }, []);
+     
     return (
         <>
-               { if(user)? <input id="checkbox" checked type="checkbox" />:<input id="checkbox" type="checkbox" />}
+              <input id="checkbox" checked type="checkbox" />
             
              <label class="switch" for="checkbox">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="slider">
