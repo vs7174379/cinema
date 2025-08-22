@@ -245,17 +245,13 @@ const Navbar = () => {
                         Drama
                     </a>
 
-                    
+                   <a href="/Sbskripsn">
+                 
+                  <button class="Btn"></button>
+                </a>  
                 < Button />
 
-                <a
-                    href="/Sbskripsn"
-                    className="relative px-6 py-3 rounded-[15px] bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 text-black font-extrabold text-lg shadow-lg transition-all duration-300 overflow-hidden
-             before:content-[''] before:absolute before:top-0 before:left-0 before:h-full before:w-0 before:rounded-[15px] 
-             before:bg-white/20 before:-z-10 before:transition-all before:duration-300 hover:text-white hover:before:w-full"
-                >
-                    Subscribe
-                </a>
+               
                 
 
             </div>
