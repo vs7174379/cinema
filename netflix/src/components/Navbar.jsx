@@ -184,19 +184,10 @@ const Navbar = () => {
                         className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer"
                     >
                         Thriller
-                    </a>
-                  
-
-                    <a href="/Sbskripsn">
-
-                        <button class="Btn"></button>
-                    </a>
-                    < Button />
-
-
-
-
+                    </a>              
                 </div>
+                
+                <a href="/Sbskripsn" className="hidden md:flex"><button class="Btn"></button> </a>
                  {/* Profile Dropdown */}
                     <div className="relative inline-block text-right" ref={menuRef}>
                         <button
@@ -250,6 +241,8 @@ const Navbar = () => {
                             </div>
                         )}
                     </div>
+                
+                    < Button className="hidden md:flex"/>
             </nav >
 
             {/* Search Overlay */}
