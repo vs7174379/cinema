@@ -28,7 +28,7 @@ export default function Button() {
     }, []);
     return (
         <>
-            if(user)? <input id="checkbox" checked type="checkbox" />:<input id="checkbox" type="checkbox" />
+               { if(user)? <input id="checkbox" checked type="checkbox" />:<input id="checkbox" type="checkbox" />}
             
              <label class="switch" for="checkbox">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="slider">
