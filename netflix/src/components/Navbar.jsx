@@ -155,6 +155,48 @@ const Navbar = () => {
                         <span></span>
                     </div>
                 </div>
+                
+
+
+                {/* Desktop Navigation */}
+                <div className="hidden md:flex flex-wrap items-center justify-center gap-2 text-sm text-yellow-400 font-semibold">
+                    <a
+                        href="/browser"
+                        className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer"
+                    >
+                        Browse
+                    </a>
+                    <a
+                        href="/movies"
+                        className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer"
+                    >
+                        Movies
+                    </a>
+                    <a
+                        href="/tv-series"
+                        className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer"
+                    >
+                        TV Series
+                    </a>
+                  
+                    <a
+                        href="/thriller"
+                        className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer"
+                    >
+                        Thriller
+                    </a>
+                  
+
+                    <a href="/Sbskripsn">
+
+                        <button class="Btn"></button>
+                    </a>
+                    < Button />
+
+
+
+
+                </div>
                  {/* Profile Dropdown */}
                     <div className="relative inline-block text-right" ref={menuRef}>
                         <button
@@ -208,57 +250,6 @@ const Navbar = () => {
                             </div>
                         )}
                     </div>
-
-
-                {/* Desktop Navigation */}
-                <div className="hidden md:flex flex-wrap items-center justify-center gap-2 text-sm text-yellow-400 font-semibold">
-                    <a
-                        href="/browser"
-                        className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer"
-                    >
-                        Browse
-                    </a>
-                    <a
-                        href="/movies"
-                        className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer"
-                    >
-                        Movies
-                    </a>
-                    <a
-                        href="/tv-series"
-                        className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer"
-                    >
-                        TV Series
-                    </a>
-                    <a
-                        href="/animation"
-                        className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer"
-                    >
-                        Animation
-                    </a>
-                    <a
-                        href="/thriller"
-                        className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer"
-                    >
-                        Thriller
-                    </a>
-                    <a
-                        href="/drama"
-                        className="px-4 py-1 rounded-full hover:bg-green-100 hover:text-black transition cursor-pointer"
-                    >
-                        Drama
-                    </a>
-
-                    <a href="/Sbskripsn">
-
-                        <button class="Btn"></button>
-                    </a>
-                    < Button />
-
-
-
-
-                </div>
             </nav >
 
             {/* Search Overlay */}
