@@ -123,7 +123,7 @@ export default function Subscription() {
         </div>
 
 
-        <button onClick={handlePayment} class="button" style="--clr: #00ad54;">
+        <button onClick={handlePayment} class="button">
           <span class="button-decor"></span>
           <div class="button-content">
             <div class="button__icon">
