@@ -39,9 +39,9 @@ const App = () => {
         <Route path='/movies/:id' element={<Movie />} />
         <Route path='/movies/:id/watch' element={<Watch />} />
         <Route path='/tv-series' element={<TV />} />
-        <Route path='/animation' element={<MyList head={"animation"} />} />
+        
         <Route path='/thriller' element={<Thriller />} />
-        <Route path='/drama' element={<New />} />
+        
         <Route path='/new' element={<Add/>} />
         <Route path='/:id' element={<Edit/>} />
         <Route path='/Sbskripsn' element={<Subscription/>} />
