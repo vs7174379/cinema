@@ -33,7 +33,7 @@ const App = () => {
       <Navbar />
       <Routes >
         <Route path='/' element={<LoginSignup />} />
-        <Route path='/browser' element={<Browser movieId={1434543} />} />
+        <Route path='/browser' element={<Browser movieId={1491902} />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/movies' element={<MyList head={"movies"} />} />
         <Route path='/movies/:id' element={<Movie />} />
